@@ -6,4 +6,5 @@
     <string name="order">订单</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
+    <string name="total_cash">合计：</string>
 </resources>
