@@ -3,4 +3,7 @@
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="order">订单</string>
+    <string name="temp_order">挂单</string>
+    <string name="confirm_order">下单</string>
 </resources>
