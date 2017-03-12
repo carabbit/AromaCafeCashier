@@ -55,13 +55,26 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/edit" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/delete" />
+
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/edit" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +88,8 @@
             android:name="bunny.project.aromacafecashier.ProductListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:layout="@layout/product_list" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -90,10 +104,12 @@
                 android:text="@string/create" />
 
             <ImageButton
+                android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:src="@mipmap/ic_launcher_round" />
+
         </FrameLayout>
     </LinearLayout>
 
