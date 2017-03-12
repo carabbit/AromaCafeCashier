@@ -26,6 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".provider.AccsProvider"
+            android:authorities="bunny.project.aromacafecashier"></provider>
     </application>
 
 </manifest>
