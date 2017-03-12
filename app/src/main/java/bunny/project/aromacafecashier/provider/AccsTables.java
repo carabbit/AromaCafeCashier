@@ -13,13 +13,27 @@ public class AccsTables {
                 .append(" (")
                 .append("id INTEGER PRIMARY KEY AUTOINCREMENT")
                 .append(",name TEXT")
-                .append(",type INTEGER")
+                .append(",type_id INTEGER")
                 .append(",image BLOB")
                 .append(",price FLOAT")
                 .append(");")
                 .toString();
 
     }
+
+    public static class ProductType {
+        public static String TABLE_NAME = "product_type";
+        public static String CREATE_TABLE = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(TABLE_NAME)
+                .append(" (")
+                .append("id INTEGER PRIMARY KEY AUTOINCREMENT")
+                .append(",name TEXT")
+                .append(");")
+                .toString();
+
+    }
+
 
     public static class Order {
         public static String TABLE_NAME = "[order]";

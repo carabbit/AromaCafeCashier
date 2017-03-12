@@ -1,6 +1,7 @@
 package bunny.project.aromacafecashier.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 /**
  * 数据provider
@@ -20,13 +22,15 @@ public class AccsProvider extends ContentProvider {
     private static final int PRODUCT = 1;
     private static final int ORDER = 2;
     private static final int ORDER_DETAIL = 3;
+    private static final int TYPE = 4;
 
     public static final String AUTHORITY = "bunny.project.aromacafecashier";
 
     static {
-        sURIMatcher.addURI(AUTHORITY, "", PRODUCT);
-        sURIMatcher.addURI(AUTHORITY, "", ORDER);
-        sURIMatcher.addURI(AUTHORITY, "", ORDER_DETAIL);
+        sURIMatcher.addURI(AUTHORITY, "product", PRODUCT);
+        sURIMatcher.addURI(AUTHORITY, "order", ORDER);
+        sURIMatcher.addURI(AUTHORITY, "order_detail", ORDER_DETAIL);
+        sURIMatcher.addURI(AUTHORITY, "type", TYPE);
     }
 
 
@@ -53,7 +57,31 @@ public class AccsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        int match = sURIMatcher.match(uri);
+        String tableName = "";
+        switch (match) {
+            case PRODUCT:
+                tableName = AccsTables.Product.TABLE_NAME;
+                break;
+            case ORDER:
+                tableName = AccsTables.Order.TABLE_NAME;
+                break;
+            case ORDER_DETAIL:
+                tableName = AccsTables.OrderDetail.TABLE_NAME;
+                break;
+        }
+
+        if (TextUtils.isEmpty(tableName)) {
+            return null;
+        }
+
+        long result = mDb.insert(tableName, null, contentValues);
+
+        if (result > 0) {
+            return ContentUris.withAppendedId(uri, result);
+        } else {
+            return null;
+        }
     }
 
     @Override

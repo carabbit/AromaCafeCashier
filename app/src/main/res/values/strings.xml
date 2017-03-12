@@ -7,4 +7,8 @@
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
     <string name="total_cash">合计：</string>
+    <string name="product_info">商品信息</string>
+    <string name="edit">编辑</string>
+    <string name="create">新建</string>
+    <string name="no_product">没有商品信息</string>
 </resources>
