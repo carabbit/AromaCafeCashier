@@ -19,7 +19,10 @@ import static bunny.project.aromacafecashier.QueryManager.TYPE_PROJECTION;
 
 public class ProductListFragment extends Fragment {
     private static final int TOKEN_QUERY_TYPE = 1;
+    private static final int TOKEN_QUERY_PRODUCT = 2;
+
     private AsyncQueryHandler mQqueryHandle;
+    private View mTabScrollView;
     private ViewGroup mTabContainer;
     private View mGridView;
     private View mEmptyView;
@@ -35,27 +38,38 @@ public class ProductListFragment extends Fragment {
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
             switch (token) {
-                case TOKEN_QUERY_TYPE:
+                case TOKEN_QUERY_TYPE: {
                     if (cursor == null || cursor.getCount() == 0) {
-                        mTabContainer.setVisibility(View.GONE);
+                        mTabScrollView.setVisibility(View.GONE);
                         mGridView.setVisibility(View.GONE);
                         mEmptyView.setVisibility(View.VISIBLE);
                     } else {
-                        mTabContainer.setVisibility(View.VISIBLE);
+                        mTabScrollView.setVisibility(View.VISIBLE);
                         mGridView.setVisibility(View.GONE);
                         mEmptyView.setVisibility(View.GONE);
+                        mTabContainer.removeAllViews();
                         while (cursor.moveToNext()) {
-                            Button btn = new Button(getContext());
+                            Button btn = new Button(getActivity());
                             btn.setTag(new Integer(cursor.getInt(0)));
                             btn.setText(cursor.getString(1));
                             mTabContainer.addView(btn);
                         }
                         cursor.close();
+
+
                     }
 
                     break;
+                }
+                case TOKEN_QUERY_PRODUCT: {
+                    break;
+                }
             }
         }
+    }
+
+    public void queryProductByType(int Type){
+
     }
 
     @Override
@@ -72,6 +86,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTabContainer = (ViewGroup) view.findViewById(R.id.tabContainer);
+        mTabScrollView = view.findViewById(R.id.tabContainerContainer);
         mGridView = view.findViewById(R.id.product_gridview);
         mEmptyView = view.findViewById(R.id.empty_view);
     }
@@ -80,8 +95,12 @@ public class ProductListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mQqueryHandle = new QueryProductHandler(getActivity().getContentResolver());
-        mQqueryHandle.startQuery(TOKEN_QUERY_TYPE, null, QueryManager.TYPE_URI, TYPE_PROJECTION, null, null, null);
+
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mQqueryHandle.startQuery(TOKEN_QUERY_TYPE, null, QueryManager.TYPE_URI, TYPE_PROJECTION, null, null, null);
+    }
 }

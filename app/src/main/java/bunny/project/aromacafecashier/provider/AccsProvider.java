@@ -22,7 +22,7 @@ public class AccsProvider extends ContentProvider {
     private static final int PRODUCT = 1;
     private static final int ORDER = 2;
     private static final int ORDER_DETAIL = 3;
-    private static final int TYPE = 4;
+    private static final int PRODUCT_TYPE = 4;
 
     public static final String AUTHORITY = "bunny.project.aromacafecashier";
 
@@ -30,7 +30,7 @@ public class AccsProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, "product", PRODUCT);
         sURIMatcher.addURI(AUTHORITY, "order", ORDER);
         sURIMatcher.addURI(AUTHORITY, "order_detail", ORDER_DETAIL);
-        sURIMatcher.addURI(AUTHORITY, "type", TYPE);
+        sURIMatcher.addURI(AUTHORITY, "type", PRODUCT_TYPE);
     }
 
 
@@ -45,7 +45,23 @@ public class AccsProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+        int match = sURIMatcher.match(uri);
+        String tableName = "";
+        switch (match) {
+            case PRODUCT:
+                tableName = AccsTables.Product.TABLE_NAME;
+                break;
+            case ORDER:
+                tableName = AccsTables.Order.TABLE_NAME;
+                break;
+            case ORDER_DETAIL:
+                tableName = AccsTables.OrderDetail.TABLE_NAME;
+                break;
+            case PRODUCT_TYPE:
+                tableName = AccsTables.ProductType.TABLE_NAME;
+                break;
+        }
+        return mDb.query(tableName, strings, s, strings1, s1, null, null);
     }
 
     @Nullable
@@ -68,6 +84,9 @@ public class AccsProvider extends ContentProvider {
                 break;
             case ORDER_DETAIL:
                 tableName = AccsTables.OrderDetail.TABLE_NAME;
+                break;
+            case PRODUCT_TYPE:
+                tableName = AccsTables.ProductType.TABLE_NAME;
                 break;
         }
 
