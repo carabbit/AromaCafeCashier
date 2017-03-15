@@ -1,11 +1,8 @@
 package bunny.project.aromacafecashier;
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.view.View;
 
 import bunny.project.aromacafecashier.provider.AccsProvider;
 import bunny.project.aromacafecashier.provider.AccsTables;
@@ -17,11 +14,11 @@ import bunny.project.aromacafecashier.provider.AccsTables;
 public class QueryManager {
     private volatile static QueryManager sInstance;
     private final Context mContext;
-    private static final Uri BASE_URI = Uri.parse("content://" + AccsProvider.AUTHORITY);
-    public static final Uri PRODUCT_URI = BASE_URI.buildUpon().appendPath("product").build();
-    public static final Uri TYPE_URI = BASE_URI.buildUpon().appendPath("type").build();
-    public static final Uri ORDER_URI = BASE_URI.buildUpon().appendPath("order").build();
-    public static final Uri ORDER_TYPE_URI = BASE_URI.buildUpon().appendPath("order_detail").build();
+    private static final Uri URI_BASE = Uri.parse("content://" + AccsProvider.AUTHORITY);
+    public static final Uri URI_PRODUCT = URI_BASE.buildUpon().appendPath("product").build();
+    public static final Uri URI_TYPE = URI_BASE.buildUpon().appendPath("type").build();
+    public static final Uri URI_ORDER = URI_BASE.buildUpon().appendPath("order").build();
+    public static final Uri URI_ORDER_DETAIL = URI_BASE.buildUpon().appendPath("order_detail").build();
 
     public static final String[] PROJECTION_TYPE = new String[]{
             AccsTables.ProductType._ID, AccsTables.ProductType.COL_NAME

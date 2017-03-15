@@ -111,7 +111,7 @@ public class AccsProvider extends ContentProvider {
             case PRODUCT:
                 tableName = AccsTables.Product.TABLE_NAME;
                 break;
-//            case ORDER:
+//            case ORDER_ITEM:
 //                tableName = AccsTables.Order.TABLE_NAME;
 //                break;
 //            case ORDER_DETAIL:

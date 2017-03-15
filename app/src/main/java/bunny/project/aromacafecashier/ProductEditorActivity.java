@@ -11,10 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,13 +25,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-
-import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.model.ProductType;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
-import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
  * 商品编辑界面，用于商品新增，或编辑。
@@ -224,7 +216,7 @@ public class ProductEditorActivity extends Activity {
         if (mImgProduct.getTag() != null && ((Integer) mImgProduct.getTag() == TAG_PRODUCT_IMG_UPDATE)) {
             values.put(AccsTables.Product.COL_IMAGE, BitmapTool.drawable2Bytes(mImgProduct.getDrawable()));
         }
-        mQueryProductHandler.startInsert(TOKEN_INSERT_PRODUCT, null, QueryManager.PRODUCT_URI, values);
+        mQueryProductHandler.startInsert(TOKEN_INSERT_PRODUCT, null, QueryManager.URI_PRODUCT, values);
     }
 
     @Override
@@ -277,19 +269,19 @@ public class ProductEditorActivity extends Activity {
 
     private void queryAllProductType() {
         String[] projection = new String[]{AccsTables.ProductType._ID, AccsTables.ProductType.COL_NAME};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.TYPE_URI, projection, null, null, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, projection, null, null, null);
     }
 
     private void queryProductType(String type) {
         String selection = AccsTables.ProductType.COL_NAME + "=?";
         String[] agrs = new String[]{type};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.TYPE_URI, new String[]{AccsTables.ProductType._ID}, selection, agrs, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.URI_TYPE, new String[]{AccsTables.ProductType._ID}, selection, agrs, null);
     }
 
     private void insertProductType(String type) {
         ContentValues values = new ContentValues();
         values.put(AccsTables.ProductType.COL_NAME, type);
-        mQueryProductHandler.startInsert(TOKEN_INSERT_TYPE, type, QueryManager.TYPE_URI, values);
+        mQueryProductHandler.startInsert(TOKEN_INSERT_TYPE, type, QueryManager.URI_TYPE, values);
     }
 
     /*

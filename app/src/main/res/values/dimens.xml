@@ -5,4 +5,5 @@
     <dimen name="text_size">20sp</dimen>
     <dimen name="product_list_item_width">120dp</dimen>
     <dimen name="product_list_item_space">0dp</dimen>
+    <dimen name="number_size">30dp</dimen>
 </resources>

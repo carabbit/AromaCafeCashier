@@ -76,6 +76,9 @@ public class AccsTables {
         public static String TABLE_NAME = "order_detail";
 
         public static final String COL_ORDER_ID = "order_id";
+        public static final String COL_PRODUCT_ID = "product_id";
+        public static final String COL_PRODUCT_NAME = "product_name";
+        public static final String COL_PRODUCT_PRICE = "product_price";
         public static final String COL_COUNT = "count";
 
         public static String CREATE_TABLE = new StringBuilder()
@@ -84,6 +87,9 @@ public class AccsTables {
                 .append(" (")
                 .append(_ID + " INTEGER PRIMARY KEY AUTOINCREMENT")
                 .append("," + COL_ORDER_ID + " INTEGER")
+                .append("," + COL_PRODUCT_ID + " INTEGER")
+                .append("," + COL_PRODUCT_NAME + " TEXT")
+                .append("," + COL_PRODUCT_PRICE + " TEXT")
                 .append("," + COL_COUNT + " INTEGER ")
                 .append(");")
                 .toString();

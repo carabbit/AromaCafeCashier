@@ -19,6 +19,7 @@ import android.widget.Toast;
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
+import bunny.project.aromacafecashier.view.ProductListItemView;
 
 import static bunny.project.aromacafecashier.QueryManager.PROJECTION_TYPE;
 
@@ -71,13 +72,13 @@ public class ProductListFragment extends Fragment {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            if (!(view instanceof ProductListItem)) {
+            if (!(view instanceof ProductListItemView)) {
                 return;
             }
 
             Product product = Product.fromCursor(cursor);
 
-            ProductListItem item = (ProductListItem) view;
+            ProductListItemView item = (ProductListItemView) view;
 
             item.setTag(product);
 
@@ -92,7 +93,7 @@ public class ProductListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             Object tag = view.getTag();
-            if (tag != null && tag instanceof Product) {
+            if (tag != null && tag instanceof Product && mListener != null) {
                 mListener.onItemClick((Product) tag);
             } else {
 
@@ -142,7 +143,7 @@ public class ProductListFragment extends Fragment {
     public void deleteItem(int productId) {
         String[] args = new String[]{String.valueOf(productId)};
         String seletion = AccsTables.Product._ID + " = ?";
-        mQqueryHandle.startDelete(TOKEN_DELETE_PRODUCT, productId, QueryManager.PRODUCT_URI, seletion, args);
+        mQqueryHandle.startDelete(TOKEN_DELETE_PRODUCT, productId, QueryManager.URI_PRODUCT, seletion, args);
     }
 
     private void handleProductQuery(int type, Cursor cursor) {
@@ -201,7 +202,7 @@ public class ProductListFragment extends Fragment {
         String selection = AccsTables.Product.COL_TYPE_ID + " = ?";
         String[] args = new String[]{String.valueOf(type)};
         String order = AccsTables.Product.COL_NAME;
-        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT, type, QueryManager.PRODUCT_URI, QueryManager.PROJECTION_PRODUCT, selection, args, order);
+        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT, type, QueryManager.URI_PRODUCT, QueryManager.PROJECTION_PRODUCT, selection, args, order);
     }
 
     @Override
@@ -234,7 +235,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mQqueryHandle.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.TYPE_URI, PROJECTION_TYPE, null, null, null);
+        mQqueryHandle.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, PROJECTION_TYPE, null, null, null);
     }
 
     public void setProductItemClickListener(ProductItemClickListener listener) {

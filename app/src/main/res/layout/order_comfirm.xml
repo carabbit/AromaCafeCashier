@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_cash_single"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/total_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_in"
+            android:textSize="@dimen/text_size" />
+
+        <bunny.project.aromacafecashier.view.NumberEditText
+            android:id="@+id/pay_in"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="@dimen/text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/charge"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/one"
+                    style="@style/NumberStyle"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/two"
+                    style="@style/NumberStyle"
+                    android:text="2" />
+
+                <TextView
+                    android:id="@+id/three"
+                    style="@style/NumberStyle"
+                    android:text="3" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/four"
+                    style="@style/NumberStyle"
+                    android:text="4" />
+
+                <TextView
+                    android:id="@+id/five"
+                    style="@style/NumberStyle"
+                    android:text="5" />
+
+                <TextView
+                    android:id="@+id/six"
+                    style="@style/NumberStyle"
+                    android:text="6" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/seven"
+                    style="@style/NumberStyle"
+                    android:text="7" />
+
+                <TextView
+                    android:id="@+id/eight"
+                    style="@style/NumberStyle"
+                    android:text="8" />
+
+                <TextView
+                    android:id="@+id/nine"
+                    style="@style/NumberStyle"
+                    android:text="9" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/dot"
+                    style="@style/NumberStyle"
+                    android:text="."
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/zero"
+                    style="@style/NumberStyle"
+                    android:text="0" />
+
+                <ImageView
+                    android:id="@+id/del"
+                    android:layout_width="@dimen/number_size"
+                    android:layout_height="@dimen/number_size"
+                    android:src="@drawable/delete" />
+
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/pay_finish" />
+    </LinearLayout>
+</LinearLayout>

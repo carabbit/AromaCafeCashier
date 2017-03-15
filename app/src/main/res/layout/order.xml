@@ -6,28 +6,18 @@
     android:background="#0099cc"
     tools:context="bunny.project.aromacafecashier.MainActivity">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/order" />
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></ListView>
-
-        <TextView
-            android:id="@+id/total_cash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/total_cash" />
+        <fragment
+            android:id="@+id/order_list_fragment"
+            android:name="bunny.project.aromacafecashier.OrderListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/order_list_fragment" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +38,6 @@
                 android:layout_weight="1"
                 android:text="@string/confirm_order" />
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -57,17 +46,31 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <GridView
-            android:id="@+id/product_gridview"
+        <fragment
+            android:id="@+id/product_list_fragment"
+            android:name="bunny.project.aromacafecashier.ProductListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:layout="@layout/product_list" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@mipmap/ic_launcher_round" />
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_menu_manager"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/product_manager"/>
+
+            <!--<ImageButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/ic_launcher_round" />-->
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

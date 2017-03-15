@@ -25,7 +25,8 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
 
     Button mBtnCreate;
     Button mBtnDelete;
-//    Button mBtnEdit;
+    ImageView mBtnBack;
+    //    Button mBtnEdit;
     ImageView mProductImgView;
     TextView mProductNameView;
     TextView mProudctPriceView;
@@ -53,9 +54,11 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
         mProudctPriceView = (TextView) findViewById(R.id.product_price);
         mProductTypeView = (TextView) findViewById(R.id.product_type);
 
+
         mBtnDelete = (Button) findViewById(R.id.btn_delete);
 //        mBtnEdit = (Button) findViewById(R.id.btn_edit);
         mBtnCreate = (Button) findViewById(R.id.btn_create);
+        mBtnBack = (ImageView) findViewById(R.id.btn_back);
 
         mBtnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,13 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
 //                editProduct(v);
 //            }
 //        });
+
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void editProduct(View v) {

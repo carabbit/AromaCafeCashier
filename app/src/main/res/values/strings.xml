@@ -6,8 +6,13 @@
     <string name="order">订单</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
+    <string name="pay_finish">完成付款</string>
     <string name="total_cash">合计：</string>
+    <string name="total_cash_single">合计：</string>
+    <string name="pay_in">实收：</string>
+    <string name="charge">找零：</string>
     <string name="product_info">商品信息</string>
+    <string name="product_manager">商品管理</string>
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
     <string name="create">新建</string>
@@ -29,4 +34,5 @@
     <string name="cancel">取消</string>
     <string name="type_exist">该商品类型已存在</string>
     <string name="delete_product_fail">删除商品失败！</string>
+    <string name="create_order_fail">总价为0元，创建订单失败</string>
 </resources>
