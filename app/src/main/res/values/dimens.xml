@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="product_img_size">100dp</dimen>
+    <dimen name="product_img_size">150dp</dimen>
+    <dimen name="product_list_img_size">100dp</dimen>
+    <dimen name="text_size">20sp</dimen>
+    <dimen name="product_list_item_width">120dp</dimen>
+    <dimen name="product_list_item_space">0dp</dimen>
 </resources>

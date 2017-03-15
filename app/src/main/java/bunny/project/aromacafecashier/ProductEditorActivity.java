@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -30,8 +31,11 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.model.ProductType;
 import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.utility.BitmapTool;
+import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
  * 商品编辑界面，用于商品新增，或编辑。
@@ -54,6 +58,7 @@ public class ProductEditorActivity extends Activity {
     private static final int TOKEN_INSERT_TYPE = 2;
     private static final int TOKEN_QUERY_TYPE = 3;
     private static final int TOKEN_QUERY_ALL_TYPE = 4;
+    private static final int TOKEN_QUERY_PRODUCT = 5;
 
     private static final int DIALOG_CREATE_TYPE = 1;
 
@@ -112,7 +117,6 @@ public class ProductEditorActivity extends Activity {
                 }
             } else if (token == TOKEN_QUERY_ALL_TYPE) {
                 mSpinnerAdapter.clear();
-
                 if (cursor != null && cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
                         ProductType productType = new ProductType();
@@ -139,6 +143,10 @@ public class ProductEditorActivity extends Activity {
 
         mQueryProductHandler = new QueryProductHandler(getContentResolver());
 
+        initViews();
+    }
+
+    private void initViews() {
         mTypeSpinner = (Spinner) findViewById(R.id.type_spinner);
         mEdtName = (EditText) findViewById(R.id.edit_name);
         mEdtPrice = (EditText) findViewById(R.id.edit_price);
@@ -214,7 +222,7 @@ public class ProductEditorActivity extends Activity {
         values.put(AccsTables.Product.COL_PRICE, Float.valueOf(mEdtPrice.getText().toString()));
 
         if (mImgProduct.getTag() != null && ((Integer) mImgProduct.getTag() == TAG_PRODUCT_IMG_UPDATE)) {
-            values.put(AccsTables.Product.COL_IMAGE, Drawable2Bytes(mImgProduct.getDrawable()));
+            values.put(AccsTables.Product.COL_IMAGE, BitmapTool.drawable2Bytes(mImgProduct.getDrawable()));
         }
         mQueryProductHandler.startInsert(TOKEN_INSERT_PRODUCT, null, QueryManager.PRODUCT_URI, values);
     }
@@ -268,14 +276,14 @@ public class ProductEditorActivity extends Activity {
     }
 
     private void queryAllProductType() {
-        String[] projection = new String[]{AccsTables.ProductType.COL_ID, AccsTables.ProductType.COL_NAME};
+        String[] projection = new String[]{AccsTables.ProductType._ID, AccsTables.ProductType.COL_NAME};
         mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.TYPE_URI, projection, null, null, null);
     }
 
     private void queryProductType(String type) {
         String selection = AccsTables.ProductType.COL_NAME + "=?";
         String[] agrs = new String[]{type};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.TYPE_URI, new String[]{AccsTables.ProductType.COL_ID}, selection, agrs, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.TYPE_URI, new String[]{AccsTables.ProductType._ID}, selection, agrs, null);
     }
 
     private void insertProductType(String type) {
@@ -304,33 +312,5 @@ public class ProductEditorActivity extends Activity {
         intent.putExtra("return-data", true);
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         startActivityForResult(intent, REQUEST_PHOTO_CUT);
-    }
-
-    // Drawable转换成Bitmap
-    public Bitmap drawable2Bitmap(Drawable drawable) {
-        Bitmap bitmap = Bitmap
-                .createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                                : Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-    // Bitmap转换成byte[]
-    public byte[] Bitmap2Bytes(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
-    }
-
-    // Drawable转换成byte[]
-    public byte[] Drawable2Bytes(Drawable d) {
-        Bitmap bitmap = this.drawable2Bitmap(d);
-        return this.Bitmap2Bytes(bitmap);
     }
 }

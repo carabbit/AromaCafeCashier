@@ -18,42 +18,82 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/product_info" />
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:shrinkColumns="@string/product_price">
 
-
-            <ImageView
-                android:layout_width="wrap_content"
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_launcher_round" />
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/edit" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_img" />
 
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/total_cash" />
+                <ImageView
+                    android:id="@+id/product_img"
+                    android:layout_width="@dimen/product_img_size"
+                    android:layout_height="@dimen/product_img_size"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_launcher_round" />
+            </TableRow>
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/total_cash" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_name" />
+
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_type" />
+
+                <TextView
+                    android:id="@+id/product_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
 
 
-        </LinearLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_price" />
+
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
+
+
+        </TableLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,13 +107,6 @@
                 android:layout_weight="1"
                 android:text="@string/delete" />
 
-            <Button
-                android:id="@+id/btn_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="@string/edit" />
         </LinearLayout>
     </LinearLayout>
 
@@ -84,7 +117,7 @@
         android:orientation="vertical">
 
         <fragment
-            android:id="@+id/product_gridview"
+            android:id="@+id/product_list_fragment"
             android:name="bunny.project.aromacafecashier.ProductListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"

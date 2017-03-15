@@ -49,7 +49,7 @@ public class AccsProvider extends ContentProvider {
         String tableName = "";
         switch (match) {
             case PRODUCT:
-                tableName = AccsTables.Product.TABLE_NAME;
+                tableName = AccsTables.Views.VIEW_PRODUCT;
                 break;
             case ORDER:
                 tableName = AccsTables.Order.TABLE_NAME;
@@ -105,7 +105,24 @@ public class AccsProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        int match = sURIMatcher.match(uri);
+        String tableName = "";
+        switch (match) {
+            case PRODUCT:
+                tableName = AccsTables.Product.TABLE_NAME;
+                break;
+//            case ORDER:
+//                tableName = AccsTables.Order.TABLE_NAME;
+//                break;
+//            case ORDER_DETAIL:
+//                tableName = AccsTables.OrderDetail.TABLE_NAME;
+//                break;
+//            case PRODUCT_TYPE:
+//                tableName = AccsTables.ProductType.TABLE_NAME;
+//                break;
+        }
+
+        return mDb.delete(tableName, s, strings);
     }
 
     @Override

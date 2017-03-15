@@ -23,6 +23,7 @@ public class AccsDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(AccsTables.ProductType.CREATE_TABLE);
         sqLiteDatabase.execSQL(AccsTables.Order.CREATE_TABLE);
         sqLiteDatabase.execSQL(AccsTables.OrderDetail.CREATE_TABLE);
+        sqLiteDatabase.execSQL(AccsTables.Views.CREATE_PRODUCT_VIEW);
     }
 
     @Override
