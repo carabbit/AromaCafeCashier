@@ -1,13 +1,12 @@
 package bunny.project.aromacafecashier;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,11 +16,10 @@ import bunny.project.aromacafecashier.utility.BitmapTool;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
- * 商品管理界面
- * Created by bunny on 2017/3/12.
+ * Created by bunny on 17-3-16.
  */
 
-public class ProductManagerActivity extends FullScreenActivity implements ProductListFragment.ProductItemClickListener {
+public class ProductManagerFragment extends Fragment implements ProductListFragment.ProductItemClickListener {
 
     Button mBtnCreate;
     Button mBtnDelete;
@@ -31,39 +29,43 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
     TextView mProductNameView;
     TextView mProudctPriceView;
     TextView mProductTypeView;
-    ProductListFragment mProductListFragment;
+    private ProductListFragment mProductListFragment;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.product_manager);
-
-        initViews();
-
-//        Fragment productListFragment = getFragmentManager().findFragmentById(R.id.product_list_fragment);
-//        if (productListFragment != null && productListFragment instanceof ProductListFragment) {
-//            mProductListFragment = ((ProductListFragment) productListFragment);
-//            mProductListFragment.setProductItemClickListener(this);
-//        }
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.product_manager, null);
+        mProductListFragment = new ProductListFragment();
+        mProductListFragment.setProductItemClickListener(this);
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.product_list_fragment_container, mProductListFragment)
+                .commitAllowingStateLoss();
+        return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+    }
 
-    private void initViews() {
-        mProductImgView = (ImageView) findViewById(R.id.product_img);
-        mProductNameView = (TextView) findViewById(R.id.product_name);
-        mProudctPriceView = (TextView) findViewById(R.id.product_price);
-        mProductTypeView = (TextView) findViewById(R.id.product_type);
+    private void initViews(View view) {
+        mProductImgView = (ImageView) view.findViewById(R.id.product_img);
+        mProductNameView = (TextView) view.findViewById(R.id.product_name);
+        mProudctPriceView = (TextView) view.findViewById(R.id.product_price);
+        mProductTypeView = (TextView) view.findViewById(R.id.product_type);
 
 
-        mBtnDelete = (Button) findViewById(R.id.btn_delete);
+        mBtnDelete = (Button) view.findViewById(R.id.btn_delete);
 //        mBtnEdit = (Button) findViewById(R.id.btn_edit);
-        mBtnCreate = (Button) findViewById(R.id.btn_create);
-        mBtnBack = (ImageView) findViewById(R.id.btn_back);
+        mBtnCreate = (Button) view.findViewById(R.id.btn_create);
+        mBtnBack = (ImageView) view.findViewById(R.id.btn_back);
 
         mBtnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ProductManagerActivity.this, ProductEditorActivity.class));
+                startActivity(new Intent(getActivity(), ProductEditorActivity.class));
             }
         });
 
@@ -81,12 +83,12 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
 //            }
 //        });
 
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        mBtnBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
     }
 
     private void editProduct(View v) {
@@ -94,7 +96,7 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
         if (tag != null && tag instanceof Integer) {
             int productId = (Integer) tag;
             MyLog.i("", "edit id:" + productId);
-            Intent intent = new Intent(ProductManagerActivity.this, ProductEditorActivity.class);
+            Intent intent = new Intent(getActivity(), ProductEditorActivity.class);
             intent.putExtra(IntentKeys.ID, productId);
             startActivity(intent);
         }

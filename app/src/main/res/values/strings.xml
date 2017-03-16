@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">AromaCafeCashier</string>
-
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="tab_order">点单</string>
+    <string name="tab_order_history">订单\n记录</string>
+    <string name="tab_product_manager">商品\n管理</string>
     <string name="order">订单</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
@@ -35,4 +35,6 @@
     <string name="type_exist">该商品类型已存在</string>
     <string name="delete_product_fail">删除商品失败！</string>
     <string name="create_order_fail">总价为0元，创建订单失败</string>
+    <string name="has_payed">已付款</string>
+    <string name="unpayed">未付款</string>
 </resources>

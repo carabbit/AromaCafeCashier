@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bunny.project.aromacafecashier.view.HistoryOrderItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/order_history_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/order_id"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/order_history_item_height"
+        android:layout_marginEnd="@dimen/order_history_item_space"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/order_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/order_history_item_space" />
+
+    <TextView
+        android:id="@+id/pay_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/order_history_item_space" />
+
+    <TextView
+        android:id="@+id/pay_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</bunny.project.aromacafecashier.view.HistoryOrderItemView>

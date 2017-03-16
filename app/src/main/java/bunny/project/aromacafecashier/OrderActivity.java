@@ -1,28 +1,15 @@
 package bunny.project.aromacafecashier;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import bunny.project.aromacafecashier.model.OrderItem;
-import bunny.project.aromacafecashier.model.Product;
-import bunny.project.aromacafecashier.utility.IntentKeys;
-import bunny.project.aromacafecashier.view.OrderItemView;
 
 /**
  * Created by bunny on 2017/3/11.
@@ -83,26 +70,28 @@ public class OrderActivity extends FullScreenActivity implements OrderConfirmDia
         return dialog;
     }
 
-    private OrderListFragment mOrderListFragment;
+    private OrderDetailFragment mOrderListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order);
-
-
-        mBtnOrder = (Button) findViewById(R.id.btn_comfirm_order);
-        mBtnTempOrder = (Button) findViewById(R.id.btn_temp_order);
-        mBtnProductManager = (Button) findViewById(R.id.btn_menu_manager);
-
-        mBtnOrder.setOnClickListener(mOnClickListener);
-        mBtnTempOrder.setOnClickListener(mOnClickListener);
-        mBtnProductManager.setOnClickListener(mOnClickListener);
-
-        mOrderListFragment = (OrderListFragment) getFragmentManager().findFragmentById(R.id.order_list_fragment);
-        ProductListFragment productListFragment = (ProductListFragment) getFragmentManager().findFragmentById(R.id.product_list_fragment);
-
-        productListFragment.setProductItemClickListener(mOrderListFragment.mProductItemClickListener);
+//        setContentView(R.layout.order);
+//
+//
+//        mBtnOrder = (Button) findViewById(R.id.btn_comfirm_order);
+//        mBtnTempOrder = (Button) findViewById(R.id.btn_temp_order);
+//        mBtnProductManager = (Button) findViewById(R.id.btn_menu_manager);
+//
+//        mBtnOrder.setOnClickListener(mOnClickListener);
+//        mBtnTempOrder.setOnClickListener(mOnClickListener);
+//        mBtnProductManager.setOnClickListener(mOnClickListener);
+//
+//
+//
+//        mOrderListFragment = (OrderDetailFragment) getFragmentManager().findFragmentById(R.id.order_list_fragment);
+//        ProductListFragment productListFragment = (ProductListFragment) getFragmentManager().findFragmentById(R.id.product_list_fragment);
+//
+//        productListFragment.setProductItemClickListener(mOrderListFragment.mProductItemClickListener);
     }
 
     @Override

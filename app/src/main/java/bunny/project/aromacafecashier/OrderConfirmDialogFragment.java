@@ -1,19 +1,16 @@
 package bunny.project.aromacafecashier;
 
-import android.app.DialogFragment;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.OperationApplicationException;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -30,7 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import bunny.project.aromacafecashier.model.Order;
+import bunny.project.aromacafecashier.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItem;
 import bunny.project.aromacafecashier.provider.AccsProvider;
 import bunny.project.aromacafecashier.utility.IntentKeys;
@@ -204,7 +201,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         protected Integer doInBackground(Void[] params) {
             ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
-            operations.add(Order.getNewInsertOperation());
+            operations.add(OrderInfo.getNewInsertOperation());
 
             for (OrderItem item : mOrderItems) {
                 operations.add(item.toInsertContentProviderOperation(0));

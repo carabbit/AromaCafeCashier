@@ -3,7 +3,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/fragment_bg"
     tools:context="bunny.project.aromacafecashier.MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,14 +11,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <fragment
+        <FrameLayout
+            android:id="@+id/order_list_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></FrameLayout>
+
+        <!--<fragment
             android:id="@+id/order_list_fragment"
-            android:name="bunny.project.aromacafecashier.OrderListFragment"
+            android:name="bunny.project.aromacafecashier.OrderDetailFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:layout="@layout/order_list_fragment" />
-
+            android:tag="order_list_fragment"
+            tools:layout="@layout/order_detail_fragment" />
+-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,13 +53,20 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <fragment
+        <FrameLayout
+            android:id="@+id/product_list_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></FrameLayout>
+
+        <!--<fragment
             android:id="@+id/product_list_fragment"
             android:name="bunny.project.aromacafecashier.ProductListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:layout="@layout/product_list" />
+            android:tag="product_list_fragment"
+            tools:layout="@layout/product_list" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,7 +78,7 @@
                 android:id="@+id/btn_menu_manager"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/product_manager"/>
+                android:text="@string/product_manager" />
 
             <!--<ImageButton-->
             <!--android:layout_width="wrap_content"-->

@@ -6,4 +6,7 @@
     <dimen name="product_list_item_width">120dp</dimen>
     <dimen name="product_list_item_space">0dp</dimen>
     <dimen name="number_size">30dp</dimen>
+    <dimen name="order_detail_width">300dp</dimen>
+    <dimen name="order_history_item_height">60dp</dimen>
+    <dimen name="order_history_item_space">10dp</dimen>
 </resources>

@@ -58,16 +58,18 @@ public class AccsTables {
     public static class Order implements BaseColumns {
         public static String TABLE_NAME = "[order]";
 
-        public static final String COL_DATE = "date";
+        public static final String COL_DATE = "[date]";
         public static final String COL_PAYED = "payed";
+        public static final String COL_PAY_TIME = "pay_time";
 
         public static String CREATE_TABLE = new StringBuilder()
                 .append("CREATE TABLE ")
                 .append(TABLE_NAME)
                 .append(" (")
                 .append(_ID + " INTEGER PRIMARY KEY AUTOINCREMENT")
-                .append("," + COL_DATE + " INTEGER")
+                .append("," + COL_DATE + " LONG")
                 .append("," + COL_PAYED + " INTEGER")
+                .append("," + COL_PAY_TIME + " LONG")
                 .append(");")
                 .toString();
     }

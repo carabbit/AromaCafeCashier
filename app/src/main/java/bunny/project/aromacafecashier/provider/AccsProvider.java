@@ -44,7 +44,7 @@ public class AccsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
         int match = sURIMatcher.match(uri);
         String tableName = "";
         switch (match) {
@@ -61,7 +61,7 @@ public class AccsProvider extends ContentProvider {
                 tableName = AccsTables.ProductType.TABLE_NAME;
                 break;
         }
-        return mDb.query(tableName, strings, s, strings1, s1, null, null);
+        return mDb.query(tableName, projection, selection, selectionArgs, null, null, orderBy);
     }
 
     @Nullable
@@ -104,7 +104,7 @@ public class AccsProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         int match = sURIMatcher.match(uri);
         String tableName = "";
         switch (match) {
@@ -112,7 +112,7 @@ public class AccsProvider extends ContentProvider {
                 tableName = AccsTables.Product.TABLE_NAME;
                 break;
 //            case ORDER_ITEM:
-//                tableName = AccsTables.Order.TABLE_NAME;
+//                tableName = AccsTables.OrderInfo.TABLE_NAME;
 //                break;
 //            case ORDER_DETAIL:
 //                tableName = AccsTables.OrderDetail.TABLE_NAME;
@@ -122,11 +122,11 @@ public class AccsProvider extends ContentProvider {
 //                break;
         }
 
-        return mDb.delete(tableName, s, strings);
+        return mDb.delete(tableName, selection, selectionArgs);
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
     }
 }

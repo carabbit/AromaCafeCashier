@@ -27,6 +27,36 @@ public class QueryManager {
     public static final int INDEX_TYPE_ID = 0;
     public static final int INDEX_TYPE_NAME = 1;
 
+    public static final String[] PROJECTION_ORDER = new String[]{
+            AccsTables.Order._ID
+            , AccsTables.Order.COL_DATE
+            , AccsTables.Order.COL_PAYED
+            , AccsTables.Order.COL_PAY_TIME
+    };
+
+    public static final int INDEX_ORDER_ID = 0;
+    public static final int INDEX_ORDER_DATE = 1;
+    public static final int INDEX_ORDER_PAYED = 2;
+    public static final int INDEX_ORDER_PAY_TIME = 3;
+
+
+    public static final String[] PROJECTION_ORDER_DETAIL = new String[]{
+            AccsTables.OrderDetail._ID
+            , AccsTables.OrderDetail.COL_ORDER_ID
+            , AccsTables.OrderDetail.COL_PRODUCT_ID
+            , AccsTables.OrderDetail.COL_PRODUCT_NAME
+            , AccsTables.OrderDetail.COL_PRODUCT_PRICE
+            , AccsTables.OrderDetail.COL_COUNT
+    };
+
+    public static final int INDEX_ORDER_DETAIL_ID = 0;
+    public static final int INDEX_ORDER_DETAIL_ORDER_ID = 1;
+    public static final int INDEX_ORDER_DETAIL_PRODUCT_ID = 2;
+    public static final int INDEX_ORDER_DETAIL_PRODUCT_NAME = 3;
+    public static final int INDEX_ORDER_DETAIL_PRODUCT_PRICE = 4;
+    public static final int INDEX_ORDER_DETAIL_COUNT = 5;
+
+
     public static final String[] PROJECTION_PRODUCT = new String[]{
             AccsTables.Product._ID//.........0
             , AccsTables.Product.COL_NAME//.....1

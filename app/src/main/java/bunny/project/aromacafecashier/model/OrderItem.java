@@ -2,6 +2,7 @@ package bunny.project.aromacafecashier.model;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.Settings;
@@ -42,6 +43,16 @@ public class OrderItem implements Parcelable {
         builder.withValues(toContentValues());
         builder.withYieldAllowed(true);
         return builder.build();
+    }
+
+    public static OrderItem fromCursor(Cursor cursor) {
+        OrderItem item = new OrderItem();
+        item.setProductName(cursor.getString(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_NAME));
+        item.setProductId(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_ID));
+        item.setCount(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT));
+        item.setOrderId(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_ORDER_ID));
+        item.setProductPrice(cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_PRICE));
+        return item;
     }
 
 

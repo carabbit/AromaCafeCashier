@@ -1,143 +1,170 @@
 package bunny.project.aromacafecashier;
 
-import android.app.Fragment;
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-import bunny.project.aromacafecashier.model.OrderItem;
-import bunny.project.aromacafecashier.model.Product;
-import bunny.project.aromacafecashier.view.OrderItemView;
+import bunny.project.aromacafecashier.model.OrderInfo;
+import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.view.HistoryOrderItemView;
 
 /**
- * Created by bunny on 17-3-15.
+ * 显示挂单和历史订单
+ * Created by bunny on 17-3-16.
  */
 
 public class OrderListFragment extends Fragment {
 
-    private ListView mOrderListView;
-    private BaseAdapter mOrderAdpter;
+    private static final int TOKEN_QUEREY_TEMP_ORDER = 1;
+    private static final int TOKEN_QUEREY_HISTORY_ORDER = 2;
 
-    private ArrayList<OrderItem> mOrderItems = new ArrayList<OrderItem>();
+    private ListView mListTempOrder;
+    private ListView mListHistoryOrder;
+    private List<OrderInfo> mTempOrders = new ArrayList<OrderInfo>();
+    private List<OrderInfo> mHistoryOrders = new ArrayList<OrderInfo>();
 
-    private class OrderListAdapter extends BaseAdapter implements View.OnClickListener {
+    private CursorAdapter mTempOrderAdapter;
+    private CursorAdapter mHistoryOrderAdapter;
 
-        @Override
-        public int getCount() {
-            return mOrderItems.size();
+    private AsyncQueryHandler mQueryHandler;
+    private OrderItemClickListener mOrderItemClickListener;
+
+    public void setOrderItemClickListener(OrderItemClickListener listener) {
+        this.mOrderItemClickListener = listener;
+    }
+
+
+    public static interface OrderItemClickListener {
+        void onItemClick(OrderInfo order);
+    }
+
+    private class OrderQueryHandler extends AsyncQueryHandler {
+
+        public OrderQueryHandler(ContentResolver cr) {
+            super(cr);
         }
 
         @Override
-        public Object getItem(int position) {
-            return mOrderItems.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
+        protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+            if (token == TOKEN_QUEREY_HISTORY_ORDER) {
+                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
+                mHistoryOrderAdapter.changeCursor(cursor);
+            } else if (token == TOKEN_QUEREY_TEMP_ORDER) {
+                MyLog.i("", "temp:" + (cursor == null ? "null" : cursor.getCount()));
+                mTempOrderAdapter.changeCursor(cursor);
             }
-
-            if (!(convertView instanceof OrderItemView)) {
-                return new TextView(getActivity());
-            }
-
-            OrderItem orderItem = mOrderItems.get(position);
-
-            OrderItemView orderItemView = (OrderItemView) convertView;
-
-            orderItemView.setProductId(orderItem.getProductId());
-            orderItemView.getNameView().setText(orderItem.getProductName());
-            orderItemView.getCountView().setText(String.valueOf(orderItem.getCount()));
-            orderItemView.getDeleteBtn().setTag(orderItem.getProductId());
-            orderItemView.getDeleteBtn().setOnClickListener(this);
-
-            return convertView;
-        }
-
-        @Override
-        public void onClick(View v) {
-
-            if (v.getTag() == null || !(v.getTag() instanceof Integer)) {
-                return;
-            }
-
-            int productId = (Integer) v.getTag();
-
-            OrderItem item = getOrderItem(productId);
-
-            if (item == null) {
-                return;
-            }
-
-            item.setCount(item.getCount() - 1);
-
-            if (item.getCount() <= 0) {
-                mOrderItems.remove(item);
-            }
-
-            notifyDataSetChanged();
         }
     }
 
+    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (mOrderItemClickListener != null) {
+                mOrderItemClickListener.onItemClick((OrderInfo) view.getTag());
+            }
+        }
+    };
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.order_list_fragment, null);
+        return inflater.inflate(R.layout.order_list, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mOrderListView = (ListView) view.findViewById(R.id.list);
-        mOrderAdpter = new OrderListAdapter();
-        mOrderListView.setAdapter(mOrderAdpter);
+        super.onViewCreated(view, savedInstanceState);
+        mListTempOrder = (ListView) view.findViewById(R.id.listTempOrder);
+        mListHistoryOrder = (ListView) view.findViewById(R.id.listHistoryOrder);
+
+        mTempOrderAdapter = new OrderListAdapter(getActivity());
+        mHistoryOrderAdapter = new OrderListAdapter(getActivity());
+
+        mListTempOrder.setAdapter(mTempOrderAdapter);
+        mListHistoryOrder.setAdapter(mHistoryOrderAdapter);
+
+        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
+        mListHistoryOrder.setOnItemClickListener(mOnItemClickListener);
     }
 
-    public ProductListFragment.ProductItemClickListener mProductItemClickListener = new ProductListFragment.ProductItemClickListener() {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mQueryHandler = new OrderQueryHandler(getActivity().getContentResolver());
+
+        queryTempOrders();
+        queryHistoryOrders();
+    }
+
+    private void queryTempOrders() {
+        String selection = AccsTables.Order.COL_PAYED + " = ?";
+        String[] args = new String[]{"0"};
+        String orderBy = AccsTables.Order.COL_DATE + " DESC";
+        mQueryHandler.startQuery(TOKEN_QUEREY_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+    }
+
+    private void queryHistoryOrders() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        long todayZeroTime = cal.getTimeInMillis();
+        cal.add(Calendar.DATE, 1);
+        long nextDayZeroTime = cal.getTimeInMillis();
+
+        String selection = AccsTables.Order.COL_PAYED + " = ? AND (" + AccsTables.Order.COL_DATE + " BETWEEN ? AND ?) ";
+        String[] args = new String[]{"1", String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
+        String orderBy = AccsTables.Order.COL_DATE + " DESC";
+        mQueryHandler.startQuery(TOKEN_QUEREY_HISTORY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+    }
+
+    private class OrderListAdapter extends CursorAdapter {
+        public OrderListAdapter(Context context) {
+            super(context, null);
+        }
+
+        private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CHINA);
 
         @Override
-        public void onItemClick(Product product) {
-            OrderItem item = getOrderItem(product.getId());
-
-            if (item == null) {
-                item = new OrderItem();
-                item.setCount(1);
-                item.setProductId(product.getId());
-                item.setProductName(product.getName());
-                item.setProductPrice(product.getPrice());
-                mOrderItems.add(item);
-            } else {
-                item.setCount(item.getCount() + 1);
-            }
-
-            mOrderAdpter.notifyDataSetChanged();
-        }
-    };
-
-    private OrderItem getOrderItem(int productId) {
-        for (OrderItem item : mOrderItems) {
-            if (item.getProductId() == productId) {
-                return item;
-            }
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            View view = LayoutInflater.from(context).inflate(R.layout.histrory_order_item, null);
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            return view;
         }
 
-        return null;
-    }
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            MyLog.i("xxx", "bindView");
+            HistoryOrderItemView itemView = (HistoryOrderItemView) view;
+            OrderInfo order = OrderInfo.fromCusor(cursor);
+            itemView.getOrderIdView().setText(String.valueOf(order.getId()));
+            itemView.getViewOrderPayStatus().setText(order.getPayed() == 1 ? getString(R.string.has_payed) : getString(R.string.unpayed));
 
-    public ArrayList<OrderItem> getOrderItems() {
-        return mOrderItems;
+            MyLog.i("xxx", "pay_time:" + order.getPay_time() + "  order_time:" + order.getDate());
+
+            itemView.getViewOrderPayTime().setText(mDateFormat.format(new Date(order.getPay_time())));
+            itemView.getViewOrderTime().setText(mDateFormat.format(new Date(order.getDate())));
+
+            itemView.setTag(order);
+        }
     }
 }

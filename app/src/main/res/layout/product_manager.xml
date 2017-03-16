@@ -3,7 +3,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/fragment_bg"
     android:baselineAligned="false"
     tools:context="bunny.project.aromacafecashier.MainActivity">
 
@@ -116,13 +116,19 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/product_list_fragment"
-            android:name="bunny.project.aromacafecashier.ProductListFragment"
+        <FrameLayout
+            android:id="@+id/product_list_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:layout="@layout/product_list" />
+            android:layout_weight="1"></FrameLayout>
+
+        <!--  <fragment
+              android:id="@+id/product_list_fragment"
+              android:name="bunny.project.aromacafecashier.ProductListFragment"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              tools:layout="@layout/product_list" />-->
 
         <FrameLayout
             android:layout_width="match_parent"
