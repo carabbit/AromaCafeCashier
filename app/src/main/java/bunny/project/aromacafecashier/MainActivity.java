@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 public class MainActivity extends FullScreenActivity implements RadioGroup.OnCheckedChangeListener {
     public static final String FRAGMENT_ORDER = "FRAGMENT_ORDER";
@@ -58,7 +57,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         if (FRAGMENT_ORDER.equals(fragmentTag)) {
             fragment = new OrderFragment();
         } else if (FRAGMENT_ORDER_HISTORY.equals(fragmentTag)) {
-            fragment = new OrderHistroryFragment();
+            fragment = new OrderHistoryFragment();
         } else if (FRAGMENT_PRODUCT_MANAGER.equals(fragmentTag)) {
             fragment = new ProductManagerFragment();
         }
@@ -118,7 +117,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
 //            return mOrderFragment;
 //        } else if (FRAGMENT_ORDER_HISTORY.equals(fragmentTag)) {
 //            if (mOrderHistoryFragment == null) {
-//                mOrderHistoryFragment = new OrderHistroryFragment();
+//                mOrderHistoryFragment = new OrderHistoryFragment();
 //                getFragmentManager()
 //                        .beginTransaction()
 //                        .add(R.id.fragment_container_order_history, mOrderHistoryFragment, FRAGMENT_ORDER_HISTORY)

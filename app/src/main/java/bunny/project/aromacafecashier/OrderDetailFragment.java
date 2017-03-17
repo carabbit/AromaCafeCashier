@@ -13,12 +13,16 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import bunny.project.aromacafecashier.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItem;
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.utility.IntentKeys;
 import bunny.project.aromacafecashier.view.OrderItemView;
 
 /**
@@ -34,8 +38,10 @@ public class OrderDetailFragment extends Fragment {
 
     private AsyncQueryHandler mQueryOrderHandler;
 
-    private boolean mIsHistoryMode;some code
+    private boolean mIsHistoryMode;
+    private TextView mTotalCashView;
 
+    //TODO 考虑使用子类实现历史订单详情的展示
     private class QueryOrderHandler extends AsyncQueryHandler {
 
         public QueryOrderHandler(ContentResolver cr) {
@@ -51,8 +57,13 @@ public class OrderDetailFragment extends Fragment {
                 }
                 cursor.close();
             }
-            mOrderAdpter.notifyDataSetChanged();
+            refreshOrderList();
         }
+    }
+
+    private void refreshOrderList() {
+        mOrderAdpter.notifyDataSetChanged();
+        countTotalCash();
     }
 
     private class OrderListAdapter extends BaseAdapter implements View.OnClickListener {
@@ -88,9 +99,24 @@ public class OrderDetailFragment extends Fragment {
 
             orderItemView.setProductId(orderItem.getProductId());
             orderItemView.getNameView().setText(orderItem.getProductName());
+
+//            String countStr = getResources().getString(R.string.item_count, orderItem.getCount());
             orderItemView.getCountView().setText(String.valueOf(orderItem.getCount()));
-            orderItemView.getDeleteBtn().setTag(orderItem.getProductId());
-            orderItemView.getDeleteBtn().setOnClickListener(this);
+
+            orderItemView.getProductPriceView().setText(String.valueOf(orderItem.getProductPrice()));
+
+            float sumPrice = orderItem.getProductPrice() * orderItem.getCount();
+            String sumPriceStr = getResources().getString(R.string.sum_price, sumPrice);
+            orderItemView.getSumPriceView().setText(sumPriceStr);
+
+            if (mIsHistoryMode) {
+                orderItemView.getDeleteBtn().setVisibility(View.GONE);
+            } else {
+                orderItemView.getDeleteBtn().setVisibility(View.VISIBLE);
+                orderItemView.getDeleteBtn().setTag(orderItem.getProductId());
+                orderItemView.getDeleteBtn().setOnClickListener(this);
+            }
+
 
             return convertView;
         }
@@ -116,8 +142,19 @@ public class OrderDetailFragment extends Fragment {
                 mOrderItems.remove(item);
             }
 
-            notifyDataSetChanged();
+            refreshOrderList();
         }
+    }
+
+    private void countTotalCash() {
+        float totalCash = 0f;
+        for (OrderItem item : mOrderItems) {
+            totalCash += item.getCount() * item.getProductPrice();
+        }
+        String totalCashStr = getResources().getString(R.string.total_cash, totalCash);
+//        MyLog.i("xxx", "totalCashStr:" + totalCashStr);
+//        mTotalCashView.setText(String.format(totalCashStr, totalCash));
+        mTotalCashView.setText(totalCashStr);
     }
 
 
@@ -129,15 +166,28 @@ public class OrderDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mTotalCashView = (TextView) view.findViewById(R.id.total_cash);
         mOrderListView = (ListView) view.findViewById(R.id.list);
         mOrderAdpter = new OrderListAdapter();
         mOrderListView.setAdapter(mOrderAdpter);
+
+        countTotalCash();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mQueryOrderHandler = new QueryOrderHandler(getActivity().getContentResolver());
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mIsHistoryMode = bundle.getBoolean(IntentKeys.HISTORY_MODE, false);
+        }
+
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
+        mOrderListView.addHeaderView(headerView);
+
+        if (mIsHistoryMode) {
+            mQueryOrderHandler = new QueryOrderHandler(getActivity().getContentResolver());
+        }
     }
 
     public OrderListFragment.OrderItemClickListener mOrderItemClickListener = new OrderListFragment.OrderItemClickListener() {
@@ -167,7 +217,7 @@ public class OrderDetailFragment extends Fragment {
                 item.setCount(item.getCount() + 1);
             }
 
-            mOrderAdpter.notifyDataSetChanged();
+            refreshOrderList();
         }
     };
 

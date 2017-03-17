@@ -7,7 +7,13 @@
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
     <string name="pay_finish">完成付款</string>
-    <string name="total_cash">合计：</string>
+    <string name="item_count">x %1$d</string>
+    <string name="item_title_name">名称</string>
+    <string name="item_title_price">单价</string>
+    <string name="item_title_count">数量</string>
+    <string name="item_title_sum">小计</string>
+    <string name="total_cash">合计：%1$.1f 元</string>
+    <string name="sum_price">%1$.1f</string>
     <string name="total_cash_single">合计：</string>
     <string name="pay_in">实收：</string>
     <string name="charge">找零：</string>
@@ -16,6 +22,7 @@
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
     <string name="create">新建</string>
+    <string name="create_product">新建商品</string>
     <string name="create_success">新建成功</string>
     <string name="create_fail">新建失败</string>
     <string name="no_product">没有商品信息</string>

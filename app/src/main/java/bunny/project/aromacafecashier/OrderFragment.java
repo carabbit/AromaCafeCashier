@@ -22,17 +22,18 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
 public class OrderFragment extends Fragment implements OrderConfirmDialogFragment.OrderListener {
     private Button mBtnOrder;
     private Button mBtnTempOrder;
-    private Button mBtnProductManager;
+    //    private Button mBtnProductManager;
     private OrderDetailFragment mOrderListFragment;
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.btn_menu_manager) {
-                Intent intent = new Intent(getActivity(), ProductManagerActivity.class);
-                startActivity(intent);
-                return;
-            } else if (v.getId() == R.id.btn_temp_order) {
+//            if (v.getId() == R.id.btn_menu_manager) {
+//                Intent intent = new Intent(getActivity(), ProductManagerActivity.class);
+//                startActivity(intent);
+//                return;
+//            } else
+            if (v.getId() == R.id.btn_temp_order) {
                 return;
             } else if (v.getId() == R.id.btn_comfirm_order) {
                 ArrayList<OrderItem> orderItems = mOrderListFragment.getOrderItems();
@@ -56,7 +57,11 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
             Bundle data = new Bundle();
             data.putParcelableArrayList(IntentKeys.ORDER_ITEM, orderItems);
             fragment.setArguments(data);
-            fragment.show(getFragmentManager(), "OrderConfirmDialogFragment");
+//            fragment.show(getFragmentManager(), "OrderConfirmDialogFragment");
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.dialog_container, fragment)
+                    .commitAllowingStateLoss();
         }
     };
 
@@ -80,11 +85,11 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
         super.onViewCreated(view, savedInstanceState);
         mBtnOrder = (Button) view.findViewById(R.id.btn_comfirm_order);
         mBtnTempOrder = (Button) view.findViewById(R.id.btn_temp_order);
-        mBtnProductManager = (Button) view.findViewById(R.id.btn_menu_manager);
+//        mBtnProductManager = (Button) view.findViewById(R.id.btn_menu_manager);
 
         mBtnOrder.setOnClickListener(mOnClickListener);
         mBtnTempOrder.setOnClickListener(mOnClickListener);
-        mBtnProductManager.setOnClickListener(mOnClickListener);
+//        mBtnProductManager.setOnClickListener(mOnClickListener);
 
 
     }

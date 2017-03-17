@@ -1,5 +1,6 @@
 package bunny.project.aromacafecashier;
 
+import android.app.Fragment;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
@@ -17,6 +18,7 @@ import android.text.TextWatcher;
 import android.util.SparseIntArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -120,17 +122,17 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(false);
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    return true;
-                }
-                return false;
-            }
-        });
+//        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getDialog().setCanceledOnTouchOutside(false);
+//        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         View view = inflater.inflate(R.layout.order_comfirm, null);
 
@@ -141,6 +143,20 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
     @NonNull
     private View initView(View view) {
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+
         mTotalCashView = (TextView) view.findViewById(R.id.total_cash);
         mPayinView = (EditText) view.findViewById(R.id.pay_in);
         mChargeView = (TextView) view.findViewById(R.id.charge);
@@ -182,11 +198,11 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         return totalCash;
     }
 
-    @Override
-    public void dismiss() {
-        super.dismiss();
-
-    }
+//    @Override
+//    public void dismiss() {
+//        super.dismiss();
+//
+//    }
 
     private class InsertOrderTask extends AsyncTask<Void, Void, Integer> {
 

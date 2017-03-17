@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import bunny.project.aromacafecashier.R;
@@ -18,6 +19,8 @@ public class OrderItemView extends LinearLayout {
     private int productId;
     private TextView mNameView;
     private TextView mCountView;
+    private TextView mProductPriceView;
+    private TextView mSumPriceView;
     private ImageView mImgDeleteView;
 
 
@@ -30,6 +33,8 @@ public class OrderItemView extends LinearLayout {
         super.onFinishInflate();
         mNameView = (TextView) findViewById(R.id.product_name);
         mCountView = (TextView) findViewById(R.id.product_count);
+        mProductPriceView = (TextView) findViewById(R.id.product_price);
+        mSumPriceView = (TextView) findViewById(R.id.product_sum_price);
         mImgDeleteView = (ImageView) findViewById(R.id.btn_delete);
 
     }
@@ -55,4 +60,11 @@ public class OrderItemView extends LinearLayout {
         this.productId = productId;
     }
 
+    public TextView getProductPriceView() {
+        return mProductPriceView;
+    }
+
+    public TextView getSumPriceView() {
+        return mSumPriceView;
+    }
 }

@@ -23,7 +23,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
 
     Button mBtnCreate;
     Button mBtnDelete;
-    ImageView mBtnBack;
+    //    ImageView mBtnBack;
     //    Button mBtnEdit;
     ImageView mProductImgView;
     TextView mProductNameView;
@@ -60,7 +60,6 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
         mBtnDelete = (Button) view.findViewById(R.id.btn_delete);
 //        mBtnEdit = (Button) findViewById(R.id.btn_edit);
         mBtnCreate = (Button) view.findViewById(R.id.btn_create);
-        mBtnBack = (ImageView) view.findViewById(R.id.btn_back);
 
         mBtnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

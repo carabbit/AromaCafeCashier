@@ -58,7 +58,6 @@ public class ProductManagerActivity extends FullScreenActivity implements Produc
         mBtnDelete = (Button) findViewById(R.id.btn_delete);
 //        mBtnEdit = (Button) findViewById(R.id.btn_edit);
         mBtnCreate = (Button) findViewById(R.id.btn_create);
-        mBtnBack = (ImageView) findViewById(R.id.btn_back);
 
         mBtnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

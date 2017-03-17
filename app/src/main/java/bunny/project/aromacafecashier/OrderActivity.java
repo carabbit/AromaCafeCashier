@@ -24,11 +24,12 @@ public class OrderActivity extends FullScreenActivity implements OrderConfirmDia
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.btn_menu_manager) {
-                Intent intent = new Intent(OrderActivity.this, ProductManagerActivity.class);
-                startActivity(intent);
-                return;
-            } else if (v.getId() == R.id.btn_temp_order) {
+//            if (v.getId() == R.id.btn_menu_manager) {
+//                Intent intent = new Intent(OrderActivity.this, ProductManagerActivity.class);
+//                startActivity(intent);
+//                return;
+//            } else
+            if (v.getId() == R.id.btn_temp_order) {
                 return;
             } else if (v.getId() == R.id.btn_comfirm_order) {
                 ArrayList<OrderItem> orderItems = mOrderListFragment.getOrderItems();
