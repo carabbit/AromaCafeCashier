@@ -11,7 +11,7 @@
         tools:context="bunny.project.aromacafecashier.MainActivity">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="300dp"
+            android:layout_width="@dimen/order_detail_width"
             android:layout_height="match_parent"
             android:orientation="vertical">
 

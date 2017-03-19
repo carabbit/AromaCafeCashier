@@ -5,19 +5,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/tabContainerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-        <LinearLayout
+        <!--<LinearLayout-->
+        <!--android:id="@+id/tabContainer"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"></LinearLayout>-->
+        <bunny.project.aromacafecashier.view.TabGroup
             android:id="@+id/tabContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal" />
 
-    </ScrollView>
+    </HorizontalScrollView>
 
     <GridView
         android:id="@+id/product_gridview"

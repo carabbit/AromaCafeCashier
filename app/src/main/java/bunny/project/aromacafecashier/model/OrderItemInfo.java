@@ -34,12 +34,27 @@ public class OrderItemInfo implements Parcelable {
         return values;
     }
 
+    public ContentProviderOperation toInertOperationWithOrderId(int orderId) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(QueryManager.URI_ORDER_DETAIL);
+        builder.withValue(AccsTables.OrderDetail.COL_ORDER_ID, orderId);
+        buildInsertPart(builder);
+        return builder.build();
+    }
+
     public ContentProviderOperation toInsertContentProviderOperation(int backRef) {
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(QueryManager.URI_ORDER_DETAIL);
         builder.withValueBackReference(AccsTables.OrderDetail.COL_ORDER_ID, backRef);
-        builder.withValues(toContentValues());
-        builder.withYieldAllowed(true);
+//        builder.withValues(toContentValues());
+        buildInsertPart(builder);
         return builder.build();
+    }
+
+    private void buildInsertPart(ContentProviderOperation.Builder builder) {
+        builder.withValue(AccsTables.OrderDetail.COL_COUNT, getCount());
+        builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_ID, getProductId());
+        builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_NAME, getProductName());
+        builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_PRICE, getProductPrice());
+        builder.withYieldAllowed(true);
     }
 
     public static OrderItemInfo fromCursor(Cursor cursor) {

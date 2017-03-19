@@ -37,6 +37,7 @@ public class OrderDetailFragment extends Fragment {
 
     private boolean mIsHistoryMode;
     private TextView mTotalCashView;
+    private int mOrderId = -1;
 
     //TODO 考虑使用子类实现历史订单详情的展示
     private class QueryOrderHandler extends AsyncQueryHandler {
@@ -181,6 +182,7 @@ public class OrderDetailFragment extends Fragment {
             if (parcelableArrayList != null) {
                 mOrderItems = parcelableArrayList;
             }
+            mOrderId = bundle.getInt(IntentKeys.ORDER_ID);
         }
 
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
@@ -198,10 +200,12 @@ public class OrderDetailFragment extends Fragment {
     public OrderListFragment.OrderItemClickListener mOrderItemClickListener = new OrderListFragment.OrderItemClickListener() {
         @Override
         public void onOrderItemClick(OrderInfo order) {
-            mOrderItems.clear();
-            String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
-            String[] args = new String[]{String.valueOf(order.getId())};
-            mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+            if (mQueryOrderHandler != null) {
+                mOrderItems.clear();
+                String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
+                String[] args = new String[]{String.valueOf(order.getId())};
+                mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+            }
         }
     };
 
@@ -245,6 +249,10 @@ public class OrderDetailFragment extends Fragment {
 
     public ArrayList<OrderItemInfo> getOrderItems() {
         return mOrderItems;
+    }
+
+    public int getOrderId() {
+        return mOrderId;
     }
 
     public void resetListView() {

@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,12 +15,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
 import bunny.project.aromacafecashier.view.ProductListItemView;
+import bunny.project.aromacafecashier.view.TabGroup;
 
 import static bunny.project.aromacafecashier.QueryManager.PROJECTION_TYPE;
 
@@ -34,7 +37,7 @@ public class ProductListFragment extends Fragment {
 
     private AsyncQueryHandler mQqueryHandle;
     private View mTabScrollView;
-    private ViewGroup mTabContainer;
+    private TabGroup mTabContainer;
     private GridView mGridView;
     private View mEmptyView;
 
@@ -54,6 +57,13 @@ public class ProductListFragment extends Fragment {
                 int typeId = (Integer) obj;
                 queryProductByType(typeId);
             }
+        }
+    };
+
+    private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+
         }
     };
 
@@ -178,11 +188,12 @@ public class ProductListFragment extends Fragment {
             mGridView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.GONE);
             while (cursor.moveToNext()) {
-                Button btn = new Button(getActivity());
-                btn.setTag(new Integer(cursor.getInt(QueryManager.INDEX_TYPE_ID)));
-                btn.setText(cursor.getString(QueryManager.INDEX_TYPE_NAME));
-                btn.setOnClickListener(mTypeOnClickListener);
-                mTabContainer.addView(btn);
+//                Button btn = new Button(getActivity());
+//                btn.setTag(new Integer(cursor.getInt(QueryManager.INDEX_TYPE_ID)));
+//                btn.setText(cursor.getString(QueryManager.INDEX_TYPE_NAME));
+//                btn.setOnClickListener(mTypeOnClickListener);
+//                mTabContainer.addView(btn);
+                mTabContainer.addTab(cursor.getInt(QueryManager.INDEX_TYPE_ID), cursor.getString(QueryManager.INDEX_TYPE_NAME));
             }
         }
 
@@ -218,12 +229,13 @@ public class ProductListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mTabContainer = (ViewGroup) view.findViewById(R.id.tabContainer);
+        mTabContainer = (TabGroup) view.findViewById(R.id.tabContainer);
         mTabScrollView = view.findViewById(R.id.tabContainerContainer);
         mGridView = (GridView) view.findViewById(R.id.product_gridview);
         mEmptyView = view.findViewById(R.id.empty_view);
 
         mGridView.setOnItemClickListener(new GridViewOnItemClickListener());
+//        mTabContainer.setOnCheckedChangeListener(mOnCheckedChangeListener);
     }
 
     @Override

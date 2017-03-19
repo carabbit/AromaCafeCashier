@@ -1,8 +1,11 @@
 package bunny.project.aromacafecashier.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +13,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 /**
  * 数据provider
@@ -88,6 +93,8 @@ public class AccsProvider extends ContentProvider {
             case PRODUCT_TYPE:
                 tableName = AccsTables.ProductType.TABLE_NAME;
                 break;
+            default:
+                throw new RuntimeException("无法处理uri：" + uri);
         }
 
         if (TextUtils.isEmpty(tableName)) {
@@ -114,12 +121,14 @@ public class AccsProvider extends ContentProvider {
 //            case ORDER_ITEM_LIST:
 //                tableName = AccsTables.OrderInfo.TABLE_NAME;
 //                break;
-//            case ORDER_DETAIL:
-//                tableName = AccsTables.OrderDetail.TABLE_NAME;
-//                break;
+            case ORDER_DETAIL:
+                tableName = AccsTables.OrderDetail.TABLE_NAME;
+                break;
 //            case PRODUCT_TYPE:
 //                tableName = AccsTables.ProductType.TABLE_NAME;
 //                break;
+            default:
+                throw new RuntimeException("无法处理uri：" + uri);
         }
 
         return mDb.delete(tableName, selection, selectionArgs);
@@ -127,6 +136,38 @@ public class AccsProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int match = sURIMatcher.match(uri);
+        String tableName = "";
+        switch (match) {
+//            case PRODUCT:
+//                tableName = AccsTables.Product.TABLE_NAME;
+//                break;
+//            case ORDER_ITEM_LIST:
+//                tableName = AccsTables.OrderInfo.TABLE_NAME;
+//                break;
+            case ORDER:
+                tableName = AccsTables.Order.TABLE_NAME;
+                break;
+//            case PRODUCT_TYPE:
+//                tableName = AccsTables.ProductType.TABLE_NAME;
+//                break;
+            default:
+                throw new RuntimeException("无法处理uri：" + uri);
+        }
+
+        return mDb.update(tableName, contentValues, selection, selectionArgs);
+    }
+
+    @NonNull
+    @Override
+    public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
+        mDb.beginTransaction();
+        try {
+            ContentProviderResult[] results = super.applyBatch(operations);
+            mDb.setTransactionSuccessful();
+            return results;
+        } finally {
+            mDb.endTransaction();
+        }
     }
 }

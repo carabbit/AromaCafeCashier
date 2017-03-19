@@ -1,9 +1,11 @@
 package bunny.project.aromacafecashier;
 
+import android.content.AsyncQueryHandler;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.OperationApplicationException;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -29,6 +31,7 @@ import java.util.List;
 import bunny.project.aromacafecashier.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.provider.AccsProvider;
+import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
@@ -36,7 +39,7 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
  */
 
 public class OrderConfirmDialogFragment extends DialogFragment {
-
+    private static final String TAG = OrderConfirmDialogFragment.class.getSimpleName();
     private static final int TOKEN_INSERT_ORDER = 1;
 
     private TextView mTotalCashView;
@@ -71,10 +74,10 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         public void onClick(View v) {
             if (v.getId() == R.id.btn_temp_order) {
                 v.setEnabled(false);
-                new InsertOrderTask(getActivity().getContentResolver()).execute(false);
+                new InsertOrderTask(getActivity().getContentResolver(), mOrderId, false).execute();
             } else if (v.getId() == R.id.btn_confirm) {
                 v.setEnabled(false);
-                new InsertOrderTask(getActivity().getContentResolver()).execute(true);
+                new InsertOrderTask(getActivity().getContentResolver(), mOrderId, true).execute();
             } else if (v.getId() == R.id.btn_cancel) {
                 dismiss();
             } else {
@@ -111,6 +114,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         }
     };
     private OrderListener mOrderListener;
+    private int mOrderId = 0;
 
 
     public void setOrderListener(OrderListener listener) {
@@ -182,6 +186,9 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
         Bundle data = getArguments();
         mOrderItems = data.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
+        mOrderId = data.getInt(IntentKeys.ORDER_ID);
+
+        MyLog.i(TAG, "orderId:" + mOrderId);
 
         float totalCash = getTotalCash(mOrderItems);
         mTotalCashView.setText(String.valueOf(totalCash));
@@ -212,21 +219,26 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     private class InsertOrderTask extends AsyncTask<Boolean, Void, Integer> {
 
         private ContentResolver mResolver;
+        private int mOrderId;
+        private boolean mIsPayed;
         private ContentProviderResult[] mResults;
 
-        public InsertOrderTask(ContentResolver resolver) {
+        public InsertOrderTask(ContentResolver resolver, int orderId, boolean isPayed) {
             mResolver = resolver;
+            mOrderId = orderId;
+            mIsPayed = isPayed;
         }
 
         @Override
         protected Integer doInBackground(Boolean[] params) {
             ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
-            operations.add(OrderInfo.getNewInsertOperation(params[0]));
-
-            for (OrderItemInfo item : mOrderItems) {
-                operations.add(item.toInsertContentProviderOperation(0));
+            if (mOrderId <= 0) {
+                buildNewInsert(operations, mIsPayed);
+            } else {
+                buildUpdateOrder(operations, mOrderId, mIsPayed);
             }
+
 
             try {
                 mResults = mResolver.applyBatch(AccsProvider.AUTHORITY, operations);
@@ -240,14 +252,61 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             return null;
         }
 
+        private void buildUpdateOrder(ArrayList<ContentProviderOperation> operations, int orderId, boolean isPayed) {
+            ContentProviderOperation updatePeration = ContentProviderOperation.newUpdate(QueryManager.URI_ORDER)
+                    .withValue(AccsTables.Order.COL_PAY_TIME, System.currentTimeMillis())
+                    .withValue(AccsTables.Order.COL_PAYED, isPayed ? 1 : 0)
+                    .withSelection(AccsTables.Order._ID + "=?", new String[]{String.valueOf(orderId)})
+                    .build();
+            operations.add(updatePeration);
+
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(QueryManager.URI_ORDER_DETAIL)
+                    .withSelection(AccsTables.OrderDetail.COL_ORDER_ID + "=?", new String[]{String.valueOf(orderId)})
+                    .build();
+            operations.add(deleteOperation);
+
+            for (OrderItemInfo item : mOrderItems) {
+                operations.add(item.toInertOperationWithOrderId(mOrderId));
+            }
+        }
+
+        /**
+         * 生成新的付款订单或挂单。
+         */
+
+        private void buildNewInsert(ArrayList<ContentProviderOperation> operations, boolean isPayed) {
+            operations.add(OrderInfo.getNewInsertOperation(isPayed));
+
+            for (OrderItemInfo item : mOrderItems) {
+                operations.add(item.toInsertContentProviderOperation(0));
+            }
+        }
+
         @Override
         protected void onPostExecute(Integer integer) {
             for (ContentProviderResult result : mResults) {
-                MyLog.i("xxx", "result:" + result.toString());
+                MyLog.i(TAG, "result:" + result.toString());
             }
             dismiss();
             mOrderListener.onOrderComplete();
         }
     }
 
+
+    private class OrderAsyncManager extends AsyncQueryHandler {
+
+        public OrderAsyncManager(ContentResolver cr) {
+            super(cr);
+        }
+
+        @Override
+        protected void onInsertComplete(int token, Object cookie, Uri uri) {
+            super.onInsertComplete(token, cookie, uri);
+        }
+
+        @Override
+        protected void onUpdateComplete(int token, Object cookie, int result) {
+            super.onUpdateComplete(token, cookie, result);
+        }
+    }
 }

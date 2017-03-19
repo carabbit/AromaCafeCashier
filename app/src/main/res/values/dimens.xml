@@ -15,7 +15,7 @@
     <dimen name="number_height">30dp</dimen>
 
     <!-- 订单详情(OrderDetailFragment) -->
-    <dimen name="order_detail_width">300dp</dimen>
+    <dimen name="order_detail_width">400dp</dimen>
     <dimen name="order_detail_list_padding">10dp</dimen>
     <dimen name="order_detail_item_price_width">100dp</dimen>
     <dimen name="order_detail_item_count_width">80dp</dimen>

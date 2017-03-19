@@ -93,11 +93,12 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         MyLog.i("xxx", "[swtichToFragment] finish");
     }
 
-    public void finishOrder(ArrayList<OrderItemInfo> orderItems) {
+    public void finishOrder(int orderId, ArrayList<OrderItemInfo> orderItems) {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(IntentKeys.ORDER_ITEM_LIST, orderItems);
+        bundle.putInt(IntentKeys.ORDER_ID, orderId);
         mTabGroup.setTag(bundle);
-
+        MyLog.i("finishOrder", "orderId:" + orderId);
         mRbtnOrder.setChecked(true);
     }
 

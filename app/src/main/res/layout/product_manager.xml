@@ -130,10 +130,16 @@
               android:layout_weight="1"
               tools:layout="@layout/product_list" />-->
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_detele_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_type" />
 
             <Button
                 android:id="@+id/btn_create"
@@ -142,7 +148,7 @@
                 android:layout_gravity="center|right"
                 android:text="@string/create_product" />
 
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

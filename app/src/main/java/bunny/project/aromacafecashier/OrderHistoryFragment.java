@@ -20,6 +20,7 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
  */
 public class OrderHistoryFragment extends Fragment implements OrderListFragment.OrderItemClickListener {
 
+    private static final int TAG_ORDER_ID = 1;
     private Button mBtnFinishOrder;
     private OrderDetailFragment mOrderDetailFragment;
 
@@ -55,7 +56,13 @@ public class OrderHistoryFragment extends Fragment implements OrderListFragment.
             @Override
             public void onClick(View view) {
                 ArrayList<OrderItemInfo> orderItems = mOrderDetailFragment.getOrderItems();
-                ((MainActivity) getActivity()).finishOrder(orderItems);
+                int orderId = view.getTag() == null ? -1 : (int) view.getTag();
+                if (orderItems == null || orderId <= 0) {
+                    return;
+                } else {
+                    MyLog.i("onViewCreated", "order:" + orderId);
+                    ((MainActivity) getActivity()).finishOrder(orderId, orderItems);
+                }
             }
         });
     }
@@ -63,6 +70,7 @@ public class OrderHistoryFragment extends Fragment implements OrderListFragment.
     @Override
     public void onOrderItemClick(OrderInfo order) {
         mBtnFinishOrder.setVisibility(order.getPayed() == 1 ? View.INVISIBLE : View.VISIBLE);
+        mBtnFinishOrder.setTag(Integer.valueOf(order.getId()));
         mOrderDetailFragment.queryOrder(order.getId());
     }
 }

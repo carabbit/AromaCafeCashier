@@ -4,6 +4,7 @@
     <string name="tab_order_history">订单\n记录</string>
     <string name="tab_product_manager">商品\n管理</string>
     <string name="order">订单</string>
+    <string name="order_detail">订单详情</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
     <string name="finish_order">结单</string>
@@ -22,6 +23,7 @@
     <string name="product_manager">商品管理</string>
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
+    <string name="delete_type">删除分类</string>
     <string name="create">新建</string>
     <string name="create_product">新建商品</string>
     <string name="create_success">新建成功</string>
