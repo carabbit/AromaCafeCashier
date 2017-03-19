@@ -1,10 +1,8 @@
 package bunny.project.aromacafecashier;
 
-import android.app.Fragment;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.OperationApplicationException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bunny.project.aromacafecashier.model.OrderInfo;
-import bunny.project.aromacafecashier.model.OrderItem;
+import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.provider.AccsProvider;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
@@ -46,6 +43,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     private EditText mPayinView;
     private TextView mChargeView;
     private Button mConfirmBtn;
+    private Button mTempOrderBtn;
     private Button mCanceltn;
 
     private static SparseIntArray DIGIT_ID_TO_EVENT_KEY = new SparseIntArray();
@@ -65,15 +63,18 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         DIGIT_ID_TO_EVENT_KEY.put(R.id.del, KeyEvent.KEYCODE_DEL);
     }
 
-    private ArrayList<OrderItem> mOrderItems;
+    private ArrayList<OrderItemInfo> mOrderItems;
 
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.btn_confirm) {
+            if (v.getId() == R.id.btn_temp_order) {
                 v.setEnabled(false);
-                new InsertOrderTask(getActivity().getContentResolver()).execute();
+                new InsertOrderTask(getActivity().getContentResolver()).execute(false);
+            } else if (v.getId() == R.id.btn_confirm) {
+                v.setEnabled(false);
+                new InsertOrderTask(getActivity().getContentResolver()).execute(true);
             } else if (v.getId() == R.id.btn_cancel) {
                 dismiss();
             } else {
@@ -105,6 +106,8 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             float charge = payIn - totalCash;
 
             mChargeView.setText(String.valueOf(charge > 0 ? charge : 0));
+
+            mConfirmBtn.setEnabled(charge >= 0);
         }
     };
     private OrderListener mOrderListener;
@@ -115,7 +118,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     }
 
     public interface OrderListener {
-        void onOrderFinish();
+        void onOrderComplete();
 
     }
 
@@ -162,6 +165,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         mChargeView = (TextView) view.findViewById(R.id.charge);
         mConfirmBtn = (Button) view.findViewById(R.id.btn_confirm);
         mCanceltn = (Button) view.findViewById(R.id.btn_cancel);
+        mTempOrderBtn = (Button) view.findViewById(R.id.btn_temp_order);
 
         view.findViewById(R.id.one).setOnClickListener(mOnClickListener);
         view.findViewById(R.id.two).setOnClickListener(mOnClickListener);
@@ -177,22 +181,23 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         view.findViewById(R.id.del).setOnClickListener(mOnClickListener);
 
         Bundle data = getArguments();
-        mOrderItems = data.getParcelableArrayList(IntentKeys.ORDER_ITEM);
+        mOrderItems = data.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
 
         float totalCash = getTotalCash(mOrderItems);
         mTotalCashView.setText(String.valueOf(totalCash));
 
         mConfirmBtn.setOnClickListener(mOnClickListener);
         mCanceltn.setOnClickListener(mOnClickListener);
+        mTempOrderBtn.setOnClickListener(mOnClickListener);
 
         mPayinView.addTextChangedListener(mTextWatcher);
 
         return view;
     }
 
-    private float getTotalCash(List<OrderItem> items) {
+    private float getTotalCash(List<OrderItemInfo> items) {
         float totalCash = 0f;
-        for (OrderItem item : items) {
+        for (OrderItemInfo item : items) {
             totalCash += item.getCount() * item.getProductPrice();
         }
         return totalCash;
@@ -204,7 +209,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 //
 //    }
 
-    private class InsertOrderTask extends AsyncTask<Void, Void, Integer> {
+    private class InsertOrderTask extends AsyncTask<Boolean, Void, Integer> {
 
         private ContentResolver mResolver;
         private ContentProviderResult[] mResults;
@@ -214,12 +219,12 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         }
 
         @Override
-        protected Integer doInBackground(Void[] params) {
+        protected Integer doInBackground(Boolean[] params) {
             ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
-            operations.add(OrderInfo.getNewInsertOperation());
+            operations.add(OrderInfo.getNewInsertOperation(params[0]));
 
-            for (OrderItem item : mOrderItems) {
+            for (OrderItemInfo item : mOrderItems) {
                 operations.add(item.toInsertContentProviderOperation(0));
             }
 
@@ -240,8 +245,8 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             for (ContentProviderResult result : mResults) {
                 MyLog.i("xxx", "result:" + result.toString());
             }
-
-            mOrderListener.onOrderFinish();
+            dismiss();
+            mOrderListener.onOrderComplete();
         }
     }
 

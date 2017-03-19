@@ -40,7 +40,8 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/temp_order" />
+                    android:text="@string/temp_order"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btn_comfirm_order"

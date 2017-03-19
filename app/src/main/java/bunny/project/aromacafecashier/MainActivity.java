@@ -6,7 +6,13 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import java.util.ArrayList;
+
+import bunny.project.aromacafecashier.model.OrderItemInfo;
+import bunny.project.aromacafecashier.utility.IntentKeys;
 
 public class MainActivity extends FullScreenActivity implements RadioGroup.OnCheckedChangeListener {
     public static final String FRAGMENT_ORDER = "FRAGMENT_ORDER";
@@ -17,17 +23,25 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
     private Fragment mOrderHistoryFragment;
     private Fragment mProductManagerFragment;
 
+    private RadioButton mRbtnOrder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-//        getFragment(FRAGMENT_ORDER);
-//        getFragment(FRAGMENT_ORDER_HISTORY);
-        swtichToFragment(FRAGMENT_ORDER);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+        swtichToFragment(FRAGMENT_ORDER, null);
+//            }
+//        }, 500);
+
 
         mTabGroup = (RadioGroup) findViewById(R.id.tabGroup);
         mTabGroup.setOnCheckedChangeListener(this);
+
+        mRbtnOrder = (RadioButton) findViewById(R.id.tab_order);
     }
 
     @Override
@@ -36,22 +50,26 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
             case R.id.tab_order:
 //                Toast.makeText(MainActivity.this, R.string.tab_order, Toast.LENGTH_SHORT).show();
 //                show(FRAGMENT_ORDER);
-                swtichToFragment(FRAGMENT_ORDER);
+                Object tag = mTabGroup.getTag();
+                if (tag != null) {
+                    mTabGroup.setTag(null);
+                }
+                swtichToFragment(FRAGMENT_ORDER, (Bundle) tag);
                 break;
             case R.id.tab_order_history:
 //                Toast.makeText(MainActivity.this, R.string.tab_order_history, Toast.LENGTH_SHORT).show();
 //                show(FRAGMENT_ORDER_HISTORY);
-                swtichToFragment(FRAGMENT_ORDER_HISTORY);
+                swtichToFragment(FRAGMENT_ORDER_HISTORY, null);
                 break;
             case R.id.tab_product_manager:
 //                Toast.makeText(MainActivity.this, R.string.tab_product_manager, Toast.LENGTH_SHORT).show();
 //                show(FRAGMENT_PRODUCT_MANAGER);
-                swtichToFragment(FRAGMENT_PRODUCT_MANAGER);
+                swtichToFragment(FRAGMENT_PRODUCT_MANAGER, null);
                 break;
         }
     }
 
-    private void swtichToFragment(String fragmentTag) {
+    private void swtichToFragment(String fragmentTag, Bundle args) {
         MyLog.i("xxx", "[swtichToFragment] tag:" + fragmentTag);
         Fragment fragment = null;
         if (FRAGMENT_ORDER.equals(fragmentTag)) {
@@ -66,11 +84,21 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
             return;
         }
 
+        fragment.setArguments(args);
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container_order, fragment, fragmentTag);
         transaction.commit();
 
         MyLog.i("xxx", "[swtichToFragment] finish");
+    }
+
+    public void finishOrder(ArrayList<OrderItemInfo> orderItems) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(IntentKeys.ORDER_ITEM_LIST, orderItems);
+        mTabGroup.setTag(bundle);
+
+        mRbtnOrder.setChecked(true);
     }
 
 //    private void show(String fragmentTag) {

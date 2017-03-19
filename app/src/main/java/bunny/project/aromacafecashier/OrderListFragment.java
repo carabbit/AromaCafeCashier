@@ -52,7 +52,7 @@ public class OrderListFragment extends Fragment {
 
 
     public static interface OrderItemClickListener {
-        void onItemClick(OrderInfo order);
+        void onOrderItemClick(OrderInfo order);
     }
 
     private class OrderQueryHandler extends AsyncQueryHandler {
@@ -77,7 +77,7 @@ public class OrderListFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mOrderItemClickListener != null) {
-                mOrderItemClickListener.onItemClick((OrderInfo) view.getTag());
+                mOrderItemClickListener.onOrderItemClick((OrderInfo) view.getTag());
             }
         }
     };
@@ -161,7 +161,14 @@ public class OrderListFragment extends Fragment {
 
             MyLog.i("xxx", "pay_time:" + order.getPay_time() + "  order_time:" + order.getDate());
 
-            itemView.getViewOrderPayTime().setText(mDateFormat.format(new Date(order.getPay_time())));
+            String payTimeStr = "";
+            if (order.getPay_time() <= 0) {
+                payTimeStr = "-";
+            } else {
+                payTimeStr = mDateFormat.format(new Date(order.getPay_time()));
+            }
+            itemView.getViewOrderPayTime().setText(payTimeStr);
+
             itemView.getViewOrderTime().setText(mDateFormat.format(new Date(order.getDate())));
 
             itemView.setTag(order);

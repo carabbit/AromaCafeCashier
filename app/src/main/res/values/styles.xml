@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,8 +21,8 @@
     </style>
 
     <style name="NumberStyle" parent="@android:style/TextAppearance.DeviceDefault">
-        <item name="android:layout_width">@dimen/number_size</item>
-        <item name="android:layout_height">@dimen/number_size</item>
+        <item name="android:layout_width">@dimen/number_width</item>
+        <item name="android:layout_height">@dimen/number_height</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/number_bg</item>
@@ -36,6 +36,17 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@color/number_bg_color</item>
+    </style>
+
+
+    <style name="MainTabStyle">
+        <item name="android:layout_width">@dimen/main_tab_width</item>
+        <item name="android:layout_height">@dimen/main_tab_height</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/main_tab_bg</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
 </resources>

@@ -1,7 +1,6 @@
 package bunny.project.aromacafecashier;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import bunny.project.aromacafecashier.model.OrderItem;
+import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
@@ -28,15 +27,16 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            if (v.getId() == R.id.btn_menu_manager) {
-//                Intent intent = new Intent(getActivity(), ProductManagerActivity.class);
-//                startActivity(intent);
-//                return;
-//            } else
             if (v.getId() == R.id.btn_temp_order) {
+                ArrayList<OrderItemInfo> orderItems = mOrderListFragment.getOrderItems();
+                if (orderItems.size() == 0) {
+                    Toast.makeText(getActivity(), R.string.create_order_fail, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 return;
             } else if (v.getId() == R.id.btn_comfirm_order) {
-                ArrayList<OrderItem> orderItems = mOrderListFragment.getOrderItems();
+                ArrayList<OrderItemInfo> orderItems = mOrderListFragment.getOrderItems();
 
                 if (orderItems.size() == 0) {
                     Toast.makeText(getActivity(), R.string.create_order_fail, Toast.LENGTH_SHORT).show();
@@ -49,13 +49,14 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
             }
         }
 
-        private void showConfirmDialog(ArrayList<OrderItem> orderItems) {
+        private void showConfirmDialog(ArrayList<OrderItemInfo> orderItems) {
 //            showDialog(0);
+
             OrderConfirmDialogFragment fragment = new OrderConfirmDialogFragment();
             fragment.setOrderListener(OrderFragment.this);
 
             Bundle data = new Bundle();
-            data.putParcelableArrayList(IntentKeys.ORDER_ITEM, orderItems);
+            data.putParcelableArrayList(IntentKeys.ORDER_ITEM_LIST, orderItems);
             fragment.setArguments(data);
 //            fragment.show(getFragmentManager(), "OrderConfirmDialogFragment");
 
@@ -70,6 +71,8 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.order, null);
         mOrderListFragment = new OrderDetailFragment();
+        mOrderListFragment.setArguments(getArguments());
+
         ProductListFragment productListFragment = new ProductListFragment();
         productListFragment.setProductItemClickListener(mOrderListFragment.mProductItemClickListener);
         getFragmentManager()
@@ -90,12 +93,11 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
         mBtnOrder.setOnClickListener(mOnClickListener);
         mBtnTempOrder.setOnClickListener(mOnClickListener);
 //        mBtnProductManager.setOnClickListener(mOnClickListener);
-
-
     }
 
     @Override
-    public void onOrderFinish() {
+    public void onOrderComplete() {
 //        hideStatusBar();
+        mOrderListFragment.resetListView();
     }
 }

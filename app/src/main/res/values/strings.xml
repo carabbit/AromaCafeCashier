@@ -6,6 +6,7 @@
     <string name="order">订单</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
+    <string name="finish_order">结单</string>
     <string name="pay_finish">完成付款</string>
     <string name="item_count">x %1$d</string>
     <string name="item_title_name">名称</string>

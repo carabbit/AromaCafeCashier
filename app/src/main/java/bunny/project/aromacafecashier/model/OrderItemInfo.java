@@ -5,18 +5,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.Settings;
 
 import bunny.project.aromacafecashier.QueryManager;
 import bunny.project.aromacafecashier.provider.AccsTables;
-
-import static android.support.v7.widget.AppCompatDrawableManager.get;
 
 /**
  * Created by bunny on 17-3-15.
  */
 
-public class OrderItem implements Parcelable {
+public class OrderItemInfo implements Parcelable {
 
     private int orderId;
     private int productId;
@@ -45,8 +42,8 @@ public class OrderItem implements Parcelable {
         return builder.build();
     }
 
-    public static OrderItem fromCursor(Cursor cursor) {
-        OrderItem item = new OrderItem();
+    public static OrderItemInfo fromCursor(Cursor cursor) {
+        OrderItemInfo item = new OrderItemInfo();
         item.setProductName(cursor.getString(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_NAME));
         item.setProductId(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_ID));
         item.setCount(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT));
@@ -56,11 +53,11 @@ public class OrderItem implements Parcelable {
     }
 
 
-    public OrderItem() {
+    public OrderItemInfo() {
 
     }
 
-    protected OrderItem(Parcel in) {
+    protected OrderItemInfo(Parcel in) {
         orderId = in.readInt();
         productId = in.readInt();
         count = in.readInt();
@@ -115,15 +112,15 @@ public class OrderItem implements Parcelable {
     }
 
 
-    public static final Creator<OrderItem> CREATOR = new Creator<OrderItem>() {
+    public static final Creator<OrderItemInfo> CREATOR = new Creator<OrderItemInfo>() {
         @Override
-        public OrderItem createFromParcel(Parcel in) {
-            return new OrderItem(in);
+        public OrderItemInfo createFromParcel(Parcel in) {
+            return new OrderItemInfo(in);
         }
 
         @Override
-        public OrderItem[] newArray(int size) {
-            return new OrderItem[size];
+        public OrderItemInfo[] newArray(int size) {
+            return new OrderItemInfo[size];
         }
     };
 

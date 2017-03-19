@@ -9,4 +9,6 @@
     <color name="number_bg_color">#f00</color>
     <color name="fragment_bg">#0099cc</color>
     <color name="fragment_translucent_bg">#88000000</color>
+
+    <color name="main_tab_bg">#0099cc</color>
 </resources>

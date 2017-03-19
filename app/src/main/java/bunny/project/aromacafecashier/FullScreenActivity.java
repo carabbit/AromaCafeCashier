@@ -12,7 +12,7 @@ import android.view.WindowManager;
  */
 
 public class FullScreenActivity extends Activity {
-    private static final int UI_ANIMATION_DELAY = 0;
+    private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
 
     @Override

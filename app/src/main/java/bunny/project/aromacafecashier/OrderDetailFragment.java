@@ -13,13 +13,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import bunny.project.aromacafecashier.model.OrderInfo;
-import bunny.project.aromacafecashier.model.OrderItem;
+import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.IntentKeys;
@@ -34,7 +31,7 @@ public class OrderDetailFragment extends Fragment {
     private ListView mOrderListView;
     private BaseAdapter mOrderAdpter;
 
-    private ArrayList<OrderItem> mOrderItems = new ArrayList<OrderItem>();
+    private ArrayList<OrderItemInfo> mOrderItems = new ArrayList<OrderItemInfo>();
 
     private AsyncQueryHandler mQueryOrderHandler;
 
@@ -52,7 +49,7 @@ public class OrderDetailFragment extends Fragment {
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    OrderItem item = OrderItem.fromCursor(cursor);
+                    OrderItemInfo item = OrderItemInfo.fromCursor(cursor);
                     mOrderItems.add(item);
                 }
                 cursor.close();
@@ -93,7 +90,7 @@ public class OrderDetailFragment extends Fragment {
                 return new TextView(getActivity());
             }
 
-            OrderItem orderItem = mOrderItems.get(position);
+            OrderItemInfo orderItem = mOrderItems.get(position);
 
             OrderItemView orderItemView = (OrderItemView) convertView;
 
@@ -130,7 +127,7 @@ public class OrderDetailFragment extends Fragment {
 
             int productId = (Integer) v.getTag();
 
-            OrderItem item = getOrderItem(productId);
+            OrderItemInfo item = getOrderItem(productId);
 
             if (item == null) {
                 return;
@@ -148,7 +145,7 @@ public class OrderDetailFragment extends Fragment {
 
     private void countTotalCash() {
         float totalCash = 0f;
-        for (OrderItem item : mOrderItems) {
+        for (OrderItemInfo item : mOrderItems) {
             totalCash += item.getCount() * item.getProductPrice();
         }
         String totalCashStr = getResources().getString(R.string.total_cash, totalCash);
@@ -180,6 +177,10 @@ public class OrderDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             mIsHistoryMode = bundle.getBoolean(IntentKeys.HISTORY_MODE, false);
+            ArrayList<OrderItemInfo> parcelableArrayList = bundle.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
+            if (parcelableArrayList != null) {
+                mOrderItems = parcelableArrayList;
+            }
         }
 
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
@@ -188,11 +189,15 @@ public class OrderDetailFragment extends Fragment {
         if (mIsHistoryMode) {
             mQueryOrderHandler = new QueryOrderHandler(getActivity().getContentResolver());
         }
+
+        if (mOrderItems != null && mOrderItems.size() > 0) {
+            mOrderAdpter.notifyDataSetChanged();
+        }
     }
 
     public OrderListFragment.OrderItemClickListener mOrderItemClickListener = new OrderListFragment.OrderItemClickListener() {
         @Override
-        public void onItemClick(OrderInfo order) {
+        public void onOrderItemClick(OrderInfo order) {
             mOrderItems.clear();
             String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
             String[] args = new String[]{String.valueOf(order.getId())};
@@ -200,14 +205,21 @@ public class OrderDetailFragment extends Fragment {
         }
     };
 
+    public void queryOrder(int orderId) {
+        mOrderItems.clear();
+        String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
+        String[] args = new String[]{String.valueOf(orderId)};
+        mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+    }
+
     public ProductListFragment.ProductItemClickListener mProductItemClickListener = new ProductListFragment.ProductItemClickListener() {
 
         @Override
         public void onItemClick(Product product) {
-            OrderItem item = getOrderItem(product.getId());
+            OrderItemInfo item = getOrderItem(product.getId());
 
             if (item == null) {
-                item = new OrderItem();
+                item = new OrderItemInfo();
                 item.setCount(1);
                 item.setProductId(product.getId());
                 item.setProductName(product.getName());
@@ -221,8 +233,8 @@ public class OrderDetailFragment extends Fragment {
         }
     };
 
-    private OrderItem getOrderItem(int productId) {
-        for (OrderItem item : mOrderItems) {
+    private OrderItemInfo getOrderItem(int productId) {
+        for (OrderItemInfo item : mOrderItems) {
             if (item.getProductId() == productId) {
                 return item;
             }
@@ -231,8 +243,13 @@ public class OrderDetailFragment extends Fragment {
         return null;
     }
 
-    public ArrayList<OrderItem> getOrderItems() {
+    public ArrayList<OrderItemInfo> getOrderItems() {
         return mOrderItems;
+    }
+
+    public void resetListView() {
+        mOrderItems.clear();
+        mOrderAdpter.notifyDataSetChanged();
     }
 
 //    private class QueryOrderTask extends AsyncTask<Integer, Void, Void> {
@@ -251,7 +268,7 @@ public class OrderDetailFragment extends Fragment {
 //
 //            if (cursor != null) {
 //                while (cursor.moveToNext()) {
-//                    OrderItem item = OrderItem.fromCursor(cursor);
+//                    OrderItemInfo item = OrderItemInfo.fromCursor(cursor);
 //                    mOrderItems.add(item);
 //                }
 //                cursor.close();

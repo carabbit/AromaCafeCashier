@@ -71,12 +71,18 @@ public class OrderInfo {
         return builder.build();
     }
 
-    public static ContentProviderOperation getNewInsertOperation() {
+    public static ContentProviderOperation getNewInsertOperation(boolean payed) {
         OrderInfo order = new OrderInfo();
         long now = System.currentTimeMillis();
         order.setDate(now);
-        order.setPay_time(now);
-        order.setPayed(OrderInfo.PAYED);
+        if (payed) {
+            order.setPay_time(now);
+            order.setPayed(OrderInfo.PAYED);
+        } else {
+            order.setPay_time(-1);
+            order.setPayed(OrderInfo.UNPAYED);
+        }
+
         return order.toInsertContentProviderOperation();
     }
 
