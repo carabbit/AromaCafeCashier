@@ -2,6 +2,7 @@ package bunny.project.aromacafecashier.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -13,7 +14,7 @@ import bunny.project.aromacafecashier.R;
  * Created by bunny on 2017/3/19.
  */
 
-public class TabGroup extends LinearLayout {
+public class TabGroup extends RadioGroup {
     private android.content.Context mContext;
 
     public TabGroup(Context context, AttributeSet attrs) {
@@ -29,7 +30,7 @@ public class TabGroup extends LinearLayout {
         layoutParams.rightMargin = 10;
 
         rbtn.setLayoutParams(layoutParams);
-
+        rbtn.setId(View.NO_ID);
         rbtn.setText(tabName);
         rbtn.setButtonDrawable(0);
         rbtn.setTag(typeId);

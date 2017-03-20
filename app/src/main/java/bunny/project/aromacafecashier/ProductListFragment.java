@@ -63,7 +63,14 @@ public class ProductListFragment extends Fragment {
     private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-
+            View tabView = radioGroup.findViewById(i);
+            if (tabView != null && tabView.getTag() != null) {
+                Object obj = tabView.getTag();
+                if (obj instanceof Integer) {
+                    int typeId = (Integer) obj;
+                    queryProductByType(typeId);
+                }
+            }
         }
     };
 
@@ -195,6 +202,9 @@ public class ProductListFragment extends Fragment {
 //                mTabContainer.addView(btn);
                 mTabContainer.addTab(cursor.getInt(QueryManager.INDEX_TYPE_ID), cursor.getString(QueryManager.INDEX_TYPE_NAME));
             }
+            mTabContainer.setOnCheckedChangeListener(mOnCheckedChangeListener);
+
+
         }
 
         if (cursor != null) {
