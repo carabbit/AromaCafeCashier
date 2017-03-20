@@ -93,6 +93,9 @@ public class ProductEditorActivity extends Activity {
                     productType.setName((String) cookie);
                     mSpinnerAdapter.add(productType);
                     mSpinnerAdapter.notifyDataSetChanged();
+
+                    int position = mSpinnerAdapter.getPosition(productType);
+                    mTypeSpinner.setSelection(position);
                 }
             }
         }
