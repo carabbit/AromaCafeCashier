@@ -12,15 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
+import bunny.project.aromacafecashier.view.MyButton;
 import bunny.project.aromacafecashier.view.ProductListItemView;
 import bunny.project.aromacafecashier.view.TabGroup;
 
@@ -33,10 +34,12 @@ import static bunny.project.aromacafecashier.QueryManager.PROJECTION_TYPE;
 public class ProductListFragment extends Fragment {
     private static final int TOKEN_QUERY_ALL_TYPE = 1;
     private static final int TOKEN_QUERY_PRODUCT = 2;
-    private static final int TOKEN_DELETE_PRODUCT = 3;
+    private static final int TOKEN_QUERY_PRODUCT_WITH_NO_TYPE = 3;
+    private static final int TOKEN_DELETE_PRODUCT = 4;
+    private static final int TOKEN_DELETE_TYPE = 5;
 
     private AsyncQueryHandler mQqueryHandle;
-    private View mTabScrollView;
+    //    private View mTabScrollView;
     private TabGroup mTabContainer;
     private GridView mGridView;
     private View mEmptyView;
@@ -44,6 +47,7 @@ public class ProductListFragment extends Fragment {
     private CursorAdapter mProductAdapter;
 
     private ProductItemClickListener mListener;
+    private int mCurrentTypeId;
 
     public static interface ProductItemClickListener {
         void onItemClick(Product product);
@@ -64,11 +68,12 @@ public class ProductListFragment extends Fragment {
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
             View tabView = radioGroup.findViewById(i);
+            MyLog.i("onCheckedChanged", "tabView:" + tabView);
             if (tabView != null && tabView.getTag() != null) {
                 Object obj = tabView.getTag();
                 if (obj instanceof Integer) {
-                    int typeId = (Integer) obj;
-                    queryProductByType(typeId);
+                    mCurrentTypeId = (Integer) obj;
+                    queryProductByType(mCurrentTypeId);
                 }
             }
         }
@@ -137,6 +142,9 @@ public class ProductListFragment extends Fragment {
                     handleProductQuery((Integer) cookie, cursor);
                     break;
                 }
+                case TOKEN_QUERY_PRODUCT_WITH_NO_TYPE:
+                    handleProdcutWithNoType(cursor);
+                    break;
             }
         }
 
@@ -152,9 +160,59 @@ public class ProductListFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), R.string.delete_product_fail, Toast.LENGTH_SHORT).show();
                 }
+            } else if (token == TOKEN_DELETE_TYPE) {
+                if (result > 0) {
+//                    MyLog.i("", "mTabContainer size:" + mTabContainer.getChildCount());
+//                    for (int i = 0; i < mTabContainer.getChildCount(); i++) {
+//                        View childView = mTabContainer.getChildAt(i);
+//                        int typeId = (Integer) childView.getTag();
+//                        if (mCurrentTypeId == typeId) {
+//                            MyLog.i("", "mTabContainer.removeView(childView);" + typeId);
+//                            mTabContainer.removeView(childView);
+//                            if (mTabContainer.getChildCount() > 0) {
+//                                ((RadioButton) mTabContainer.getChildAt(0)).setChecked(true);
+//                            }
+//                            break;
+//                        }
+//                    }
 
+                    queryAllType();
+                }
             }
         }
+    }
+
+    private void handleProdcutWithNoType(Cursor cursor) {
+        MyLog.i("[handleProdcutWithNoType]", "cursor size:" + (cursor == null ? "null" : cursor.getCount()));
+        if (cursor != null && cursor.getCount() > 0) {
+            mTabContainer.addTab(-1, getResources().getString(R.string.no_type));
+            MyLog.i("[handleProdcutWithNoType]", "mTabContainer.getChildCount()-->" + mTabContainer.getChildCount());
+            if (mTabContainer.getChildCount() == 1) {
+                mTabContainer.check(mTabContainer.getChildAt(0).getId());
+                queryProductByType(-1);
+                mTabContainer.setVisibility(View.VISIBLE);
+                mGridView.setVisibility(View.VISIBLE);
+                mEmptyView.setVisibility(View.GONE);
+            }
+
+
+        }
+//        else {
+//            if (mProductAdapter.getCount() == 0) {
+//                mEmptyView.setVisibility(View.VISIBLE);
+//            }
+//        }
+
+    }
+
+    public int getCurrentTypeId() {
+        return mCurrentTypeId;
+    }
+
+    public void deleteCurrentType() {
+        String[] args = new String[]{String.valueOf(mCurrentTypeId)};
+        String seletion = AccsTables.Type._ID + " = ?";
+        mQqueryHandle.startDelete(TOKEN_DELETE_TYPE, mCurrentTypeId, QueryManager.URI_TYPE, seletion, args);
     }
 
     public void deleteItem(int productId) {
@@ -164,6 +222,7 @@ public class ProductListFragment extends Fragment {
     }
 
     private void handleProductQuery(int type, Cursor cursor) {
+        MyLog.i("handleProductQuery", "type:" + type + "  cursor size:" + (cursor == null ? "null" : cursor.getCount()));
         mGridView.setTag(type);
 
         if (cursor == null || cursor.getCount() == 0) {
@@ -187,11 +246,13 @@ public class ProductListFragment extends Fragment {
         mTabContainer.removeAllViews();
 
         if (cursor == null || cursor.getCount() == 0) {
-            mTabScrollView.setVisibility(View.GONE);
+//            mTabScrollView.setVisibility(View.GONE);
+            mTabContainer.setVisibility(View.GONE);
             mGridView.setVisibility(View.GONE);
-            mEmptyView.setVisibility(View.VISIBLE);
+//            mEmptyView.setVisibility(View.VISIBLE);
         } else {
-            mTabScrollView.setVisibility(View.VISIBLE);
+//            mTabScrollView.setVisibility(View.VISIBLE);
+            mTabContainer.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.GONE);
             while (cursor.moveToNext()) {
@@ -211,17 +272,35 @@ public class ProductListFragment extends Fragment {
             cursor.close();
         }
 
-        View firstTypeView = mTabContainer.getChildAt(0);
-        if (firstTypeView != null) {
-            int typeId = (Integer) firstTypeView.getTag();
-            mGridView.setTag(Integer.valueOf(typeId));
-            queryProductByType(typeId);
+        if (mTabContainer.getChildCount() > 0) {
+            ((RadioButton) mTabContainer.getChildAt(0)).setChecked(true);
         }
+
+        queryProductWithNoType();
+
+//        View firstTypeView = mTabContainer.getChildAt(0);
+//        if (firstTypeView != null) {
+//            mCurrentTypeId = (Integer) firstTypeView.getTag();
+//            mGridView.setTag(Integer.valueOf(mCurrentTypeId));
+//            queryProductByType(mCurrentTypeId);
+//        }
+    }
+
+    private void queryProductWithNoType() {
+        String selection = AccsTables.Product.COL_TYPE_ID + " NOT IN ( SELECT " + AccsTables.Type._ID + " FROM " + AccsTables.Type.TABLE_NAME + ")";
+        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT_WITH_NO_TYPE, null, QueryManager.URI_PRODUCT, new String[]{AccsTables.Product._ID}, selection, null, null);
     }
 
     private void queryProductByType(int type) {
-        String selection = AccsTables.Product.COL_TYPE_ID + " = ?";
-        String[] args = new String[]{String.valueOf(type)};
+        String selection = null;
+        String[] args = null;
+        if (type < 0) {
+            selection = AccsTables.Product.COL_TYPE_ID + " NOT IN ( SELECT " + AccsTables.Type._ID + " FROM " + AccsTables.Type.TABLE_NAME + ")";
+        } else {
+            selection = AccsTables.Product.COL_TYPE_ID + " = ?";
+            args = new String[]{String.valueOf(type)};
+        }
+
         String order = AccsTables.Product.COL_NAME;
         mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT, type, QueryManager.URI_PRODUCT, QueryManager.PROJECTION_PRODUCT, selection, args, order);
     }
@@ -240,7 +319,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTabContainer = (TabGroup) view.findViewById(R.id.tabContainer);
-        mTabScrollView = view.findViewById(R.id.tabContainerContainer);
+//        mTabScrollView = view.findViewById(R.id.tabContainerContainer);
         mGridView = (GridView) view.findViewById(R.id.product_gridview);
         mEmptyView = view.findViewById(R.id.empty_view);
 
@@ -257,6 +336,10 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        queryAllType();
+    }
+
+    private void queryAllType() {
         mQqueryHandle.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, PROJECTION_TYPE, null, null, null);
     }
 

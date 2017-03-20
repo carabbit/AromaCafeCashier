@@ -5,24 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <HorizontalScrollView
-        android:id="@+id/tabContainerContainer"
-        android:layout_width="match_parent"
+    <!--<HorizontalScrollView-->
+    <!--android:id="@+id/tabContainerContainer"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:visibility="gone">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/tabContainer"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"></LinearLayout>-->
+    <bunny.project.aromacafecashier.view.TabGroup
+        android:id="@+id/tabContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/tabContainer"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"></LinearLayout>-->
-        <bunny.project.aromacafecashier.view.TabGroup
-            android:id="@+id/tabContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-
-    </HorizontalScrollView>
+    <!--</HorizontalScrollView>-->
 
     <GridView
         android:id="@+id/product_gridview"

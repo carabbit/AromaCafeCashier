@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -35,16 +36,20 @@ public class OrderListFragment extends Fragment {
     private static final int TOKEN_QUEREY_TEMP_ORDER = 1;
     private static final int TOKEN_QUEREY_HISTORY_ORDER = 2;
 
-    private ListView mListTempOrder;
+    //    private ListView mListTempOrder;
     private ListView mListHistoryOrder;
-    private List<OrderInfo> mTempOrders = new ArrayList<OrderInfo>();
+    //    private List<OrderInfo> mTempOrders = new ArrayList<OrderInfo>();
     private List<OrderInfo> mHistoryOrders = new ArrayList<OrderInfo>();
 
-    private CursorAdapter mTempOrderAdapter;
+    //    private CursorAdapter mTempOrderAdapter;
     private CursorAdapter mHistoryOrderAdapter;
 
     private AsyncQueryHandler mQueryHandler;
     private OrderItemClickListener mOrderItemClickListener;
+
+    private Button mBtnTodayOrder;
+    private Button mBtnAllTempOrder;
+    private Button mBtnAllOrder;
 
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
@@ -63,13 +68,13 @@ public class OrderListFragment extends Fragment {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-            if (token == TOKEN_QUEREY_HISTORY_ORDER) {
-                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
-                mHistoryOrderAdapter.changeCursor(cursor);
-            } else if (token == TOKEN_QUEREY_TEMP_ORDER) {
-                MyLog.i("", "temp:" + (cursor == null ? "null" : cursor.getCount()));
-                mTempOrderAdapter.changeCursor(cursor);
-            }
+//            if (token == TOKEN_QUEREY_HISTORY_ORDER) {
+//                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
+            mHistoryOrderAdapter.changeCursor(cursor);
+//            } else if (token == TOKEN_QUEREY_TEMP_ORDER) {
+//                MyLog.i("", "temp:" + (cursor == null ? "null" : cursor.getCount()));
+//                mTempOrderAdapter.changeCursor(cursor);
+//            }
         }
     }
 
@@ -78,6 +83,23 @@ public class OrderListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mOrderItemClickListener != null) {
                 mOrderItemClickListener.onOrderItemClick((OrderInfo) view.getTag());
+            }
+        }
+    };
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_all_order:
+                    queryAllOrders();
+                    break;
+                case R.id.btn_all_temp_order:
+                    queryTempOrders();
+                    break;
+                case R.id.btn_today_order:
+                    queryTodayOrders();
+                    break;
             }
         }
     };
@@ -91,17 +113,25 @@ public class OrderListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mListTempOrder = (ListView) view.findViewById(R.id.listTempOrder);
+//        mListTempOrder = (ListView) view.findViewById(R.id.listTempOrder);
         mListHistoryOrder = (ListView) view.findViewById(R.id.listHistoryOrder);
 
-        mTempOrderAdapter = new OrderListAdapter(getActivity());
+//        mTempOrderAdapter = new OrderListAdapter(getActivity());
         mHistoryOrderAdapter = new OrderListAdapter(getActivity());
 
-        mListTempOrder.setAdapter(mTempOrderAdapter);
+//        mListTempOrder.setAdapter(mTempOrderAdapter);
         mListHistoryOrder.setAdapter(mHistoryOrderAdapter);
 
-        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
+//        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
         mListHistoryOrder.setOnItemClickListener(mOnItemClickListener);
+
+        mBtnAllOrder = (Button) view.findViewById(R.id.btn_all_order);
+        mBtnAllTempOrder = (Button) view.findViewById(R.id.btn_all_temp_order);
+        mBtnTodayOrder = (Button) view.findViewById(R.id.btn_today_order);
+
+        mBtnAllOrder.setOnClickListener(mOnClickListener);
+        mBtnAllTempOrder.setOnClickListener(mOnClickListener);
+        mBtnTodayOrder.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -109,8 +139,8 @@ public class OrderListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mQueryHandler = new OrderQueryHandler(getActivity().getContentResolver());
 
-        queryTempOrders();
-        queryHistoryOrders();
+//        queryTempOrders();
+        queryTodayOrders();
     }
 
     private void queryTempOrders() {
@@ -120,7 +150,7 @@ public class OrderListFragment extends Fragment {
         mQueryHandler.startQuery(TOKEN_QUEREY_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
-    private void queryHistoryOrders() {
+    private void queryTodayOrders() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);
@@ -131,10 +161,15 @@ public class OrderListFragment extends Fragment {
         cal.add(Calendar.DATE, 1);
         long nextDayZeroTime = cal.getTimeInMillis();
 
-        String selection = AccsTables.Order.COL_PAYED + " = ? AND (" + AccsTables.Order.COL_DATE + " BETWEEN ? AND ?) ";
-        String[] args = new String[]{"1", String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
-        String orderBy = AccsTables.Order.COL_DATE + " DESC";
+        String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
+        String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
+        String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         mQueryHandler.startQuery(TOKEN_QUEREY_HISTORY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+    }
+
+    private void queryAllOrders() {
+        String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
+        mQueryHandler.startQuery(TOKEN_QUEREY_HISTORY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
     }
 
     private class OrderListAdapter extends CursorAdapter {

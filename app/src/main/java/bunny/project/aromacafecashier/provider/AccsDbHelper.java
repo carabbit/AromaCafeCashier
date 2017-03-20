@@ -20,7 +20,7 @@ public class AccsDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(AccsTables.Product.CREATE_TABLE);
-        sqLiteDatabase.execSQL(AccsTables.ProductType.CREATE_TABLE);
+        sqLiteDatabase.execSQL(AccsTables.Type.CREATE_TABLE);
         sqLiteDatabase.execSQL(AccsTables.Order.CREATE_TABLE);
         sqLiteDatabase.execSQL(AccsTables.OrderDetail.CREATE_TABLE);
         sqLiteDatabase.execSQL(AccsTables.Views.CREATE_PRODUCT_VIEW);

@@ -21,15 +21,39 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
 
 public class ProductManagerFragment extends Fragment implements ProductListFragment.ProductItemClickListener {
 
-    Button mBtnCreate;
-    Button mBtnDelete;
+    Button mBtnCreateProduct;
+    Button mBtnDeleteProduct;
+    Button mBtnDeleteType;
     //    ImageView mBtnBack;
+    // TODO 商品编辑功能（待做）
     //    Button mBtnEdit;
     ImageView mProductImgView;
     TextView mProductNameView;
     TextView mProudctPriceView;
     TextView mProductTypeView;
     private ProductListFragment mProductListFragment;
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_detele_type:
+                    // TODO 使用弹窗提示：如果当前分类下有产品列表，则提示该分类下产品将归类于“未分类”
+                    deleteType();
+                    break;
+                case R.id.btn_delete:
+                    deteteProduct(v);
+                    break;
+                case R.id.btn_create:
+                    startActivity(new Intent(getActivity(), ProductEditorActivity.class));
+                    break;
+            }
+        }
+    };
+
+    private void deleteType() {
+        mProductListFragment.deleteCurrentType();
+    }
 
     @Nullable
     @Override
@@ -57,23 +81,14 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
         mProductTypeView = (TextView) view.findViewById(R.id.product_type);
 
 
-        mBtnDelete = (Button) view.findViewById(R.id.btn_delete);
+        mBtnDeleteType = (Button) view.findViewById(R.id.btn_detele_type);
+        mBtnDeleteProduct = (Button) view.findViewById(R.id.btn_delete);
 //        mBtnEdit = (Button) findViewById(R.id.btn_edit);
-        mBtnCreate = (Button) view.findViewById(R.id.btn_create);
+        mBtnCreateProduct = (Button) view.findViewById(R.id.btn_create);
 
-        mBtnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ProductEditorActivity.class));
-            }
-        });
-
-        mBtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deteteProduct(v);
-            }
-        });
+        mBtnCreateProduct.setOnClickListener(mOnClickListener);
+        mBtnDeleteProduct.setOnClickListener(mOnClickListener);
+        mBtnDeleteType.setOnClickListener(mOnClickListener);
 
 //        mBtnEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -119,7 +134,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             mProudctPriceView.setText(null);
             mProductTypeView.setText(null);
 
-            mBtnDelete.setTag(null);
+            mBtnDeleteProduct.setTag(null);
 //            mBtnEdit.setTag(null);
         } else {
             mProductImgView.setImageDrawable(BitmapTool.bytes2RoundDrawable(getResources(), product.getImage()));
@@ -127,7 +142,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             mProudctPriceView.setText(String.valueOf(product.getPrice()));
             mProductTypeView.setText(product.getType());
 
-            mBtnDelete.setTag(Integer.valueOf(product.getId()));
+            mBtnDeleteProduct.setTag(Integer.valueOf(product.getId()));
 //            mBtnEdit.setTag(Integer.valueOf(product.getId()));
         }
     }

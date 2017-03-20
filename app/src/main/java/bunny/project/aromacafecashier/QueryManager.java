@@ -21,7 +21,7 @@ public class QueryManager {
     public static final Uri URI_ORDER_DETAIL = URI_BASE.buildUpon().appendPath("order_detail").build();
 
     public static final String[] PROJECTION_TYPE = new String[]{
-            AccsTables.ProductType._ID, AccsTables.ProductType.COL_NAME
+            AccsTables.Type._ID, AccsTables.Type.COL_NAME
     };
 
     public static final int INDEX_TYPE_ID = 0;

@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:buttonStyle">@style/MyButtonStyle</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -48,6 +49,13 @@
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/main_tab_bg</item>
         <item name="android:textColor">@color/text_color</item>
+    </style>
+
+    <style name="MyButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:minWidth">@dimen/button_min_width</item>
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:padding">@dimen/button_padding</item>
     </style>
 
 </resources>

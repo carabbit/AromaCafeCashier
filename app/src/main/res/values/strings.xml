@@ -47,4 +47,8 @@
     <string name="create_order_fail">总价为0元，创建订单失败</string>
     <string name="has_payed">已付款</string>
     <string name="unpayed">未付款</string>
+    <string name="today_order">今日订单</string>
+    <string name="all_temp_order">全部挂单</string>
+    <string name="all_order">全部订单</string>
+    <string name="no_type">未分类</string>
 </resources>

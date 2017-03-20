@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -232,6 +233,7 @@ public class ProductEditorActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_CREATE_TYPE) {
             final EditText edtType = new EditText(this);
+            edtType.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.product_type);
             builder.setView(edtType);
@@ -271,19 +273,19 @@ public class ProductEditorActivity extends Activity {
     }
 
     private void queryAllProductType() {
-        String[] projection = new String[]{AccsTables.ProductType._ID, AccsTables.ProductType.COL_NAME};
+        String[] projection = new String[]{AccsTables.Type._ID, AccsTables.Type.COL_NAME};
         mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, projection, null, null, null);
     }
 
     private void queryProductType(String type) {
-        String selection = AccsTables.ProductType.COL_NAME + "=?";
+        String selection = AccsTables.Type.COL_NAME + "=?";
         String[] agrs = new String[]{type};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.URI_TYPE, new String[]{AccsTables.ProductType._ID}, selection, agrs, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.URI_TYPE, new String[]{AccsTables.Type._ID}, selection, agrs, null);
     }
 
     private void insertProductType(String type) {
         ContentValues values = new ContentValues();
-        values.put(AccsTables.ProductType.COL_NAME, type);
+        values.put(AccsTables.Type.COL_NAME, type);
         mQueryProductHandler.startInsert(TOKEN_INSERT_TYPE, type, QueryManager.URI_TYPE, values);
     }
 

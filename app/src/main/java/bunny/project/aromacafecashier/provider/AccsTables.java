@@ -34,7 +34,7 @@ public class AccsTables {
 
     }
 
-    public static class ProductType implements BaseColumns {
+    public static class Type implements BaseColumns {
         public static String TABLE_NAME = "product_type";
 
         public static final String COL_NAME = "name";
@@ -109,8 +109,8 @@ public class AccsTables {
                 + "," + Product.COL_TYPE_ID
                 + "," + Product.COL_PRICE
                 + "," + Product.COL_IMAGE
-                + "," + ProductType.COL_CONCRETE_NAME + " AS " + COL_VIEW_TYPE
+                + "," + Type.COL_CONCRETE_NAME + " AS " + COL_VIEW_TYPE
                 + " FROM " + Product.TABLE_NAME
-                + " LEFT JOIN " + ProductType.TABLE_NAME + " ON " + Product.COL_CONCRETE_TYPE_ID + " = " + ProductType.COL_CONCRETE_ID;
+                + " LEFT JOIN " + Type.TABLE_NAME + " ON " + Product.COL_CONCRETE_TYPE_ID + " = " + Type.COL_CONCRETE_ID;
     }
 }

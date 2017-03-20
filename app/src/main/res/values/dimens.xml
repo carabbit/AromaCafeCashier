@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="product_img_size">150dp</dimen>
-    <dimen name="product_list_img_size">100dp</dimen>
-    <dimen name="text_size">20sp</dimen>
-    <dimen name="product_list_item_width">120dp</dimen>
-    <dimen name="product_list_item_space">0dp</dimen>
+    <!--全局-->
+    <dimen name="text_size">30px</dimen>
+    <dimen name="button_bg_radius">10px</dimen>
+    <dimen name="button_bg_stroke">5px</dimen>
+    <dimen name="button_min_width">100px</dimen>
+    <dimen name="button_min_height">80px</dimen>
+    <dimen name="button_padding">20px</dimen>
+
+    <dimen name="product_img_size">150px</dimen>
+    <dimen name="product_list_img_size">100px</dimen>
+
+    <dimen name="product_list_item_width">120px</dimen>
+    <dimen name="product_list_item_space">0px</dimen>
+
+    <!--商品表格tab-->
+
 
     <!--主界面tab-->
-    <dimen name="main_tab_width">80dp</dimen>
-    <dimen name="main_tab_height">100dp</dimen>
+    <dimen name="main_tab_width">80px</dimen>
+    <dimen name="main_tab_height">100px</dimen>
 
     <!--订单确认弹窗-->
-    <dimen name="number_width">40dp</dimen>
-    <dimen name="number_height">30dp</dimen>
+    <dimen name="number_width">40px</dimen>
+    <dimen name="number_height">30px</dimen>
 
     <!-- 订单详情(OrderDetailFragment) -->
-    <dimen name="order_detail_width">400dp</dimen>
-    <dimen name="order_detail_list_padding">10dp</dimen>
-    <dimen name="order_detail_item_price_width">100dp</dimen>
-    <dimen name="order_detail_item_count_width">80dp</dimen>
+    <dimen name="order_detail_width">600px</dimen>
+    <dimen name="order_detail_list_padding">10px</dimen>
+    <dimen name="order_detail_item_name_width">100px</dimen>
+    <dimen name="order_detail_item_count_width">80px</dimen>
+    <dimen name="order_detail_item_price_width">100px</dimen>
+    <dimen name="order_detail_item_sum_price_width">100px</dimen>
+    <dimen name="order_detail_item_delete_size">80px</dimen>
 
     <!--历史订单（OrderHistoryFragment）-->
-    <dimen name="order_history_item_height">60dp</dimen>
-    <dimen name="order_history_item_space">10dp</dimen>
+    <dimen name="order_history_item_height">60px</dimen>
+    <dimen name="order_history_item_space">10px</dimen>
 </resources>

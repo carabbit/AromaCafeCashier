@@ -186,6 +186,11 @@ public class OrderDetailFragment extends Fragment {
         }
 
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
+        View deleteBtn = headerView.findViewById(R.id.btn_delete);
+        if (mIsHistoryMode) {
+        } else {
+            deleteBtn.setVisibility(View.INVISIBLE);
+        }
         mOrderListView.addHeaderView(headerView);
 
         if (mIsHistoryMode) {
