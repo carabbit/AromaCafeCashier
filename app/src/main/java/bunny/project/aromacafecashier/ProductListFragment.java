@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
-import bunny.project.aromacafecashier.view.MyButton;
 import bunny.project.aromacafecashier.view.ProductListItemView;
 import bunny.project.aromacafecashier.view.TabGroup;
 
@@ -64,19 +60,30 @@ public class ProductListFragment extends Fragment {
         }
     };
 
-    private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+    private TabGroup.OnCheckedChangeListener mOnCheckedChangeListener = new TabGroup.OnCheckedChangeListener() {
         @Override
-        public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-            View tabView = radioGroup.findViewById(i);
-            MyLog.i("onCheckedChanged", "tabView:" + tabView);
-            if (tabView != null && tabView.getTag() != null) {
-                Object obj = tabView.getTag();
+        public void onChecked(View view) {
+//            MyLog.i("onCheckedChanged", "tabView:" + tabView);
+            if (view != null && view.getTag() != null) {
+                Object obj = view.getTag();
                 if (obj instanceof Integer) {
                     mCurrentTypeId = (Integer) obj;
                     queryProductByType(mCurrentTypeId);
                 }
             }
         }
+//        @Override
+//        public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+//            View tabView = radioGroup.findViewById(i);
+//            MyLog.i("onCheckedChanged", "tabView:" + tabView);
+//            if (tabView != null && tabView.getTag() != null) {
+//                Object obj = tabView.getTag();
+//                if (obj instanceof Integer) {
+//                    mCurrentTypeId = (Integer) obj;
+//                    queryProductByType(mCurrentTypeId);
+//                }
+//            }
+//        }
     };
 
     private class ProudctAdapter extends CursorAdapter {
@@ -188,7 +195,7 @@ public class ProductListFragment extends Fragment {
             mTabContainer.addTab(-1, getResources().getString(R.string.no_type));
             MyLog.i("[handleProdcutWithNoType]", "mTabContainer.getChildCount()-->" + mTabContainer.getChildCount());
             if (mTabContainer.getChildCount() == 1) {
-                mTabContainer.check(mTabContainer.getChildAt(0).getId());
+                mTabContainer.checkTab(0);
                 queryProductByType(-1);
                 mTabContainer.setVisibility(View.VISIBLE);
                 mGridView.setVisibility(View.VISIBLE);
@@ -243,7 +250,7 @@ public class ProductListFragment extends Fragment {
     }
 
     private void handleAllTypyQuery(Cursor cursor) {
-        mTabContainer.removeAllViews();
+        mTabContainer.removeAllTabs();
 
         if (cursor == null || cursor.getCount() == 0) {
 //            mTabScrollView.setVisibility(View.GONE);
@@ -268,8 +275,9 @@ public class ProductListFragment extends Fragment {
         }
 
         if (mTabContainer.getChildCount() > 0) {
-//            ((RadioButton) mTabContainer.getTabViewAt(0)).setChecked(true);
+            mTabContainer.checkTab(0);
         }
+
 
         queryProductWithNoType();
 

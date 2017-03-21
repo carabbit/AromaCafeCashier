@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -16,9 +17,22 @@ import bunny.project.aromacafecashier.R;
  * Created by bunny on 2017/3/19.
  */
 
-public class TabGroup extends LinearLayout {
+public class TabGroup extends LinearLayout implements View.OnClickListener {
     private android.content.Context mContext;
     private static final int MAX_COUNT_IN_LINE = 8;
+    private int mChildCount;
+
+    private OnCheckedChangeListener mOnCheckedListener;
+
+    @Override
+    public void onClick(View view) {
+        checkTab(view);
+    }
+
+
+    public static interface OnCheckedChangeListener {
+        void onChecked(View view);
+    }
 
     public TabGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,19 +41,19 @@ public class TabGroup extends LinearLayout {
     }
 
     public void addTab(int typeId, String tabName) {
-        int lineCount = getChildCount();
+        int lineCount = super.getChildCount();
         if (lineCount == 0) {
             addNewLine();
         }
 
-        ViewGroup lastChidViewGroup = (ViewGroup) getChildAt(getChildCount() - 1);
+        ViewGroup lastChidViewGroup = (ViewGroup) getChildAt(super.getChildCount() - 1);
 
 
         if (lastChidViewGroup.getChildCount() == MAX_COUNT_IN_LINE) {
             addNewLine();
         }
 
-        lastChidViewGroup = (ViewGroup) getChildAt(getChildCount() - 1);
+        lastChidViewGroup = (ViewGroup) getChildAt(super.getChildCount() - 1);
 
 
         int groupWidth = getWidth();
@@ -58,7 +72,20 @@ public class TabGroup extends LinearLayout {
         rbtn.setTag(typeId);
         rbtn.setBackgroundResource(R.drawable.product_tab_bg);
         rbtn.setPadding(10, 10, 10, 10);
+//        rbtn.setOnCheckedChangeListener(this);
+        rbtn.setOnClickListener(this);
         lastChidViewGroup.addView(rbtn);
+
+
+        mChildCount++;
+    }
+
+    public void removeTab(int pos) {
+
+    }
+
+    public void removeTab(View view) {
+
     }
 
     private void addNewLine() {
@@ -67,18 +94,57 @@ public class TabGroup extends LinearLayout {
         addView(linearLayout);
     }
 
-    public void check(int pos) {
+//    public void check(int pos) {
+//        View tabView = getTabViewAt(pos);
+//        if (tabView instanceof RadioButton) {
+//            ((RadioButton) tabView).setChecked(true);
+//        }
+//    }
 
+    public void checkTab(int pos) {
+        for (int i = 0; i < mChildCount; i++) {
+            RadioButton tabView = (RadioButton) getTabViewAt(i);
+            boolean checked = pos == i;
+            tabView.setChecked(checked);
+            setTabChecked(tabView, checked);
+        }
     }
 
-    public void setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener listener) {
+    public void checkTab(View view) {
+        MyLog.i("[checkTab]", "mChildCount:" + mChildCount);
+        for (int i = 0; i < mChildCount; i++) {
+            RadioButton tabView = (RadioButton) getTabViewAt(i);
+            boolean checked = tabView == view;
+            setTabChecked(tabView, checked);
+        }
+    }
 
+    private void setTabChecked(RadioButton tabView, boolean checked) {
+        tabView.setChecked(checked);
+        if (checked) {
+            mOnCheckedListener.onChecked(tabView);
+        }
+    }
+
+
+    public int getTabCount() {
+        return mChildCount;
     }
 
     public View getTabViewAt(int pos) {
         int line = pos / MAX_COUNT_IN_LINE;
-        int posInLine = pos % MAX_COUNT_IN_LINE - 1;
+        int posInLine = pos % MAX_COUNT_IN_LINE;
+
         ViewGroup lineGroupView = (ViewGroup) getChildAt(line);
         return lineGroupView.getChildAt(posInLine);
+    }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        mOnCheckedListener = listener;
+    }
+
+    public void removeAllTabs() {
+        removeAllViews();
+        mChildCount = 0;
     }
 }
