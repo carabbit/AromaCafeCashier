@@ -34,7 +34,7 @@ import bunny.project.aromacafecashier.view.HistoryOrderItemView;
 
 public class OrderListFragment extends Fragment {
     //TODO 订单废弃功能（待做）
-    private static final int TOKEN_QUEREY_TEMP_ORDER = 1;
+    private static final int TOKEN_QUEREY_ALL_TEMP_ORDER = 1;
     private static final int TOKEN_QUEREY_ALL_ORDER = 2;
     private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
 
@@ -76,8 +76,8 @@ public class OrderListFragment extends Fragment {
                 case TOKEN_QUEREY_ALL_ORDER:
                     resId = R.string.all_order;
                     break;
-                case TOKEN_QUEREY_TEMP_ORDER:
-                    resId = R.string.temp_order;
+                case TOKEN_QUEREY_ALL_TEMP_ORDER:
+                    resId = R.string.all_temp_order;
                     break;
                 case TOKEN_QUEREY_TODAY_ORDER:
                     resId = R.string.today_order;
@@ -88,7 +88,7 @@ public class OrderListFragment extends Fragment {
 //            if (token == TOKEN_QUEREY_ALL_ORDER) {
 //                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
             mHistoryOrderAdapter.changeCursor(cursor);
-//            } else if (token == TOKEN_QUEREY_TEMP_ORDER) {
+//            } else if (token == TOKEN_QUEREY_ALL_TEMP_ORDER) {
 //                MyLog.i("", "temp:" + (cursor == null ? "null" : cursor.getCount()));
 //                mTempOrderAdapter.changeCursor(cursor);
 //            }
@@ -166,7 +166,7 @@ public class OrderListFragment extends Fragment {
         String selection = AccsTables.Order.COL_PAYED + " = ?";
         String[] args = new String[]{"0"};
         String orderBy = AccsTables.Order.COL_DATE + " DESC";
-        mQueryHandler.startQuery(TOKEN_QUEREY_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
     private void queryTodayOrders() {

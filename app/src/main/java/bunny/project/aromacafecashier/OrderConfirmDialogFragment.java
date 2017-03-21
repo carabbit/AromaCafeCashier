@@ -37,7 +37,7 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
 /**
  * Created by bunny on 17-3-15.
  */
-
+//TODO 按键0在实收为空的时候，显示成disable状态
 public class OrderConfirmDialogFragment extends DialogFragment {
     private static final String TAG = OrderConfirmDialogFragment.class.getSimpleName();
     private static final int TOKEN_INSERT_ORDER = 1;

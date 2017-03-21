@@ -3,6 +3,7 @@ package bunny.project.aromacafecashier.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -68,8 +69,10 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
         rbtn.setLayoutParams(layoutParams);
         rbtn.setId(View.NO_ID);
         rbtn.setText(tabName);
+        rbtn.setTextColor(getResources().getColor(R.color.text_color));
         rbtn.setButtonDrawable(0);
         rbtn.setTag(typeId);
+        rbtn.setGravity(Gravity.CENTER);
         rbtn.setBackgroundResource(R.drawable.product_tab_bg);
         rbtn.setPadding(10, 10, 10, 10);
 //        rbtn.setOnCheckedChangeListener(this);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!--android:shape="oval"-->
-    <solid android:color="@color/btn_bg_normal" />
+    <solid android:color="@color/btn_bg_disable" />
     <stroke
         android:width="@dimen/button_bg_stroke"
         android:color="@color/main_tab_stroke" />

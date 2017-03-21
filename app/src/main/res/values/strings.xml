@@ -51,4 +51,9 @@
     <string name="all_temp_order">全部挂单</string>
     <string name="all_order">全部订单</string>
     <string name="no_type">未分类</string>
+    <string name="cost_off_nine">9折</string>
+    <string name="cost_off_eight">8折</string>
+    <string name="cost_off_seven">7折</string>
+    <string name="cost_off_six">6折</string>
+    <string name="cost_off_five">5折</string>
 </resources>

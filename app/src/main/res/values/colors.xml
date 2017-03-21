@@ -6,6 +6,14 @@
 
     <color name="black_overlay">#66000000</color>
 
+    <!--全局色-->
+    <color name="text_color">#f5f1f9</color>
+    <color name="btn_bg_normal">#113651</color>
+    <color name="btn_bg_pressed">#2e6486</color>
+    <color name="btn_bg_disable">#113651</color>
+    <color name="btn_bg_pressed_stroke">#306588</color>
+    <color name="divider">@color/main_tab_stroke</color>
+
     <!--↓↓↓主界面↓↓↓-->
     <!--背景色-->
     <color name="main_bg_color">#09283d</color>
@@ -19,8 +27,10 @@
     <!--子内容界面背景色-->
     <color name="fragment_bg">#01445e</color>
 
-    <color name="text_color">#a2bed6</color>
-    <color name="number_bg_color">#f00</color>
+    <color name="number_bg_normal">@color/fragment_bg</color>
+    <color name="number_bg_pressed">@color/btn_bg_pressed</color>
+    <color name="number_bg_pressed_stroke">@color/btn_bg_pressed_stroke</color>
+    <color name="number_bg_normal_stroke">#f0f0f0</color>
 
     <color name="fragment_translucent_bg">#88000000</color>
 

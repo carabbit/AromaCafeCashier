@@ -11,8 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="@color/fragment_bg"
-        android:orientation="vertical">
+        android:background="@drawable/dialog_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15px">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,14 +35,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_cash_single"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size_big" />
 
                     <TextView
                         android:id="@+id/total_cash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:minWidth="200px"
                         android:text="0"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size_big" />
 
                 </LinearLayout>
 
@@ -53,20 +57,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/charge"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size_big" />
 
                     <TextView
                         android:id="@+id/charge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:minWidth="200px"
                         android:text="0"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size_big" />
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/divider_size"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="15px"
+                android:layout_marginStart="15px"
+                android:background="@color/divider" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -77,14 +91,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pay_in"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size_big" />
 
                     <bunny.project.aromacafecashier.view.NumberEditText
                         android:id="@+id/pay_in"
-                        android:layout_width="100dp"
+                        android:layout_width="280px"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:maxLength="4"
                         android:maxLines="1"
-                        android:textSize="@dimen/text_size" />
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_big" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -179,12 +196,52 @@
 
             </LinearLayout>
 
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
+                <RadioButton
+                    android:id="@+id/cost_off_nine"
+                    style="@style/MyRatioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cost_off_nine" />
+
+                <RadioButton
+                    android:id="@+id/cost_off_eight"
+                    style="@style/MyRatioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cost_off_eight" />
+
+                <RadioButton
+                    android:id="@+id/cost_off_seven"
+                    style="@style/MyRatioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cost_off_seven" />
+
+                <RadioButton
+                    android:id="@+id/cost_off_six"
+                    style="@style/MyRatioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cost_off_six" />
+
+                <RadioButton
+                    android:id="@+id/cost_off_five"
+                    style="@style/MyRatioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cost_off_five" />
+            </RadioGroup>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15px">
 
             <Button
                 android:id="@+id/btn_cancel"
@@ -198,6 +255,8 @@
                 android:id="@+id/btn_temp_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="15px"
+                android:layout_marginStart="15px"
                 android:text="@string/temp_order" />
 
             <Button
