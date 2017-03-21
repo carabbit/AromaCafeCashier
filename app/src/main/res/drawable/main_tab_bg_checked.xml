@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!--android:shape="oval"-->
-    <solid android:color="@color/main_tab_bg" />
+    <solid android:color="@color/main_tab_bg_checked" />
 
     <corners
-        android:bottomRightRadius="10dp"
-        android:topRightRadius="10dp" />
+        android:bottomRightRadius="@dimen/main_tab_corner"
+        android:topRightRadius="@dimen/main_tab_corner" />
 </shape>

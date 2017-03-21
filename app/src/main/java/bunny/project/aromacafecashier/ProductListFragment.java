@@ -256,11 +256,6 @@ public class ProductListFragment extends Fragment {
             mGridView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.GONE);
             while (cursor.moveToNext()) {
-//                Button btn = new Button(getActivity());
-//                btn.setTag(new Integer(cursor.getInt(QueryManager.INDEX_TYPE_ID)));
-//                btn.setText(cursor.getString(QueryManager.INDEX_TYPE_NAME));
-//                btn.setOnClickListener(mTypeOnClickListener);
-//                mTabContainer.addView(btn);
                 mTabContainer.addTab(cursor.getInt(QueryManager.INDEX_TYPE_ID), cursor.getString(QueryManager.INDEX_TYPE_NAME));
             }
             mTabContainer.setOnCheckedChangeListener(mOnCheckedChangeListener);
@@ -273,7 +268,7 @@ public class ProductListFragment extends Fragment {
         }
 
         if (mTabContainer.getChildCount() > 0) {
-            ((RadioButton) mTabContainer.getChildAt(0)).setChecked(true);
+//            ((RadioButton) mTabContainer.getTabViewAt(0)).setChecked(true);
         }
 
         queryProductWithNoType();

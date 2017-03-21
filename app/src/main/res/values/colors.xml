@@ -5,10 +5,26 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
-    <color name="text_color">#000</color>
+
+    <!--↓↓↓主界面↓↓↓-->
+    <!--背景色-->
+    <color name="main_bg_color">#09283d</color>
+    <!--侧边tab背景色-->
+    <color name="main_tab_bg_checked">@color/fragment_bg</color>
+    <color name="main_tab_bg">#8801445e</color>
+    <!--侧边tab边线色-->
+    <color name="main_tab_stroke">#077286</color>
+    <!--↑↑↑主界面↑↑↑-->
+
+    <!--子内容界面背景色-->
+    <color name="fragment_bg">#01445e</color>
+
+    <color name="text_color">#a2bed6</color>
     <color name="number_bg_color">#f00</color>
-    <color name="fragment_bg">#0099cc</color>
+
     <color name="fragment_translucent_bg">#88000000</color>
 
-    <color name="main_tab_bg">#0099cc</color>
+
+    <!--订单列表高亮-->
+    <color name="list_item_highlight">#ffffff00</color>
 </resources>

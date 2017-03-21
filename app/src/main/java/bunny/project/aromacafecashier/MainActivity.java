@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
-
+// TODO 数据上传云服务器功能（待做）
 public class MainActivity extends FullScreenActivity implements RadioGroup.OnCheckedChangeListener {
     public static final String FRAGMENT_ORDER = "FRAGMENT_ORDER";
     public static final String FRAGMENT_ORDER_HISTORY = "FRAGMENT_ORDER_HISTORY";

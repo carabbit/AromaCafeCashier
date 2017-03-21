@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,9 +33,10 @@ import bunny.project.aromacafecashier.view.HistoryOrderItemView;
  */
 
 public class OrderListFragment extends Fragment {
-
+    //TODO 订单废弃功能（待做）
     private static final int TOKEN_QUEREY_TEMP_ORDER = 1;
-    private static final int TOKEN_QUEREY_HISTORY_ORDER = 2;
+    private static final int TOKEN_QUEREY_ALL_ORDER = 2;
+    private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
 
     //    private ListView mListTempOrder;
     private ListView mListHistoryOrder;
@@ -50,6 +52,7 @@ public class OrderListFragment extends Fragment {
     private Button mBtnTodayOrder;
     private Button mBtnAllTempOrder;
     private Button mBtnAllOrder;
+    private TextView mTitleView;
 
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
@@ -68,7 +71,21 @@ public class OrderListFragment extends Fragment {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-//            if (token == TOKEN_QUEREY_HISTORY_ORDER) {
+            int resId = 0;
+            switch (token) {
+                case TOKEN_QUEREY_ALL_ORDER:
+                    resId = R.string.all_order;
+                    break;
+                case TOKEN_QUEREY_TEMP_ORDER:
+                    resId = R.string.temp_order;
+                    break;
+                case TOKEN_QUEREY_TODAY_ORDER:
+                    resId = R.string.today_order;
+                    break;
+            }
+
+            mTitleView.setText(resId);
+//            if (token == TOKEN_QUEREY_ALL_ORDER) {
 //                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
             mHistoryOrderAdapter.changeCursor(cursor);
 //            } else if (token == TOKEN_QUEREY_TEMP_ORDER) {
@@ -125,6 +142,8 @@ public class OrderListFragment extends Fragment {
 //        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
         mListHistoryOrder.setOnItemClickListener(mOnItemClickListener);
 
+        mTitleView = (TextView) view.findViewById(R.id.title);
+
         mBtnAllOrder = (Button) view.findViewById(R.id.btn_all_order);
         mBtnAllTempOrder = (Button) view.findViewById(R.id.btn_all_temp_order);
         mBtnTodayOrder = (Button) view.findViewById(R.id.btn_today_order);
@@ -164,12 +183,12 @@ public class OrderListFragment extends Fragment {
         String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
         String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
-        mQueryHandler.startQuery(TOKEN_QUEREY_HISTORY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
     private void queryAllOrders() {
         String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
-        mQueryHandler.startQuery(TOKEN_QUEREY_HISTORY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
     }
 
     private class OrderListAdapter extends CursorAdapter {
@@ -207,6 +226,13 @@ public class OrderListFragment extends Fragment {
             itemView.getViewOrderTime().setText(mDateFormat.format(new Date(order.getDate())));
 
             itemView.setTag(order);
+
+            if (order.getPayed() < 1) {
+                itemView.setBackgroundColor(getResources().getColor(R.color.list_item_highlight));
+            } else {
+                itemView.setBackgroundResource(0);
+            }
+
         }
     }
 }
