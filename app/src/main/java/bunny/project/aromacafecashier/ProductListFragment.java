@@ -94,7 +94,7 @@ public class ProductListFragment extends Fragment {
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            View view = LayoutInflater.from(context).inflate(R.layout.product_item, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.product_item_view, null);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return view;
         }
@@ -316,7 +316,7 @@ public class ProductListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_list, null);
+        return inflater.inflate(R.layout.product_list_fragment, null);
     }
 
     @Override

@@ -5,10 +5,15 @@
     <string name="tab_product_manager">商品\n管理</string>
     <string name="order">订单</string>
     <string name="order_detail">订单详情</string>
+    <string name="order_id">订单编号</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
+    <string name="confirm_order_time">下单时间</string>
+
     <string name="finish_order">结单</string>
     <string name="pay_finish">完成付款</string>
+    <string name="pay_status">支付状态</string>
+    <string name="pay_time">付款时间</string>
     <string name="item_count">x %1$d</string>
     <string name="item_title_name">名称</string>
     <string name="item_title_price">单价</string>

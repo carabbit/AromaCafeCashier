@@ -84,7 +84,7 @@ public class OrderDetailFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item_view, null);
             }
 
             if (!(convertView instanceof OrderItemView)) {
@@ -108,7 +108,7 @@ public class OrderDetailFragment extends Fragment {
             orderItemView.getSumPriceView().setText(sumPriceStr);
 
             if (mIsHistoryMode) {
-                orderItemView.getDeleteBtn().setVisibility(View.GONE);
+                ((View) orderItemView.getDeleteBtn().getParent()).setVisibility(View.GONE);
             } else {
                 orderItemView.getDeleteBtn().setVisibility(View.VISIBLE);
                 orderItemView.getDeleteBtn().setTag(orderItem.getProductId());
@@ -155,6 +155,19 @@ public class OrderDetailFragment extends Fragment {
         mTotalCashView.setText(totalCashStr);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mIsHistoryMode = bundle.getBoolean(IntentKeys.HISTORY_MODE, false);
+            ArrayList<OrderItemInfo> parcelableArrayList = bundle.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
+            if (parcelableArrayList != null) {
+                mOrderItems = parcelableArrayList;
+            }
+            mOrderId = bundle.getInt(IntentKeys.ORDER_ID);
+        }
+    }
 
     @Nullable
     @Override
@@ -168,31 +181,15 @@ public class OrderDetailFragment extends Fragment {
         mOrderListView = (ListView) view.findViewById(R.id.list);
         mOrderAdpter = new OrderListAdapter();
         mOrderListView.setAdapter(mOrderAdpter);
-
+        if (mIsHistoryMode) {
+            view.findViewById(R.id.btn_delete_container).setVisibility(View.GONE);
+        }
         countTotalCash();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mIsHistoryMode = bundle.getBoolean(IntentKeys.HISTORY_MODE, false);
-            ArrayList<OrderItemInfo> parcelableArrayList = bundle.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
-            if (parcelableArrayList != null) {
-                mOrderItems = parcelableArrayList;
-            }
-            mOrderId = bundle.getInt(IntentKeys.ORDER_ID);
-        }
-
-        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_item, null);
-        View deleteBtn = headerView.findViewById(R.id.btn_delete);
-        if (mIsHistoryMode) {
-        } else {
-            deleteBtn.setVisibility(View.INVISIBLE);
-        }
-        mOrderListView.addHeaderView(headerView);
-
         if (mIsHistoryMode) {
             mQueryOrderHandler = new QueryOrderHandler(getActivity().getContentResolver());
         }

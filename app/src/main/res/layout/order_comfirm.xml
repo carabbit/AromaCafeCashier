@@ -184,11 +184,16 @@
                                 style="@style/NumberStyle"
                                 android:text="0" />
 
-                            <ImageView
+                            <TextView
+                                android:id="@+id/del"
+                                style="@style/NumberStyle"
+                                android:background="@drawable/number_delete_bg"
+                                android:text="&lt;-" />
+                            <!--<ImageView
                                 android:id="@+id/del"
                                 android:layout_width="@dimen/number_width"
                                 android:layout_height="@dimen/number_height"
-                                android:src="@drawable/delete" />
+                                android:src="@drawable/delete" />-->
 
                         </TableRow>
                     </TableLayout>

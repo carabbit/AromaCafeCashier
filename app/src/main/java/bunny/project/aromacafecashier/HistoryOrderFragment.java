@@ -18,7 +18,7 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
  * 显示订单详情和订单列表
  * Created by bunny on 17-3-16.
  */
-public class OrderHistoryFragment extends Fragment implements OrderListFragment.OrderItemClickListener {
+public class HistoryOrderFragment extends Fragment implements OrderListFragment.OrderItemClickListener {
 
     private static final int TAG_ORDER_ID = 1;
     private Button mBtnFinishOrder;
@@ -27,7 +27,7 @@ public class OrderHistoryFragment extends Fragment implements OrderListFragment.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.order_history, null);
+        View view = inflater.inflate(R.layout.history_order_fragment, null);
 
         mOrderDetailFragment = new OrderDetailFragment();
         Bundle bundle = new Bundle();
@@ -60,7 +60,7 @@ public class OrderHistoryFragment extends Fragment implements OrderListFragment.
                 if (orderItems == null || orderId <= 0) {
                     return;
                 } else {
-                    MyLog.i("onViewCreated", "order:" + orderId);
+                    MyLog.i("onViewCreated", "order_fragment:" + orderId);
                     ((MainActivity) getActivity()).finishOrder(orderId, orderItems);
                 }
             }

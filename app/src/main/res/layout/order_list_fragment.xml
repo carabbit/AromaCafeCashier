@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/today_order" />
+        android:text="@string/today_order"
+        android:textSize="@dimen/text_size_middle" />
     <!--    <ListView
             android:id="@+id/listTempOrder"
             android:layout_width="match_parent"
@@ -25,7 +26,9 @@
         android:id="@+id/listHistoryOrder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:divider="@color/light_white"
+        android:dividerHeight="2px" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,19 +7,30 @@
     <color name="black_overlay">#66000000</color>
 
     <!--全局色-->
-    <color name="text_color">#f5f1f9</color>
+    <color name="red">#ff505d</color>
+    <color name="light_red">#99ff505d</color>
+    <color name="white">#f5f1f9</color>
+    <color name="light_white">#55f5f1f9</color>
+    <color name="yellow">#ff8b14</color>
+
+
+    <color name="text_color">@color/white</color>
+    <color name="text_color_disable">@color/light_white</color>
     <color name="btn_bg_normal">#113651</color>
     <color name="btn_bg_pressed">#2e6486</color>
     <color name="btn_bg_disable">#113651</color>
+    <color name="btn_bg_disable_stroke">#01445e</color>
     <color name="btn_bg_pressed_stroke">#306588</color>
     <color name="divider">@color/main_tab_stroke</color>
 
     <!--↓↓↓主界面↓↓↓-->
     <!--背景色-->
     <color name="main_bg_color">#09283d</color>
+
     <!--侧边tab背景色-->
     <color name="main_tab_bg_checked">@color/fragment_bg</color>
     <color name="main_tab_bg">#8801445e</color>
+
     <!--侧边tab边线色-->
     <color name="main_tab_stroke">#077286</color>
     <!--↑↑↑主界面↑↑↑-->
@@ -36,5 +47,5 @@
 
 
     <!--订单列表高亮-->
-    <color name="list_item_highlight">#ffffff00</color>
+    <color name="list_item_highlight">@color/yellow</color>
 </resources>

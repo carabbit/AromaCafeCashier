@@ -39,7 +39,7 @@ public class OrderListFragment extends Fragment {
     private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
 
     //    private ListView mListTempOrder;
-    private ListView mListHistoryOrder;
+    private ListView mOrderListView;
     //    private List<OrderInfo> mTempOrders = new ArrayList<OrderInfo>();
     private List<OrderInfo> mHistoryOrders = new ArrayList<OrderInfo>();
 
@@ -124,23 +124,26 @@ public class OrderListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.order_list, null);
+        return inflater.inflate(R.layout.order_list_fragment, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        mListTempOrder = (ListView) view.findViewById(R.id.listTempOrder);
-        mListHistoryOrder = (ListView) view.findViewById(R.id.listHistoryOrder);
+        mOrderListView = (ListView) view.findViewById(R.id.listHistoryOrder);
 
 //        mTempOrderAdapter = new OrderListAdapter(getActivity());
         mHistoryOrderAdapter = new OrderListAdapter(getActivity());
 
 //        mListTempOrder.setAdapter(mTempOrderAdapter);
-        mListHistoryOrder.setAdapter(mHistoryOrderAdapter);
+        mOrderListView.setAdapter(mHistoryOrderAdapter);
 
 //        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
-        mListHistoryOrder.setOnItemClickListener(mOnItemClickListener);
+        mOrderListView.setOnItemClickListener(mOnItemClickListener);
+
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.histrory_order_item, null);
+        mOrderListView.addHeaderView(headerView, null, false);
 
         mTitleView = (TextView) view.findViewById(R.id.title);
 

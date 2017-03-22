@@ -58,7 +58,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.product_manager, null);
+        View view = inflater.inflate(R.layout.product_manager_fragment, null);
         mProductListFragment = new ProductListFragment();
         mProductListFragment.setProductItemClickListener(this);
         getFragmentManager()

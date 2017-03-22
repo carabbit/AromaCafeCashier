@@ -75,7 +75,7 @@ public class OrderActivity extends FullScreenActivity implements OrderConfirmDia
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.order);
+//        setContentView(R.layout.order_fragment);
 //
 //
 //        mBtnOrder = (Button) findViewById(R.id.btn_comfirm_order);

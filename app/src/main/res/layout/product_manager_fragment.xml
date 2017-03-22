@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/product_info" />
+            android:text="@string/product_info"
+            android:textSize="@dimen/text_size_middle" />
 
 
         <LinearLayout
@@ -124,7 +125,7 @@
               android:layout_width="match_parent"
               android:layout_height="0dp"
               android:layout_weight="1"
-              tools:layout="@layout/product_list" />-->
+              tools:layout="@layout/product_list_fragment" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

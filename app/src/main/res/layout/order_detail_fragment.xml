@@ -2,26 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/section_bg"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/section_bg"
+        android:gravity="center"
         android:text="@string/order_detail"
-        android:textSize="@dimen/text_size" />
+        android:textSize="@dimen/text_size_middle" />
+
+    <include layout="@layout/order_item_view" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"></ListView>
+        android:layout_weight="1"
+        android:divider="@color/light_white"
+        android:dividerHeight="2px"></ListView>
 
     <TextView
         android:id="@+id/total_cash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/section_bg"
         android:text="@string/total_cash" />
 
 

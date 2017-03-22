@@ -60,9 +60,10 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
         int groupWidth = getWidth();
         RadioButton rbtn = new RadioButton(mContext);
         int width = (int) getResources().getDimension(R.dimen.product_tab_width);
+        int height = (int) getResources().getDimension(R.dimen.product_tab_height);
 
         MyLog.i("", "gwidth:" + groupWidth + " width:" + width);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
 //        layoutParams.setMargins(10, 10, 50, 0);
 //        layoutParams.rightMargin = 10;
 

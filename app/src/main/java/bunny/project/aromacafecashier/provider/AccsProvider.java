@@ -33,7 +33,7 @@ public class AccsProvider extends ContentProvider {
 
     static {
         sURIMatcher.addURI(AUTHORITY, "product", PRODUCT);
-        sURIMatcher.addURI(AUTHORITY, "order", ORDER);
+        sURIMatcher.addURI(AUTHORITY, "order_fragment", ORDER);
         sURIMatcher.addURI(AUTHORITY, "order_detail", ORDER_DETAIL);
         sURIMatcher.addURI(AUTHORITY, "type", TYPE);
     }

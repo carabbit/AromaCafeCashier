@@ -75,7 +75,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         if (FRAGMENT_ORDER.equals(fragmentTag)) {
             fragment = new OrderFragment();
         } else if (FRAGMENT_ORDER_HISTORY.equals(fragmentTag)) {
-            fragment = new OrderHistoryFragment();
+            fragment = new HistoryOrderFragment();
         } else if (FRAGMENT_PRODUCT_MANAGER.equals(fragmentTag)) {
             fragment = new ProductManagerFragment();
         }
@@ -146,7 +146,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
 //            return mOrderFragment;
 //        } else if (FRAGMENT_ORDER_HISTORY.equals(fragmentTag)) {
 //            if (mOrderHistoryFragment == null) {
-//                mOrderHistoryFragment = new OrderHistoryFragment();
+//                mOrderHistoryFragment = new HistoryOrderFragment();
 //                getFragmentManager()
 //                        .beginTransaction()
 //                        .add(R.id.fragment_container_order_history, mOrderHistoryFragment, FRAGMENT_ORDER_HISTORY)

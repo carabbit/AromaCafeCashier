@@ -56,7 +56,7 @@ public class AccsTables {
 
 
     public static class Order implements BaseColumns {
-        public static String TABLE_NAME = "[order]";
+        public static String TABLE_NAME = "[order_fragment]";
 
         public static final String COL_DATE = "[date]";
         public static final String COL_PAYED = "payed";

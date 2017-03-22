@@ -11,12 +11,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="start"
         android:paddingEnd="@dimen/order_detail_list_padding"
         android:paddingStart="@dimen/order_detail_list_padding"
         android:text="@string/item_title_name"
         android:textSize="@dimen/text_size" />
 
     <TextView
+
         android:id="@+id/product_price"
         android:layout_width="@dimen/order_detail_item_price_width"
         android:layout_height="wrap_content"
@@ -30,6 +32,7 @@
         android:id="@+id/product_count"
         android:layout_width="@dimen/order_detail_item_count_width"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:paddingEnd="@dimen/order_detail_list_padding"
         android:paddingStart="@dimen/order_detail_list_padding"
         android:text="@string/item_title_count"
@@ -37,6 +40,7 @@
 
 
     <TextView
+
         android:id="@+id/product_sum_price"
         android:layout_width="@dimen/order_detail_item_sum_price_width"
         android:layout_height="wrap_content"
@@ -46,11 +50,17 @@
         android:text="@string/item_title_sum"
         android:textSize="@dimen/text_size" />
 
-
-    <ImageView
-        android:id="@+id/btn_delete"
+    <FrameLayout
+        android:id="@+id/btn_delete_container"
         android:layout_width="@dimen/order_detail_item_delete_size"
-        android:layout_height="@dimen/order_detail_item_delete_size"
-        android:src="@drawable/delete"
-        android:visibility="gone" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="@dimen/order_detail_item_delete_size"
+            android:layout_height="@dimen/order_detail_item_delete_size"
+            android:gravity="center"
+            android:src="@drawable/delete"
+            android:visibility="gone" />
+    </FrameLayout>
 </bunny.project.aromacafecashier.view.OrderItemView>

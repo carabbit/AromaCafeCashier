@@ -72,7 +72,7 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.order, null);
+        View view = inflater.inflate(R.layout.order_fragment, null);
         mOrderListFragment = new OrderDetailFragment();
         mOrderListFragment.setArguments(getArguments());
 
