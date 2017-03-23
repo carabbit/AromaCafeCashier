@@ -37,6 +37,7 @@ public class OrderDetailFragment extends Fragment {
 
     private boolean mIsHistoryMode;
     private TextView mTotalCashView;
+    private TextView mOrderNumber;
     private int mOrderId = -1;
 
     //TODO 考虑使用子类实现历史订单详情的展示
@@ -178,7 +179,9 @@ public class OrderDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTotalCashView = (TextView) view.findViewById(R.id.total_cash);
+        mOrderNumber = (TextView) view.findViewById(R.id.order_number);
         mOrderListView = (ListView) view.findViewById(R.id.list);
+
         mOrderAdpter = new OrderListAdapter();
         mOrderListView.setAdapter(mOrderAdpter);
         if (mIsHistoryMode) {
@@ -199,24 +202,28 @@ public class OrderDetailFragment extends Fragment {
         }
     }
 
-    public OrderListFragment.OrderItemClickListener mOrderItemClickListener = new OrderListFragment.OrderItemClickListener() {
-        @Override
-        public void onOrderItemClick(OrderInfo order) {
-            if (mQueryOrderHandler != null) {
-                mOrderItems.clear();
-                String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
-                String[] args = new String[]{String.valueOf(order.getId())};
-                mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
-            }
-        }
-    };
-
     public void queryOrder(int orderId) {
         mOrderItems.clear();
         String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
         String[] args = new String[]{String.valueOf(orderId)};
         mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+        mOrderNumber.setText(getString(R.string.order_number, orderId));
+        mOrderNumber.setVisibility(View.VISIBLE);
     }
+
+//    public OrderListFragment.OrderItemClickListener mOrderItemClickListener = new OrderListFragment.OrderItemClickListener() {
+//        @Override
+//        public void onOrderItemClick(OrderInfo order) {
+//            MyLog.i("xxx", "OrderItemClickListener id:" + order.getId());
+//            if (mQueryOrderHandler != null) {
+//                mOrderItems.clear();
+//                String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
+//                String[] args = new String[]{String.valueOf(order.getId())};
+//                mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+//            }
+//        }
+//    };
+
 
     public ProductListFragment.ProductItemClickListener mProductItemClickListener = new ProductListFragment.ProductItemClickListener() {
 

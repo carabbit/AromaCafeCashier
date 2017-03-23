@@ -3,8 +3,8 @@
     <!--android:shape="oval"-->
     <!--<solid android:color="@color/red" />-->
     <stroke
-        android:width="@dimen/button_bg_stroke"
+        android:width="@dimen/section_bg_stroke"
         android:color="@color/light_white" />
 
-    <corners android:radius="@dimen/button_bg_radius" />-->
+    <corners android:radius="@dimen/section_radius" />-->
 </shape>

@@ -37,6 +37,7 @@ public class OrderListFragment extends Fragment {
     private static final int TOKEN_QUEREY_ALL_TEMP_ORDER = 1;
     private static final int TOKEN_QUEREY_ALL_ORDER = 2;
     private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
+    private static final int TOKEN_QUEREY_TODAY_PRODUCTS = 4;
 
     //    private ListView mListTempOrder;
     private ListView mOrderListView;
@@ -53,6 +54,7 @@ public class OrderListFragment extends Fragment {
     private Button mBtnAllTempOrder;
     private Button mBtnAllOrder;
     private TextView mTitleView;
+    private TextView mTodayCashView;
 
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
@@ -82,16 +84,29 @@ public class OrderListFragment extends Fragment {
                 case TOKEN_QUEREY_TODAY_ORDER:
                     resId = R.string.today_order;
                     break;
+                case TOKEN_QUEREY_TODAY_PRODUCTS:
+                    float todayCash = countTodayCash(cursor);
+                    mTodayCashView.setText(getString(R.string.today_cash, todayCash));
+                    return;
             }
 
             mTitleView.setText(resId);
-//            if (token == TOKEN_QUEREY_ALL_ORDER) {
-//                MyLog.i("", "history:" + (cursor == null ? "null" : cursor.getCount()));
             mHistoryOrderAdapter.changeCursor(cursor);
-//            } else if (token == TOKEN_QUEREY_ALL_TEMP_ORDER) {
-//                MyLog.i("", "temp:" + (cursor == null ? "null" : cursor.getCount()));
-//                mTempOrderAdapter.changeCursor(cursor);
-//            }
+        }
+
+        private float countTodayCash(Cursor cursor) {
+            if (cursor == null) {
+                return 0f;
+            }
+
+            float cash = 0f;
+            while (cursor.moveToNext()) {
+                int count = cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT);
+                float price = cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_PRICE);
+                cash += count * price;
+            }
+
+            return cash;
         }
     }
 
@@ -101,6 +116,8 @@ public class OrderListFragment extends Fragment {
             if (mOrderItemClickListener != null) {
                 mOrderItemClickListener.onOrderItemClick((OrderInfo) view.getTag());
             }
+
+            // TODO 点击后，该行显示选中标记。（待做）
         }
     };
 
@@ -109,13 +126,16 @@ public class OrderListFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_all_order:
+                    mTodayCashView.setVisibility(View.GONE);
                     queryAllOrders();
                     break;
                 case R.id.btn_all_temp_order:
+                    mTodayCashView.setVisibility(View.GONE);
                     queryTempOrders();
                     break;
                 case R.id.btn_today_order:
-                    queryTodayOrders();
+                    mTodayCashView.setVisibility(View.VISIBLE);
+                    queryTodayData();
                     break;
             }
         }
@@ -142,10 +162,10 @@ public class OrderListFragment extends Fragment {
 //        mListTempOrder.setOnItemClickListener(mOnItemClickListener);
         mOrderListView.setOnItemClickListener(mOnItemClickListener);
 
-        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.histrory_order_item, null);
-        mOrderListView.addHeaderView(headerView, null, false);
-
         mTitleView = (TextView) view.findViewById(R.id.title);
+
+        mTodayCashView = (TextView) view.findViewById(R.id.today_cash);
+        mTodayCashView.setText(getResources().getString(R.string.total_cash, 0f));
 
         mBtnAllOrder = (Button) view.findViewById(R.id.btn_all_order);
         mBtnAllTempOrder = (Button) view.findViewById(R.id.btn_all_temp_order);
@@ -159,10 +179,10 @@ public class OrderListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mQueryHandler = new OrderQueryHandler(getActivity().getContentResolver());
 
-//        queryTempOrders();
-        queryTodayOrders();
+        queryTodayData();
     }
 
     private void queryTempOrders() {
@@ -172,7 +192,8 @@ public class OrderListFragment extends Fragment {
         mQueryHandler.startQuery(TOKEN_QUEREY_ALL_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
-    private void queryTodayOrders() {
+
+    private void queryTodayData() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);
@@ -183,10 +204,24 @@ public class OrderListFragment extends Fragment {
         cal.add(Calendar.DATE, 1);
         long nextDayZeroTime = cal.getTimeInMillis();
 
+        queryTodayOrders(todayZeroTime, nextDayZeroTime);
+        queryTodayProducts(todayZeroTime, nextDayZeroTime);
+    }
+
+    private void queryTodayOrders(long todayZeroTime, long nextDayZeroTime) {
         String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
         String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+    }
+
+    private void queryTodayProducts(long todayZeroTime, long nextDayZeroTime) {
+        String selection = AccsTables.OrderDetail.COL_ORDER_ID + " IN ("
+                + " SELECT " + AccsTables.Order._ID + " FROM " + AccsTables.Order.TABLE_NAME + " WHERE " + AccsTables.Order.COL_DATE + " BETWEEN ? AND ? "
+                + " AND " + AccsTables.Order.COL_PAYED + " = 1"
+                + ")";
+        String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
+        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_PRODUCTS, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
     }
 
     private void queryAllOrders() {

@@ -254,7 +254,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
         private void buildUpdateOrder(ArrayList<ContentProviderOperation> operations, int orderId, boolean isPayed) {
             ContentProviderOperation updatePeration = ContentProviderOperation.newUpdate(QueryManager.URI_ORDER)
-                    .withValue(AccsTables.Order.COL_PAY_TIME, System.currentTimeMillis())
+                    .withValue(AccsTables.Order.COL_PAY_TIME, isPayed ? System.currentTimeMillis() : -1)
                     .withValue(AccsTables.Order.COL_PAYED, isPayed ? 1 : 0)
                     .withSelection(AccsTables.Order._ID + "=?", new String[]{String.valueOf(orderId)})
                     .build();

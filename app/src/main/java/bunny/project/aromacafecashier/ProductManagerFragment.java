@@ -38,7 +38,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_detele_type:
-                    // TODO 使用弹窗提示：如果当前分类下有产品列表，则提示该分类下产品将归类于“未分类”
+                    // TODO 使用弹窗提示：如果当前分类下有产品列表，则提示该分类下产品将归类于“未分类”（待做）
                     deleteType();
                     break;
                 case R.id.btn_delete:

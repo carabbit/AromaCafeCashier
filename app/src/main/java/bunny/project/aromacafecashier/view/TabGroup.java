@@ -65,7 +65,7 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
         MyLog.i("", "gwidth:" + groupWidth + " width:" + width);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
 //        layoutParams.setMargins(10, 10, 50, 0);
-//        layoutParams.rightMargin = 10;
+        layoutParams.rightMargin = 2;
 
         rbtn.setLayoutParams(layoutParams);
         rbtn.setId(View.NO_ID);

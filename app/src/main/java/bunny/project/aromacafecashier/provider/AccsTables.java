@@ -56,7 +56,7 @@ public class AccsTables {
 
 
     public static class Order implements BaseColumns {
-        public static String TABLE_NAME = "[order_fragment]";
+        public static String TABLE_NAME = "[order]";
 
         public static final String COL_DATE = "[date]";
         public static final String COL_PAYED = "payed";
@@ -98,9 +98,9 @@ public class AccsTables {
     }
 
     public static class Views {
-        public static final String COL_VIEW_TYPE = "type";
-
         public static final String VIEW_PRODUCT = "view_product";
+
+        public static final String COL_VIEW_TYPE = "type";
 
         public static final String CREATE_PRODUCT_VIEW = "CREATE VIEW " + VIEW_PRODUCT + " AS "
                 + "SELECT "

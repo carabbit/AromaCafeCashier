@@ -3,18 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/section_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/section_padding">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/section_bg"
-        android:gravity="center"
-        android:text="@string/order_detail"
-        android:textSize="@dimen/text_size_middle" />
+        android:background="@drawable/section_bg_top">
 
-    <include layout="@layout/order_item_view" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:padding="30px"
+
+            android:text="@string/order_detail"
+            android:textSize="@dimen/text_size_middle" />
+
+        <TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/title"
+            android:textSize="@dimen/text_size" />
+    </RelativeLayout>
+
+    <include layout="@layout/order_item_header_view" />
 
     <ListView
         android:id="@+id/list"
@@ -26,10 +43,12 @@
 
     <TextView
         android:id="@+id/total_cash"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/section_bg"
+        android:background="@drawable/section_bg_bottom"
+        android:gravity="center"
+        android:padding="30px"
         android:text="@string/total_cash" />
 
 

@@ -4,31 +4,92 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/today_order"
-        android:textSize="@dimen/text_size_middle" />
-    <!--    <ListView
-            android:id="@+id/listTempOrder"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />-->
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="5px"
-        android:background="#f00" />-->
-
-    <ListView
-        android:id="@+id/listHistoryOrder"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="@color/light_white"
-        android:dividerHeight="2px" />
+        android:background="@drawable/section_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/section_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_bg_top">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:padding="30px"
+                android:text="@string/today_order"
+                android:textSize="@dimen/text_size_middle" />
+
+            <TextView
+                android:id="@+id/today_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/today_cash"
+                android:textSize="@dimen/text_size_middle"
+                android:visibility="visible" />
+        </RelativeLayout>
+        <!--    <ListView
+                android:id="@+id/listTempOrder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />-->
+
+        <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="5px"
+            android:background="#f00" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_bg_middle"
+            android:padding="@dimen/order_detail_list_padding">
+
+            <TextView
+                android:layout_width="150px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/order_history_item_space"
+                android:gravity="center"
+                android:text="@string/order_id" />
+
+            <TextView
+                android:layout_width="250px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/order_history_item_space"
+                android:gravity="center"
+                android:text="@string/confirm_order_time" />
+
+            <TextView
+                android:layout_width="150px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/order_history_item_space"
+                android:gravity="center"
+                android:text="@string/pay_status" />
+
+            <TextView
+                android:layout_width="250px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pay_time" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listHistoryOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@color/light_white"
+            android:dividerHeight="2px" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

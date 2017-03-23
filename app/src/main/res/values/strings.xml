@@ -14,7 +14,9 @@
     <string name="pay_finish">完成付款</string>
     <string name="pay_status">支付状态</string>
     <string name="pay_time">付款时间</string>
+    <string name="today_cash">今日营业额：%1$.1f</string>
     <string name="item_count">x %1$d</string>
+    <string name="order_number">编号(%1$d)</string>
     <string name="item_title_name">名称</string>
     <string name="item_title_price">单价</string>
     <string name="item_title_count">数量</string>
