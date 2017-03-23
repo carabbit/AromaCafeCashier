@@ -25,7 +25,7 @@ import bunny.project.aromacafecashier.view.OrderItemView;
 /**
  * Created by bunny on 17-3-15.
  */
-
+// TODO 详情底部显示——下单时间，付款时间，支付状态（待做）
 public class OrderDetailFragment extends Fragment {
 
     private ListView mOrderListView;
