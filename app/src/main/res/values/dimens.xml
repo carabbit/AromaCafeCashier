@@ -13,10 +13,12 @@
     <dimen name="button_padding">20px</dimen>
 
     <dimen name="product_img_size">200px</dimen>
-    <dimen name="product_list_img_size">150px</dimen>
 
-    <dimen name="product_list_item_width">200px</dimen>
-    <dimen name="product_list_item_space">50px</dimen>
+    <!--商品列表GridView-->
+    <dimen name="product_list_img_size">150px</dimen>
+    <dimen name="product_list_item_width">195px</dimen>
+    <dimen name="product_list_item_horizontalSpacing">0px</dimen>
+    <dimen name="product_list_item_verticalSpacing">50px</dimen>
 
     <dimen name="divider_size">2px</dimen>
 
@@ -32,8 +34,8 @@
 
     <!--主界面tab-->
     <dimen name="main_tab_width">90px</dimen>
-    <dimen name="main_tab_height">150px</dimen>
-    <dimen name="main_tab_corner">10px</dimen>
+    <dimen name="main_tab_height">200px</dimen>
+    <dimen name="main_tab_corner">45px</dimen>
     <dimen name="main_tab_stroke_width">3px</dimen>
 
     <!--订单确认弹窗-->

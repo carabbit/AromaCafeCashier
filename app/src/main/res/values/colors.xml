@@ -20,6 +20,7 @@
     <color name="btn_bg_normal">#113651</color>
     <color name="btn_bg_pressed">#2e6486</color>
     <color name="btn_bg_disable">#113651</color>
+    <color name="btn_bg_normal_stroke">#077286</color>
     <color name="btn_bg_disable_stroke">#01445e</color>
     <color name="btn_bg_pressed_stroke">#306588</color>
     <color name="divider">@color/main_tab_stroke</color>
@@ -29,11 +30,11 @@
     <color name="main_bg_color">#09283d</color>
 
     <!--侧边tab背景色-->
-    <color name="main_tab_bg_checked">@color/fragment_bg</color>
-    <color name="main_tab_bg">#8801445e</color>
+    <color name="main_tab_bg_checked">#bb5c3c</color>
+    <color name="main_tab_bg">#33bb5c3c</color>
 
     <!--侧边tab边线色-->
-    <color name="main_tab_stroke">#077286</color>
+    <color name="main_tab_stroke">#bb5c3c</color>
     <!--↑↑↑主界面↑↑↑-->
 
     <!--子内容界面背景色-->

@@ -4,7 +4,7 @@
     <solid android:color="@color/main_tab_bg" />
     <stroke
         android:width="@dimen/main_tab_stroke_width"
-        android:color="@color/main_tab_stroke" />
+        android:color="@color/btn_bg_normal_stroke" />
 
     <corners android:radius="@dimen/button_bg_radius" />
 </shape>

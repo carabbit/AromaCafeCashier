@@ -12,32 +12,18 @@
         android:orientation="vertical"
         android:padding="@dimen/section_padding">
 
-        <RelativeLayout
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_bg_top">
+            android:layout_centerInParent="true"
+            android:background="@drawable/section_bg_top"
+            android:gravity="center"
+            android:padding="30px"
+            android:text="@string/today_order"
+            android:textSize="@dimen/text_size_middle" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:padding="30px"
-                android:text="@string/today_order"
-                android:textSize="@dimen/text_size_middle" />
-
-            <TextView
-                android:id="@+id/today_cash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="@string/today_cash"
-                android:textSize="@dimen/text_size_middle"
-                android:visibility="visible" />
-        </RelativeLayout>
         <!--    <ListView
                 android:id="@+id/listTempOrder"
                 android:layout_width="match_parent"
@@ -52,7 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/section_bg_middle"
-            android:padding="@dimen/order_detail_list_padding">
+            android:paddingBottom="@dimen/order_detail_list_padding"
+            android:paddingTop="@dimen/order_detail_list_padding">
 
             <TextView
                 android:layout_width="150px"
@@ -89,6 +76,16 @@
             android:layout_weight="1"
             android:divider="@color/light_white"
             android:dividerHeight="2px" />
+
+        <TextView
+            android:id="@+id/today_cash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_bg_bottom"
+            android:gravity="center"
+            android:padding="30px"
+            android:text="@string/today_cash"
+            android:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout

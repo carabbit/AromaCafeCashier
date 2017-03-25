@@ -32,12 +32,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="35px"
         android:columnWidth="@dimen/product_list_item_width"
+        android:horizontalSpacing="@dimen/product_list_item_horizontalSpacing"
         android:numColumns="auto_fit"
-
+        android:padding="20px"
         android:stretchMode="none"
-        android:verticalSpacing="@dimen/product_list_item_space"
+        android:verticalSpacing="@dimen/product_list_item_verticalSpacing"
         android:visibility="gone" />
 
     <TextView

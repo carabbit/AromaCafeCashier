@@ -3,7 +3,5 @@
     <!--android:shape="oval"-->
     <solid android:color="@color/main_tab_bg_checked" />
 
-    <corners
-        android:bottomRightRadius="@dimen/main_tab_corner"
-        android:topRightRadius="@dimen/main_tab_corner" />
+    <corners android:radius="@dimen/main_tab_corner" />
 </shape>

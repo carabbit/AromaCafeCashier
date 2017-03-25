@@ -6,5 +6,5 @@
         android:width="@dimen/button_bg_stroke"
         android:color="@color/main_tab_stroke" />
 
-    <corners android:radius="@dimen/main_tab_corner" />
+    <corners android:radius="@dimen/section_radius" />
 </shape>

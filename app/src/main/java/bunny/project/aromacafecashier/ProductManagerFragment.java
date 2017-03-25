@@ -137,13 +137,11 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             mBtnDeleteProduct.setTag(null);
 //            mBtnEdit.setTag(null);
         } else {
-            mProductImgView.setImageDrawable(BitmapTool.bytes2RoundDrawable(getResources(), product.getImage()));
+            mProductImgView.setImageBitmap(BitmapTool.bytes2Bimap(product.getImage()));
             mProductNameView.setText(product.getName());
             mProudctPriceView.setText(String.valueOf(product.getPrice()));
             mProductTypeView.setText(product.getType());
-
             mBtnDeleteProduct.setTag(Integer.valueOf(product.getId()));
-//            mBtnEdit.setTag(Integer.valueOf(product.getId()));
         }
     }
 
