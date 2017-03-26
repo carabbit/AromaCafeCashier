@@ -9,29 +9,19 @@
     <!--android:layout_width="0dp"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_weight="1">-->
-
     <FrameLayout
-        android:id="@+id/fragment_container_order"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"></FrameLayout>
+        android:layout_weight="1">
 
-    <!-- <FrameLayout
-         android:id="@+id/fragment_container_order_history"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"></FrameLayout>
+        <FrameLayout
+            android:id="@+id/fragment_container_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
 
-     <FrameLayout
-         android:id="@+id/fragment_container_product_manager"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"></FrameLayout>-->
 
-    <!--</FrameLayout>-->
+    </FrameLayout>
 
-    <!--<bunny.project.aromacafecashier.view.MyButton-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="@string/add" />-->
     <RadioGroup
         android:id="@+id/tabGroup"
         android:layout_width="wrap_content"

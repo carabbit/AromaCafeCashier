@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
+
 // TODO 数据上传云服务器功能（待做）
+// TODO 数据备份导入导出功能（待做）
 public class MainActivity extends FullScreenActivity implements RadioGroup.OnCheckedChangeListener {
     public static final String FRAGMENT_ORDER = "FRAGMENT_ORDER";
     public static final String FRAGMENT_ORDER_HISTORY = "FRAGMENT_ORDER_HISTORY";
@@ -24,6 +27,8 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
     private Fragment mProductManagerFragment;
 
     private RadioButton mRbtnOrder;
+
+//    private FrameLayout mDialogContainer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         mTabGroup.setOnCheckedChangeListener(this);
 
         mRbtnOrder = (RadioButton) findViewById(R.id.tab_order);
+
+//        mDialogContainer = (FrameLayout) findViewById(R.id.fragment_dialog_container);
     }
 
     @Override

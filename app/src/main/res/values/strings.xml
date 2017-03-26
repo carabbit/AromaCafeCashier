@@ -63,4 +63,5 @@
     <string name="cost_off_seven">7折</string>
     <string name="cost_off_six">6折</string>
     <string name="cost_off_five">5折</string>
+    <string name="password_wrong">密码错误</string>
 </resources>

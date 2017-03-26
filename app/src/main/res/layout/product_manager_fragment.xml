@@ -1,172 +1,181 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fragment_bg"
-    android:baselineAligned="false"
-    tools:context="bunny.project.aromacafecashier.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="@dimen/order_detail_width"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/section_space"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:background="@color/fragment_bg"
+        android:baselineAligned="false"
+        tools:context="bunny.project.aromacafecashier.MainActivity">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/order_detail_width"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/section_space"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/section_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/button_bg_stroke">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/section_bg_top"
+                    android:gravity="center"
+                    android:padding="30px"
+                    android:text="@string/product_info"
+                    android:textSize="@dimen/text_size_middle" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="30px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_img" />
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/product_img"
+                            android:layout_width="@dimen/product_img_size"
+                            android:layout_height="@dimen/product_img_size"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@mipmap/ic_launcher_round" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="30px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_name" />
+
+                    <TextView
+                        android:id="@+id/product_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="30px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_type" />
+
+                    <TextView
+                        android:id="@+id/product_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="30px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_price" />
+
+                    <TextView
+                        android:id="@+id/product_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/section_space"
             android:layout_weight="1"
-            android:background="@drawable/section_bg"
-            android:orientation="vertical"
-            android:padding="@dimen/button_bg_stroke">
+            android:orientation="vertical">
 
-            <TextView
+            <FrameLayout
+                android:id="@+id/product_list_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"></FrameLayout>
+
+            <!--  <fragment
+                  android:id="@+id/product_list_fragment"
+                  android:name="bunny.project.aromacafecashier.ProductListFragment"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  tools:layout="@layout/product_list_fragment" />-->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/section_bg_top"
                 android:gravity="center"
-                android:padding="30px"
-                android:text="@string/product_info"
-                android:textSize="@dimen/text_size_middle" />
+                android:orientation="horizontal">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="30px">
-
-                <TextView
+                <Button
+                    android:id="@+id/btn_detele_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/product_img" />
+                    android:text="@string/delete_type" />
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/product_img"
-                        android:layout_width="@dimen/product_img_size"
-                        android:layout_height="@dimen/product_img_size"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@mipmap/ic_launcher_round" />
-                </FrameLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30px">
-
-                <TextView
+                <Button
+                    android:id="@+id/btn_create"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/product_name" />
+                    android:layout_gravity="center|right"
+                    android:text="@string/create_product" />
 
-                <TextView
-                    android:id="@+id/product_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_type" />
-
-                <TextView
-                    android:id="@+id/product_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_price" />
-
-                <TextView
-                    android:id="@+id/product_price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center" />
-            </LinearLayout>
-
-
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/section_space"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/product_list_fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"></FrameLayout>
-
-        <!--  <fragment
-              android:id="@+id/product_list_fragment"
-              android:name="bunny.project.aromacafecashier.ProductListFragment"
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-              tools:layout="@layout/product_list_fragment" />-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_detele_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/delete_type" />
-
-            <Button
-                android:id="@+id/btn_create"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:text="@string/create_product" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment_dialog_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</FrameLayout>

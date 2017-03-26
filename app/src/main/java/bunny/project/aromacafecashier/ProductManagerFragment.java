@@ -55,6 +55,12 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
         mProductListFragment.deleteCurrentType();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        showDialog(new PasswordDialogFragment());
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -149,5 +155,11 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
     @Override
     public void onItemClick(Product product) {
         setPrudoctInfo(product);
+    }
+
+    public void showDialog(Fragment fragment) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_dialog_container, fragment)
+                .commitAllowingStateLoss();
     }
 }
