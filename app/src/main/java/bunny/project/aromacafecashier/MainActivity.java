@@ -3,12 +3,15 @@ package bunny.project.aromacafecashier;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -49,6 +52,9 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         mRbtnOrder = (RadioButton) findViewById(R.id.tab_order);
 
 //        mDialogContainer = (FrameLayout) findViewById(R.id.fragment_dialog_container);
+
+        TextView versionView = (TextView) findViewById(R.id.version);
+        versionView.setText(getVersion());
     }
 
     @Override
@@ -107,6 +113,18 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         mTabGroup.setTag(bundle);
         MyLog.i("finishOrder", "orderId:" + orderId);
         mRbtnOrder.setChecked(true);
+    }
+
+    public String getVersion() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            String version = "v" + info.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 //    private void show(String fragmentTag) {
