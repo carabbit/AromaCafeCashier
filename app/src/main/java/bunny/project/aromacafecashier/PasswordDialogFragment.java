@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import bunny.project.aromacafecashier.utility.MailHelper;
+
 /**
  * Created by bunny on 17-3-26.
  */
@@ -42,6 +44,9 @@ public class PasswordDialogFragment extends DialogFragment {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_confirm) {
+
+                MailHelper.sendTodaySheet();
+
                 if (PASSWORD.equals(mPasswordView.getText().toString())) {
                     dismiss();
                 } else {
