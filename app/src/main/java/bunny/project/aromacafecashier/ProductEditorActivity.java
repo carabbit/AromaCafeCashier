@@ -198,7 +198,7 @@ public class ProductEditorActivity extends Activity {
         });
 
         mSpinnerAdapter = new ArrayAdapter<ProductType>(this, android.R.layout.simple_spinner_item);
-        mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerAdapter.setDropDownViewResource(R.layout.product_type_spinner_dropdown_item);
         mTypeSpinner.setAdapter(mSpinnerAdapter);
     }
 

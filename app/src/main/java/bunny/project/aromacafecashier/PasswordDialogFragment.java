@@ -45,7 +45,7 @@ public class PasswordDialogFragment extends DialogFragment {
         public void onClick(View v) {
             if (v.getId() == R.id.btn_confirm) {
 
-                MailHelper.sendTodaySheet();
+//                MailHelper.sendTodaySheet();
 
                 if (PASSWORD.equals(mPasswordView.getText().toString())) {
                     dismiss();
