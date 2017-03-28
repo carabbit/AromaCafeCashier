@@ -229,9 +229,9 @@ public class OrderListFragment extends Fragment {
     }
 
     private void queryTodayOrders(long todayZeroTime, long nextDayZeroTime) {
-        String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
+        String selection = "(" + AccsTables.Order.COL_STATUS + " = ? ) AND (" + AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ) ";
+        String[] args = new String[]{String.valueOf(OrderInfo.STATUS_NOMAL), String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         String orderBy = AccsTables.Order.COL_STATUS + " ASC , " + AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
-        String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 

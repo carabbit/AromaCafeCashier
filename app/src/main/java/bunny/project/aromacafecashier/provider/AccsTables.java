@@ -71,7 +71,7 @@ public class AccsTables {
                 .append("," + COL_DATE + " LONG")
                 .append("," + COL_PAYED + " INTEGER")
                 .append("," + COL_PAY_TIME + " LONG")
-                .append("," + COL_STATUS+ " INTEGER")
+                .append("," + COL_STATUS+ " INTEGER DEFAULT 0")
                 .append(");")
                 .toString();
     }

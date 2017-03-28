@@ -15,6 +15,8 @@ import bunny.project.aromacafecashier.provider.AccsTables;
 public class OrderInfo {
     public static final int UNPAYED = 0;
     public static final int PAYED = 1;
+    public static final int STATUS_NOMAL = 0;
+    public static final int SATATUS_DELETE = 1;
     private int id;
     private int payed;
     private long date;
