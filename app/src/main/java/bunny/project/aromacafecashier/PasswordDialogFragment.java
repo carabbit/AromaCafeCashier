@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -71,6 +72,13 @@ public class PasswordDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         mPasswordView = (EditText) view.findViewById(R.id.password_view);
         mBtnConfirm = (Button) view.findViewById(R.id.btn_confirm);

@@ -17,6 +17,7 @@ public class HistoryOrderItemView extends LinearLayout {
     private TextView mViewOrderTime;
     private TextView mViewOrderPayStatus;
     private TextView mViewOrderPayTime;
+    private TextView mViewStatus;
 
     public HistoryOrderItemView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -30,6 +31,7 @@ public class HistoryOrderItemView extends LinearLayout {
         mViewOrderTime = (TextView) findViewById(R.id.order_time);
         mViewOrderPayStatus = (TextView) findViewById(R.id.pay_status);
         mViewOrderPayTime = (TextView) findViewById(R.id.pay_time);
+        mViewStatus = (TextView) findViewById(R.id.order_status);
     }
 
     public TextView getOrderIdView() {
@@ -46,5 +48,9 @@ public class HistoryOrderItemView extends LinearLayout {
 
     public TextView getViewOrderPayTime() {
         return mViewOrderPayTime;
+    }
+
+    public TextView getViewStatus() {
+        return mViewStatus;
     }
 }

@@ -22,7 +22,28 @@ public class HistoryOrderFragment extends Fragment implements OrderListFragment.
 
     private static final int TAG_ORDER_ID = 1;
     private Button mBtnFinishOrder;
+    private Button mBtnOrderStatus;
     private OrderDetailFragment mOrderDetailFragment;
+    private OrderListFragment mOrderListFragment;
+
+    private OrderDeleteDialogFragment.OnClickListener mOnDeleteClickListener = new OrderDeleteDialogFragment.OnClickListener() {
+        @Override
+        public void onConfirmClicked() {
+            Object tag = mBtnOrderStatus.getTag();
+            if (tag != null || tag instanceof OrderInfo) {
+                OrderInfo info = (OrderInfo) tag;
+                mOrderListFragment.updateOrderStatus(info);
+            }
+
+            mBtnOrderStatus.setTag(null);
+            mBtnOrderStatus.setVisibility(View.INVISIBLE);
+
+            mBtnFinishOrder.setTag(null);
+            mBtnFinishOrder.setVisibility(View.INVISIBLE);
+
+            mOrderDetailFragment.resetListView();
+        }
+    };
 
     @Nullable
     @Override
@@ -34,15 +55,15 @@ public class HistoryOrderFragment extends Fragment implements OrderListFragment.
         bundle.putBoolean(IntentKeys.HISTORY_MODE, true);
         mOrderDetailFragment.setArguments(bundle);
 
-        OrderListFragment orderListFragment = new OrderListFragment();
+        mOrderListFragment = new OrderListFragment();
 //        orderListFragment.setOrderItemClickListener(mOrderDetailFragment.mOrderItemClickListener);
-        orderListFragment.setOrderItemClickListener(this);
+        mOrderListFragment.setOrderItemClickListener(this);
 
 
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.order_detail_fragment_container, mOrderDetailFragment)
-                .add(R.id.order_list_fragment_container, orderListFragment)
+                .add(R.id.order_list_fragment_container, mOrderListFragment)
                 .commitAllowingStateLoss();
 
         return view;
@@ -52,6 +73,9 @@ public class HistoryOrderFragment extends Fragment implements OrderListFragment.
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtnFinishOrder = (Button) view.findViewById(R.id.btn_finish_order);
+        mBtnOrderStatus = (Button) view.findViewById(R.id.btn_order_status);
+
+
         mBtnFinishOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,12 +89,44 @@ public class HistoryOrderFragment extends Fragment implements OrderListFragment.
                 }
             }
         });
+
+        mBtnOrderStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Object tag = mBtnOrderStatus.getTag();
+                if (tag != null || tag instanceof OrderInfo) {
+                    OrderDeleteDialogFragment fragment = new OrderDeleteDialogFragment();
+                    fragment.setOnClickListener(mOnDeleteClickListener);
+                    OrderInfo info = (OrderInfo) tag;
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean(IntentKeys.DELETE, info.getOrderStatus() == 0);
+                    fragment.setArguments(bundle);
+                    showDialog(fragment);
+                }
+            }
+        });
     }
 
     @Override
     public void onOrderItemClick(OrderInfo order) {
         mBtnFinishOrder.setVisibility(order.getPayed() == 1 ? View.INVISIBLE : View.VISIBLE);
         mBtnFinishOrder.setTag(Integer.valueOf(order.getId()));
+
+        mBtnOrderStatus.setVisibility(View.VISIBLE);
+        mBtnOrderStatus.setTag(order);
+        if (order.getOrderStatus() == 0) {
+            mBtnOrderStatus.setText(R.string.delete_order);
+        } else {
+            mBtnOrderStatus.setText(R.string.recover_order);
+        }
+
+
         mOrderDetailFragment.queryOrder(order.getId());
+    }
+
+    public void showDialog(Fragment fragment) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_dialog_container, fragment)
+                .commitAllowingStateLoss();
     }
 }

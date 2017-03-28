@@ -28,16 +28,18 @@ public class QueryManager {
     public static final int INDEX_TYPE_NAME = 1;
 
     public static final String[] PROJECTION_ORDER = new String[]{
-            AccsTables.Order._ID
-            , AccsTables.Order.COL_DATE
-            , AccsTables.Order.COL_PAYED
-            , AccsTables.Order.COL_PAY_TIME
+            AccsTables.Order._ID // ............... 0
+            , AccsTables.Order.COL_DATE // ........ 1
+            , AccsTables.Order.COL_PAYED // ....... 2
+            , AccsTables.Order.COL_PAY_TIME // .... 3
+            , AccsTables.Order.COL_STATUS // .... 4
     };
 
     public static final int INDEX_ORDER_ID = 0;
     public static final int INDEX_ORDER_DATE = 1;
     public static final int INDEX_ORDER_PAYED = 2;
     public static final int INDEX_ORDER_PAY_TIME = 3;
+    public static final int INDEX_ORDER_STATUS = 4;
 
 
     public static final String[] PROJECTION_ORDER_DETAIL = new String[]{

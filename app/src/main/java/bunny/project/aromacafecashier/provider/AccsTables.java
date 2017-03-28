@@ -61,6 +61,7 @@ public class AccsTables {
         public static final String COL_DATE = "[date]";
         public static final String COL_PAYED = "payed";
         public static final String COL_PAY_TIME = "pay_time";
+        public static final String COL_STATUS = "status";
 
         public static String CREATE_TABLE = new StringBuilder()
                 .append("CREATE TABLE ")
@@ -70,6 +71,7 @@ public class AccsTables {
                 .append("," + COL_DATE + " LONG")
                 .append("," + COL_PAYED + " INTEGER")
                 .append("," + COL_PAY_TIME + " LONG")
+                .append("," + COL_STATUS+ " INTEGER")
                 .append(");")
                 .toString();
     }

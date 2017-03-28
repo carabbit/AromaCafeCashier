@@ -2,6 +2,7 @@ package bunny.project.aromacafecashier;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class OrderListFragment extends Fragment {
     private static final int TOKEN_QUEREY_ALL_ORDER = 2;
     private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
     private static final int TOKEN_QUEREY_TODAY_PRODUCTS = 4;
+    private static final int TOKEN_UPDATE_ORDER_STATUS = 5;
 
     //    private ListView mListTempOrder;
     private ListView mOrderListView;
@@ -69,6 +71,24 @@ public class OrderListFragment extends Fragment {
 
         public OrderQueryHandler(ContentResolver cr) {
             super(cr);
+        }
+
+        @Override
+        protected void onUpdateComplete(int token, Object cookie, int result) {
+            switch (token) {
+                case TOKEN_UPDATE_ORDER_STATUS:
+                    MyLog.i("xxx", "ret:" + result);
+                    if (result > 0) {
+                        if (getString(R.string.all_order).equals(mTitleView.getText())) {
+                            queryAllOrders();
+                        } else if (getString(R.string.all_temp_order).equals(mTitleView.getText())) {
+                            queryTempOrders();
+                        } else if (getString(R.string.today_order).equals(mTitleView.getText())) {
+                            queryTodayData();
+                        }
+                    }
+                    break;
+            }
         }
 
         @Override
@@ -186,8 +206,8 @@ public class OrderListFragment extends Fragment {
     }
 
     private void queryTempOrders() {
-        String selection = AccsTables.Order.COL_PAYED + " = ?";
-        String[] args = new String[]{"0"};
+        String selection = AccsTables.Order.COL_PAYED + " = ? AND " + AccsTables.Order.COL_STATUS + " = ?";
+        String[] args = new String[]{"0", "0"};
         String orderBy = AccsTables.Order.COL_DATE + " DESC";
         mQueryHandler.startQuery(TOKEN_QUEREY_ALL_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
@@ -210,7 +230,7 @@ public class OrderListFragment extends Fragment {
 
     private void queryTodayOrders(long todayZeroTime, long nextDayZeroTime) {
         String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
-        String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
+        String orderBy = AccsTables.Order.COL_STATUS + " ASC , " + AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
@@ -219,13 +239,14 @@ public class OrderListFragment extends Fragment {
         String selection = AccsTables.OrderDetail.COL_ORDER_ID + " IN ("
                 + " SELECT " + AccsTables.Order._ID + " FROM " + AccsTables.Order.TABLE_NAME + " WHERE " + AccsTables.Order.COL_DATE + " BETWEEN ? AND ? "
                 + " AND " + AccsTables.Order.COL_PAYED + " = 1"
+                + " AND " + AccsTables.Order.COL_STATUS + " = 0"
                 + ")";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_PRODUCTS, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
     }
 
     private void queryAllOrders() {
-        String orderBy = AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
+        String orderBy = AccsTables.Order.COL_DATE + " DESC";
         mQueryHandler.startQuery(TOKEN_QUEREY_ALL_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
     }
 
@@ -271,6 +292,20 @@ public class OrderListFragment extends Fragment {
                 itemView.setBackgroundResource(0);
             }
 
+            if (order.getOrderStatus() > 0) {
+                itemView.getViewStatus().setText(R.string.order_status_delete);
+                itemView.setBackgroundColor(getResources().getColor(R.color.list_item_delete));
+            } else {
+                itemView.getViewStatus().setText(R.string.order_status_normal);
+            }
         }
+    }
+
+    public void updateOrderStatus(OrderInfo info) {
+        ContentValues values = new ContentValues();
+        values.put(AccsTables.Order.COL_STATUS, info.getOrderStatus() == 0 ? 1 : 0);
+        String selection = AccsTables.Order._ID + " = ?";
+        String[] args = new String[]{String.valueOf(info.getId())};
+        mQueryHandler.startUpdate(TOKEN_UPDATE_ORDER_STATUS, info, QueryManager.URI_ORDER, values, selection, args);
     }
 }

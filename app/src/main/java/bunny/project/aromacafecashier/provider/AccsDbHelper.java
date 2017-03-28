@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AccsDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "accs.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     public AccsDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -27,7 +27,9 @@ public class AccsDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + AccsTables.Order.TABLE_NAME + " ADD " + AccsTables.Order.COL_STATUS + " INTEGER DEFAULT 0;");
+        }
     }
 }

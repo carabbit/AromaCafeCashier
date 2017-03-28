@@ -126,7 +126,9 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
     private void setTabChecked(RadioButton tabView, boolean checked) {
         tabView.setChecked(checked);
         if (checked) {
-            mOnCheckedListener.onChecked(tabView);
+            if (mOnCheckedListener != null) {
+                mOnCheckedListener.onChecked(tabView);
+            }
         }
     }
 

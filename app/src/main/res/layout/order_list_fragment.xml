@@ -67,6 +67,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/pay_time" />
+
+            <TextView
+                android:layout_width="250px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_status" />
         </LinearLayout>
 
         <ListView

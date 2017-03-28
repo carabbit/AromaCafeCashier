@@ -19,6 +19,15 @@ public class OrderInfo {
     private int payed;
     private long date;
     private long pay_time;
+    private int orderStatus;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getPayed() {
         return payed;
@@ -45,12 +54,21 @@ public class OrderInfo {
         this.pay_time = pay_time;
     }
 
+    public int getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(int orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     public static OrderInfo fromCusor(Cursor cursor) {
         OrderInfo order = new OrderInfo();
         order.setId(cursor.getInt(QueryManager.INDEX_ORDER_ID));
         order.setPayed(cursor.getInt(QueryManager.INDEX_ORDER_PAYED));
         order.setPay_time(cursor.getLong(QueryManager.INDEX_ORDER_PAY_TIME));
         order.setDate(cursor.getLong(QueryManager.INDEX_ORDER_DATE));
+        order.setOrderStatus(cursor.getInt(QueryManager.INDEX_ORDER_STATUS));
         MyLog.i("xxx", order.toString());
         return order;
     }
@@ -84,15 +102,6 @@ public class OrderInfo {
         }
 
         return order.toInsertContentProviderOperation();
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override

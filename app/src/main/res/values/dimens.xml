@@ -55,4 +55,7 @@
     <dimen name="order_history_item_height">80px</dimen>
     <dimen name="order_history_item_space">25px</dimen>
 
+    <dimen name="dialog_width">600px</dimen>
+    <dimen name="dialog_title_height">100px</dimen>
+
 </resources>

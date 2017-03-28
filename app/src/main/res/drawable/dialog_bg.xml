@@ -4,7 +4,7 @@
     <solid android:color="@color/fragment_bg" />
     <stroke
         android:width="@dimen/button_bg_stroke"
-        android:color="@color/main_tab_stroke" />
+        android:color="@color/light_white" />
 
     <corners android:radius="@dimen/section_radius" />
 </shape>
