@@ -83,15 +83,41 @@
             android:divider="@color/light_white"
             android:dividerHeight="2px" />
 
-        <TextView
-            android:id="@+id/today_cash"
+        <LinearLayout
+            android:id="@+id/report_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@drawable/section_bg_bottom"
             android:gravity="center"
-            android:padding="30px"
-            android:text="@string/today_cash"
-            android:visibility="visible" />
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/today_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:padding="30px"
+                android:text="@string/today_cash" />
+
+            <TextView
+                android:id="@+id/today_repot_finish_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30px"
+                android:text="@string/today_cash" />
+
+            <TextView
+                android:id="@+id/today_repot_temp_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30px"
+                android:text="@string/today_cash" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

@@ -57,6 +57,10 @@ public class OrderListFragment extends Fragment {
     private Button mBtnAllOrder;
     private TextView mTitleView;
     private TextView mTodayCashView;
+    private TextView mTodayReportFinishView;
+    private TextView mTodayReportTempView;
+
+    private View mTodayReprotContainer;
 
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
@@ -103,15 +107,36 @@ public class OrderListFragment extends Fragment {
                     break;
                 case TOKEN_QUEREY_TODAY_ORDER:
                     resId = R.string.today_order;
+                    setTodayReport(cursor);
                     break;
                 case TOKEN_QUEREY_TODAY_PRODUCTS:
                     float todayCash = countTodayCash(cursor);
                     mTodayCashView.setText(getString(R.string.today_cash, todayCash));
+                    mTodayReprotContainer.setVisibility(View.VISIBLE);
                     return;
             }
 
             mTitleView.setText(resId);
             mHistoryOrderAdapter.changeCursor(cursor);
+        }
+
+        private void setTodayReport(Cursor cursor) {
+            int finishOrderCount = 0;
+            int tmpOrderCount = 0;
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    int padyed = cursor.getInt(QueryManager.INDEX_ORDER_PAYED);
+                    if (padyed == 1) {
+                        finishOrderCount++;
+                    } else {
+                        tmpOrderCount++;
+                    }
+
+                }
+            }
+
+            mTodayReportFinishView.setText(getString(R.string.today_repot_finish_order, finishOrderCount));
+            mTodayReportTempView.setText(getString(R.string.today_repot_temp_order, tmpOrderCount));
         }
 
         private float countTodayCash(Cursor cursor) {
@@ -146,15 +171,15 @@ public class OrderListFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_all_order:
-                    mTodayCashView.setVisibility(View.GONE);
+                    mTodayReprotContainer.setVisibility(View.GONE);
                     queryAllOrders();
                     break;
                 case R.id.btn_all_temp_order:
-                    mTodayCashView.setVisibility(View.GONE);
+                    mTodayReprotContainer.setVisibility(View.GONE);
                     queryTempOrders();
                     break;
                 case R.id.btn_today_order:
-                    mTodayCashView.setVisibility(View.VISIBLE);
+                    mTodayReprotContainer.setVisibility(View.VISIBLE);
                     queryTodayData();
                     break;
             }
@@ -185,7 +210,13 @@ public class OrderListFragment extends Fragment {
         mTitleView = (TextView) view.findViewById(R.id.title);
 
         mTodayCashView = (TextView) view.findViewById(R.id.today_cash);
+        mTodayReportFinishView = (TextView) view.findViewById(R.id.today_repot_finish_order);
+        mTodayReportTempView = (TextView) view.findViewById(R.id.today_repot_temp_order);
+        mTodayReprotContainer = view.findViewById(R.id.report_container);
+
         mTodayCashView.setText(getResources().getString(R.string.total_cash, 0f));
+        mTodayReportFinishView.setText(getResources().getString(R.string.today_repot_finish_order, 0));
+        mTodayReportTempView.setText(getResources().getString(R.string.today_repot_temp_order, 0));
 
         mBtnAllOrder = (Button) view.findViewById(R.id.btn_all_order);
         mBtnAllTempOrder = (Button) view.findViewById(R.id.btn_all_temp_order);

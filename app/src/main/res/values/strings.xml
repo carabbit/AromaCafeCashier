@@ -9,7 +9,6 @@
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
     <string name="confirm_order_time">下单时间</string>
-
     <string name="finish_order">结单</string>
     <string name="delete_order">删除订单</string>
     <string name="recover_order">恢复订单</string>
@@ -18,6 +17,8 @@
     <string name="pay_time">付款时间</string>
     <string name="order_status">订单状态</string>
     <string name="today_cash">今日营业额：%1$.1f</string>
+    <string name="today_repot_finish_order">完成订单：%1$d</string>
+    <string name="today_repot_temp_order">挂单：%1$d</string>
     <string name="item_count">x %1$d</string>
     <string name="order_number">编号(%1$d)</string>
     <string name="item_title_name">名称</string>
