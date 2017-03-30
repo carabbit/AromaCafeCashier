@@ -144,5 +144,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/all_order" />
+        <Button
+            android:layout_marginStart="30px"
+            android:id="@+id/btn_send_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_report" />
     </LinearLayout>
 </LinearLayout>

@@ -48,7 +48,7 @@ public class OrderInfo {
     }
 
 
-    public long getPay_time() {
+    public long getPayTime() {
         return pay_time;
     }
 
@@ -79,8 +79,8 @@ public class OrderInfo {
         ContentValues values = new ContentValues();
         values.put(AccsTables.Order.COL_PAYED, getPayed());
         values.put(AccsTables.Order.COL_DATE, getDate());
-        values.put(AccsTables.Order.COL_PAY_TIME, getPay_time());
-        MyLog.i("xxx", "[toContentValues] date:" + getDate() + " payTime:" + getPay_time());
+        values.put(AccsTables.Order.COL_PAY_TIME, getPayTime());
+        MyLog.i("xxx", "[toContentValues] date:" + getDate() + " payTime:" + getPayTime());
         return values;
     }
 
@@ -108,6 +108,6 @@ public class OrderInfo {
 
     @Override
     public String toString() {
-        return "[ id:" + getId() + " payed:" + getPayed() + " time:" + getDate() + " pay_time:" + getPay_time() + " ]";
+        return "[ id:" + getId() + " payed:" + getPayed() + " time:" + getDate() + " pay_time:" + getPayTime() + " ]";
     }
 }

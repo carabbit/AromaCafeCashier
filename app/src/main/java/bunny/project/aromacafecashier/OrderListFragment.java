@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import bunny.project.aromacafecashier.model.OrderInfo;
 import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.report.SendReportTask;
 import bunny.project.aromacafecashier.view.HistoryOrderItemView;
 
 /**
@@ -34,7 +35,6 @@ import bunny.project.aromacafecashier.view.HistoryOrderItemView;
  */
 
 public class OrderListFragment extends Fragment {
-    //TODO 订单废弃功能（待做）
     private static final int TOKEN_QUEREY_ALL_TEMP_ORDER = 1;
     private static final int TOKEN_QUEREY_ALL_ORDER = 2;
     private static final int TOKEN_QUEREY_TODAY_ORDER = 3;
@@ -55,6 +55,8 @@ public class OrderListFragment extends Fragment {
     private Button mBtnTodayOrder;
     private Button mBtnAllTempOrder;
     private Button mBtnAllOrder;
+    private Button mBtnSendReport;
+
     private TextView mTitleView;
     private TextView mTodayCashView;
     private TextView mTodayReportFinishView;
@@ -182,9 +184,16 @@ public class OrderListFragment extends Fragment {
                     mTodayReprotContainer.setVisibility(View.VISIBLE);
                     queryTodayData();
                     break;
+                case R.id.btn_send_report:
+                    sendReport();
+                    break;
             }
         }
     };
+
+    private void sendReport() {
+        new SendReportTask(getActivity()).execute();
+    }
 
     @Nullable
     @Override
@@ -221,10 +230,12 @@ public class OrderListFragment extends Fragment {
         mBtnAllOrder = (Button) view.findViewById(R.id.btn_all_order);
         mBtnAllTempOrder = (Button) view.findViewById(R.id.btn_all_temp_order);
         mBtnTodayOrder = (Button) view.findViewById(R.id.btn_today_order);
+        mBtnSendReport = (Button) view.findViewById(R.id.btn_send_report);
 
         mBtnAllOrder.setOnClickListener(mOnClickListener);
         mBtnAllTempOrder.setOnClickListener(mOnClickListener);
         mBtnTodayOrder.setOnClickListener(mOnClickListener);
+        mBtnSendReport.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -303,13 +314,13 @@ public class OrderListFragment extends Fragment {
             itemView.getOrderIdView().setText(String.valueOf(order.getId()));
             itemView.getViewOrderPayStatus().setText(order.getPayed() == 1 ? getString(R.string.has_payed) : getString(R.string.unpayed));
 
-            MyLog.i("xxx", "pay_time:" + order.getPay_time() + "  order_time:" + order.getDate());
+            MyLog.i("xxx", "pay_time:" + order.getPayTime() + "  order_time:" + order.getDate());
 
             String payTimeStr = "";
-            if (order.getPay_time() <= 0) {
+            if (order.getPayTime() <= 0) {
                 payTimeStr = "-";
             } else {
-                payTimeStr = mDateFormat.format(new Date(order.getPay_time()));
+                payTimeStr = mDateFormat.format(new Date(order.getPayTime()));
             }
             itemView.getViewOrderPayTime().setText(payTimeStr);
 

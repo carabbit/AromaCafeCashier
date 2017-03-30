@@ -19,6 +19,7 @@
     <string name="today_cash">今日营业额：%1$.1f</string>
     <string name="today_repot_finish_order">完成订单：%1$d</string>
     <string name="today_repot_temp_order">挂单：%1$d</string>
+    <string name="today_repot">营业报表(%1$s)</string>
     <string name="item_count">x %1$d</string>
     <string name="order_number">编号(%1$d)</string>
     <string name="item_title_name">名称</string>
@@ -61,6 +62,7 @@
     <string name="today_order">今日订单</string>
     <string name="all_temp_order">全部挂单</string>
     <string name="all_order">全部订单</string>
+    <string name="send_report">发送报表</string>
     <string name="no_type">未分类</string>
     <string name="cost_off_nine">9折</string>
     <string name="cost_off_eight">8折</string>

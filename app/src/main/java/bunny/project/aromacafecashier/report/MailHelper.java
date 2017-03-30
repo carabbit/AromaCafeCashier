@@ -1,4 +1,7 @@
-package bunny.project.aromacafecashier.utility;
+package bunny.project.aromacafecashier.report;
+
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import java.util.Properties;
 
@@ -21,14 +24,27 @@ import bunny.project.aromacafecashier.MyLog;
  */
 
 public class MailHelper {
-    public static void sendTodaySheet() {
+
+    private Handler mHandler;
+
+//    public MailHelper() {
+//        HandlerThread handlerThread = new HandlerThread("MailHelper");
+//        handlerThread.start();
+//        mHandler = new Handler(handlerThread.getLooper());
+//    }
+
+    public static void sendTodaySheet(String title, String content) {
+//        mHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+
         final String sendUserName = "aroma_cafe@163.com";
-        final String sendPassword = "portugal";
+        final String sendPassword = "orange12345";
 
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
         Properties properties = new Properties();
-        properties.setProperty("mail.smtp.host", "smtp.qq.com");
+        properties.setProperty("mail.smtp.host", "smtp.163.com");
         properties.setProperty("mail.transport.protocol", "smtp");//声明发送邮件使用的端口
         properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         properties.setProperty("mail.smtp.socketFactory.fallback", "false");
@@ -42,25 +58,28 @@ public class MailHelper {
                 return new PasswordAuthentication(sendUserName, sendPassword);
             }
         });
-//        session.setDebug(true);//同意在当前线程的控制台打印与服务器对话信息
+        session.setDebug(true);//同意在当前线程的控制台打印与服务器对话信息
 
         try {
             Message message = new MimeMessage(session);//构建发送的信息
             message.setFrom(new InternetAddress("aroma_cafe@163.com"));//发件人
             message.setRecipient(Message.RecipientType.TO, new InternetAddress("supercarabbit@qq.com"));
-            message.setSubject("每日报表");
-            message.setText("test123！");//信息内容
-//            MimeBodyPart textPart = new MimeBodyPart();
-//            textPart.setContent("图文加附件邮件测试", "text/html;charset=UTF-8");
+            message.setSubject(title);
+            message.setText(content);//信息内容
+            MimeBodyPart textPart = new MimeBodyPart();
+            textPart.setContent("图文加附件邮件测试", "text/html;charset=UTF-8");
 
-//            MimeMultipart mmp2 = new MimeMultipart();
-//            mmp2.addBodyPart(textImagePart);
+            MimeMultipart mmp2 = new MimeMultipart();
+            mmp2.addBodyPart(textPart);
 //
 //            MimeBodyPart imagePart = new MimeBodyPart();
 //            imagePart.setDataHandler(new DataHandler(new FileDataSource("imagePath")));//图片路径
 //            imagePart.setContentID("myimg");
 
-//            message.setContent("图文加附件邮件测试", "text/html;charset=UTF-8");
+            message.setContent(content, "text/html;charset=UTF-8");
+
+//            message.setContent(mmp2);
+
 
             Transport.send(message);
 
@@ -72,5 +91,7 @@ public class MailHelper {
             MyLog.i("", e.toString());
         }
 
+//            }
+//    });
     }
 }
