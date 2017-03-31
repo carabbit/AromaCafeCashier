@@ -25,21 +25,11 @@ import bunny.project.aromacafecashier.MyLog;
 
 public class MailHelper {
 
-    private Handler mHandler;
-
-//    public MailHelper() {
-//        HandlerThread handlerThread = new HandlerThread("MailHelper");
-//        handlerThread.start();
-//        mHandler = new Handler(handlerThread.getLooper());
-//    }
-
-    public static void sendTodaySheet(String title, String content) {
-//        mHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
-
+    public static boolean sendTodaySheet(String title, String content) {
         final String sendUserName = "aroma_cafe@163.com";
         final String sendPassword = "orange12345";
+        final String mailToAddress1 = "1172434168@qq.com";
+        final String mailToAddress2 = "supercarabbit@qq.com";
 
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
@@ -63,7 +53,7 @@ public class MailHelper {
         try {
             Message message = new MimeMessage(session);//构建发送的信息
             message.setFrom(new InternetAddress("aroma_cafe@163.com"));//发件人
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress("supercarabbit@qq.com"));
+            message.setRecipients(Message.RecipientType.TO, new Address[]{new InternetAddress(mailToAddress1), new InternetAddress(mailToAddress2)});
             message.setSubject(title);
             message.setText(content);//信息内容
             MimeBodyPart textPart = new MimeBodyPart();
@@ -72,6 +62,7 @@ public class MailHelper {
             MimeMultipart mmp2 = new MimeMultipart();
             mmp2.addBodyPart(textPart);
 //
+
 //            MimeBodyPart imagePart = new MimeBodyPart();
 //            imagePart.setDataHandler(new DataHandler(new FileDataSource("imagePath")));//图片路径
 //            imagePart.setContentID("myimg");
@@ -82,16 +73,11 @@ public class MailHelper {
 
 
             Transport.send(message);
-
-//            Transport transport = session.getTransport();
-//            transport.connect("smtp.163.com", 25, sendUserName, sendPassword);//连接发件人使用发件的服务器
-//            transport.sendMessage(message, new Address[]{new InternetAddress("492134880@qq.com")});//接受邮件
-//            transport.close();
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             MyLog.i("", e.toString());
+            return false;
         }
 
-//            }
-//    });
+        return true;
     }
 }

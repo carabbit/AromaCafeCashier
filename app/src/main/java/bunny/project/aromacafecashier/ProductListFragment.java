@@ -190,10 +190,10 @@ public class ProductListFragment extends Fragment {
     }
 
     private void handleProdcutWithNoType(Cursor cursor) {
-        MyLog.i("[handleProdcutWithNoType]", "cursor size:" + (cursor == null ? "null" : cursor.getCount()));
+//        MyLog.i("[handleProdcutWithNoType]", "cursor size:" + (cursor == null ? "null" : cursor.getCount()));
         if (cursor != null && cursor.getCount() > 0) {
             mTabContainer.addTab(-1, getResources().getString(R.string.no_type));
-            MyLog.i("[handleProdcutWithNoType]", "mTabContainer.getChildCount()-->" + mTabContainer.getChildCount());
+//            MyLog.i("[handleProdcutWithNoType]", "mTabContainer.getChildCount()-->" + mTabContainer.getChildCount());
             if (mTabContainer.getChildCount() == 1) {
                 mTabContainer.checkTab(0);
                 queryProductByType(-1);
@@ -229,7 +229,7 @@ public class ProductListFragment extends Fragment {
     }
 
     private void handleProductQuery(int type, Cursor cursor) {
-        MyLog.i("handleProductQuery", "type:" + type + "  cursor size:" + (cursor == null ? "null" : cursor.getCount()));
+//        MyLog.i("handleProductQuery", "type:" + type + "  cursor size:" + (cursor == null ? "null" : cursor.getCount()));
         mGridView.setTag(type);
 
         if (cursor == null || cursor.getCount() == 0) {

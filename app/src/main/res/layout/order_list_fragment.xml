@@ -120,21 +120,22 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btn_today_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btn_all_temp_order"
             android:text="@string/today_order" />
 
         <Button
             android:id="@+id/btn_all_temp_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginEnd="15px"
             android:layout_marginStart="15px"
             android:text="@string/all_temp_order" />
@@ -143,12 +144,15 @@
             android:id="@+id/btn_all_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/btn_all_temp_order"
             android:text="@string/all_order" />
+
         <Button
-            android:layout_marginStart="30px"
             android:id="@+id/btn_send_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="30px"
             android:text="@string/send_report" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

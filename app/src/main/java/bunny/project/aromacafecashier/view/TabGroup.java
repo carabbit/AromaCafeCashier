@@ -62,9 +62,7 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
         int width = (int) getResources().getDimension(R.dimen.product_tab_width);
         int height = (int) getResources().getDimension(R.dimen.product_tab_height);
 
-        MyLog.i("", "gwidth:" + groupWidth + " width:" + width);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-//        layoutParams.setMargins(10, 10, 50, 0);
         layoutParams.rightMargin = 2;
 
         rbtn.setLayoutParams(layoutParams);
@@ -76,7 +74,6 @@ public class TabGroup extends LinearLayout implements View.OnClickListener {
         rbtn.setGravity(Gravity.CENTER);
         rbtn.setBackgroundResource(R.drawable.product_tab_bg);
         rbtn.setPadding(10, 10, 10, 10);
-//        rbtn.setOnCheckedChangeListener(this);
         rbtn.setOnClickListener(this);
         lastChidViewGroup.addView(rbtn);
 

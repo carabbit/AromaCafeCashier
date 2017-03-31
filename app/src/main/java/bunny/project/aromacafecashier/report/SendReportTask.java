@@ -23,20 +23,26 @@ import bunny.project.aromacafecashier.provider.AccsTables;
 /**
  * Created by bunny on 17-3-30.
  */
-public class SendReportTask extends AsyncTask<Void, Void, Void> {
+public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
 
     private ContentResolver mResolver;
     private Context mContext;
+    private OnSendFinishListener mListener;
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
     private SimpleDateFormat mContentDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CHINA);
 
-    public SendReportTask(Context context) {
+    public static interface OnSendFinishListener {
+        void onSendFinish(boolean success);
+    }
+
+    public SendReportTask(Context context, OnSendFinishListener listener) {
         mResolver = context.getContentResolver();
         mContext = context;
+        mListener = listener;
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Boolean doInBackground(Void... params) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);
@@ -55,9 +61,14 @@ public class SendReportTask extends AsyncTask<Void, Void, Void> {
         String formatDate = mDateFormat.format(new Date(System.currentTimeMillis()));
         String title = mContext.getResources().getString(R.string.today_repot, formatDate);
 
-        MailHelper.sendTodaySheet(title, content);
+        return MailHelper.sendTodaySheet(title, content);
+    }
 
-        return null;
+    @Override
+    protected void onPostExecute(Boolean result) {
+        if (mListener != null) {
+            mListener.onSendFinish(result);
+        }
     }
 
     @NonNull

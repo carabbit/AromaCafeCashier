@@ -83,7 +83,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
     }
 
     private void swtichToFragment(String fragmentTag, Bundle args) {
-        MyLog.i("xxx", "[swtichToFragment] tag:" + fragmentTag);
+//        MyLog.i("xxx", "[swtichToFragment] tag:" + fragmentTag);
         Fragment fragment = null;
         if (FRAGMENT_ORDER.equals(fragmentTag)) {
             fragment = new OrderFragment();
@@ -103,7 +103,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
         transaction.replace(R.id.fragment_container_order, fragment, fragmentTag);
         transaction.commit();
 
-        MyLog.i("xxx", "[swtichToFragment] finish");
+//        MyLog.i("xxx", "[swtichToFragment] finish");
     }
 
     public void finishOrder(int orderId, ArrayList<OrderItemInfo> orderItems) {

@@ -192,7 +192,7 @@ public class OrderListFragment extends Fragment {
     };
 
     private void sendReport() {
-        new SendReportTask(getActivity()).execute();
+        new SendReportTask(getActivity(), null).execute();
     }
 
     @Nullable
