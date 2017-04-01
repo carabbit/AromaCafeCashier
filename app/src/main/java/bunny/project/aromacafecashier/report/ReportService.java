@@ -32,8 +32,8 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
     private static final int MSG_SEND_REPORT = 1;
     private static final int REPEAT_INTERVAL = 1 * 30 * 1000;
 
-    private static final int SEND_HOUR = 22;//每天22：00时发送邮件
-    private static final int SEND_MINUTE = 0;
+    private static final int SEND_HOUR = 21;//每天21：45时发送邮件
+    private static final int SEND_MINUTE = 45;
     private static final int SEND_MINUTE_OFFSET = 2;
     private static final int SEND_MINUTE_LIMIT = SEND_MINUTE + SEND_MINUTE_OFFSET;
 
