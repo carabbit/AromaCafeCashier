@@ -3,6 +3,7 @@ package bunny.project.aromacafecashier.view;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import bunny.project.aromacafecashier.R;
  */
 
 public class HistoryOrderItemView extends LinearLayout {
+    private View mSelectIcon;
     private TextView mViewOrderId;
     private TextView mViewOrderTime;
     private TextView mViewOrderPayStatus;
@@ -27,6 +29,7 @@ public class HistoryOrderItemView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        mSelectIcon = findViewById(R.id.select_icon);
         mViewOrderId = (TextView) findViewById(R.id.order_id);
         mViewOrderTime = (TextView) findViewById(R.id.order_time);
         mViewOrderPayStatus = (TextView) findViewById(R.id.pay_status);
@@ -52,5 +55,9 @@ public class HistoryOrderItemView extends LinearLayout {
 
     public TextView getViewStatus() {
         return mViewStatus;
+    }
+
+    public View getSelectIcon() {
+        return mSelectIcon;
     }
 }

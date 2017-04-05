@@ -13,6 +13,8 @@
     <color name="light_white">#55f5f1f9</color>
     <color name="light_white2">#33f5f1f9</color>
     <color name="yellow">#ff8b14</color>
+    <color name="green">#54c671</color>
+
 
 
     <color name="text_color">@color/white</color>

@@ -41,6 +41,12 @@
             android:paddingBottom="@dimen/order_detail_list_padding"
             android:paddingTop="@dimen/order_detail_list_padding">
 
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:src="@drawable/item_select_icon"
+                android:visibility="invisible" />
+
             <TextView
                 android:layout_width="150px"
                 android:layout_height="wrap_content"

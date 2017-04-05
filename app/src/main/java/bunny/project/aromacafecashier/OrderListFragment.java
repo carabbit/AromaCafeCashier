@@ -64,6 +64,8 @@ public class OrderListFragment extends Fragment {
 
     private View mTodayReprotContainer;
 
+    private int mCurrentClickItemId = -1;
+
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
     }
@@ -161,10 +163,14 @@ public class OrderListFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mOrderItemClickListener != null) {
-                mOrderItemClickListener.onOrderItemClick((OrderInfo) view.getTag());
+                OrderInfo orderInfo = (OrderInfo) view.getTag();
+                mOrderItemClickListener.onOrderItemClick(orderInfo);
+
+                mCurrentClickItemId = orderInfo.getId();
             }
 
-            // TODO 点击后，该行显示选中标记。（待做）
+
+            mHistoryOrderAdapter.notifyDataSetChanged();
         }
     };
 
@@ -308,13 +314,12 @@ public class OrderListFragment extends Fragment {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            MyLog.i("xxx", "bindView");
             HistoryOrderItemView itemView = (HistoryOrderItemView) view;
             OrderInfo order = OrderInfo.fromCusor(cursor);
             itemView.getOrderIdView().setText(String.valueOf(order.getId()));
             itemView.getViewOrderPayStatus().setText(order.getPayed() == 1 ? getString(R.string.has_payed) : getString(R.string.unpayed));
 
-            MyLog.i("xxx", "pay_time:" + order.getPayTime() + "  order_time:" + order.getDate());
+//            MyLog.i("xxx", "pay_time:" + order.getPayTime() + "  order_time:" + order.getDate());
 
             String payTimeStr = "";
             if (order.getPayTime() <= 0) {
@@ -339,6 +344,12 @@ public class OrderListFragment extends Fragment {
                 itemView.setBackgroundColor(getResources().getColor(R.color.list_item_delete));
             } else {
                 itemView.getViewStatus().setText(R.string.order_status_normal);
+            }
+
+            if (order.getId() == mCurrentClickItemId) {
+                itemView.getSelectIcon().setVisibility(View.VISIBLE);
+            } else {
+                itemView.getSelectIcon().setVisibility(View.INVISIBLE);
             }
         }
     }
