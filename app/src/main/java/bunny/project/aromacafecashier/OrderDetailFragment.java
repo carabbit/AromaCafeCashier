@@ -155,21 +155,19 @@ public class OrderDetailFragment extends Fragment {
             totalCash += item.getCount() * item.getProductPrice();
             totalDiscount += item.getCount() * item.getProductPrice() * item.getDiscount();
         }
+
         String totalCashStr = getResources().getString(R.string.total_cash, totalCash);
 
-
-//        MyLog.i("xxx", "totalCashStr:" + totalCashStr);
-//        mTotalCashView.setText(String.format(totalCashStr, totalCash));
         mTotalCashView.setText(totalCashStr);
 
         if (totalCash == totalDiscount) {
             mTotalDiscountView.setVisibility(View.GONE);
         } else {
+            totalDiscount = Math.round(totalDiscount);
             String totalDiscountStr = getResources().getString(R.string.total_discount, totalDiscount);
             mTotalDiscountView.setVisibility(View.VISIBLE);
             mTotalDiscountView.setText(totalDiscountStr);
         }
-
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,13 +153,35 @@ public class OrderListFragment extends Fragment {
                 return 0f;
             }
 
+            SparseArray<Float> cashPerOrderMap = new SparseArray<Float>();
+            SparseArray<Float> discountPerOrderMap = new SparseArray<Float>();
+
             float cash = 0f;
             while (cursor.moveToNext()) {
+                int orderId = cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_ORDER_ID);
+
+                Float cashPerOrder = cashPerOrderMap.get(orderId);
+                if (cashPerOrder == null) {
+                    cashPerOrder = 0f;
+                }
+
                 int count = cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT);
                 float price = cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_PRICE);
+
+
+                cashPerOrderMap.put(orderId, cashPerOrder + count * price);
+
+
                 float discount = cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_DISCOUNT);
-                MyLog.i("", "discount:" + discount);
-                cash += count * price * discount;
+                discountPerOrderMap.put(orderId, discount);
+            }
+
+            int orderCount = cashPerOrderMap.size();
+            for (int i = 0; i < orderCount; i++) {
+                float cashPerOrder = cashPerOrderMap.valueAt(i);
+                int orderId = cashPerOrderMap.keyAt(i);
+                float discountPerOrder = discountPerOrderMap.get(orderId);
+                cash += Math.round(cashPerOrder * discountPerOrder);
             }
 
             return cash;
