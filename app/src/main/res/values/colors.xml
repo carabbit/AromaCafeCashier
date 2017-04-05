@@ -25,7 +25,7 @@
     <color name="btn_bg_normal_stroke">#077286</color>
     <color name="btn_bg_disable_stroke">#01445e</color>
     <color name="btn_bg_pressed_stroke">#306588</color>
-    <color name="divider">@color/main_tab_stroke</color>
+    <color name="divider">@color/light_white</color>
 
     <!--↓↓↓主界面↓↓↓-->
     <!--背景色-->

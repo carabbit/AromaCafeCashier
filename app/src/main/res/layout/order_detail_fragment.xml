@@ -39,17 +39,34 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:divider="@color/light_white"
-        android:dividerHeight="2px"></ListView>
+        android:dividerHeight="2px" />
 
-    <TextView
-        android:id="@+id/total_cash"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:background="@drawable/section_bg_bottom"
-        android:gravity="center"
-        android:padding="30px"
-        android:text="@string/total_cash" />
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/total_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="30px"
+            android:text="@string/total_cash" />
+
+        <TextView
+            android:id="@+id/total_discount_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="30px"
+            android:text="@string/total_cash"
+            android:visibility="gone" />
+    </LinearLayout>
 
 
 </LinearLayout>

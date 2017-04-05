@@ -76,7 +76,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
         SparseArray<ArrayList<OrderItemInfo>> orderItemInfos = getOrderItemInfos(todayProductCursor);
         SparseArray<OrderInfo> orderInfos = getOrderInfos(todayOrderCursor);
 
-        MyLog.i("xxx", "mOrderItemInfos.size()-->" + orderItemInfos.size());
+//        MyLog.i("xxx", "mOrderItemInfos.size()-->" + orderItemInfos.size());
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("今日订单：<br>");
@@ -90,6 +90,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
             stringBuilder.append("<td>" + mContext.getString(R.string.pay_time) + "</td>");
             stringBuilder.append("<td>" + mContext.getString(R.string.order_status) + "</td>");
             stringBuilder.append("<td>" + mContext.getString(R.string.order_detail) + "</td>");
+            stringBuilder.append("<td>" + mContext.getString(R.string.order_discount) + "</td>");
             stringBuilder.append("</tr>");
 
             todayOrderCursor.moveToPosition(-1);
@@ -103,6 +104,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
                 stringBuilder.append("<td>" + getPayTime(info.getPayTime()) + "</td>");
                 stringBuilder.append("<td>" + getOrderStatus(info.getOrderStatus()) + "</td>");
                 stringBuilder.append("<td>" + getOrderDetail(orderItemInfos.get(info.getId())) + "</td>");
+                stringBuilder.append("<td>" + info.getDiscount() + "</td>");
                 stringBuilder.append("</tr>");
             }
             stringBuilder.append("</table>");
@@ -234,7 +236,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
 
 
             for (OrderItemInfo itemInfo : itemInfos) {
-                sumReport.totalCash += itemInfo.getCount() * itemInfo.getProductPrice();
+                sumReport.totalCash += itemInfo.getCount() * itemInfo.getProductPrice() * itemInfo.getDiscount();
             }
         }
 

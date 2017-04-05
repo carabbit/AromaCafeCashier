@@ -20,6 +20,7 @@ public class OrderItemInfo implements Parcelable {
     private int count;
     private float price;
     private String productName;
+    private float discount;
 
 
     public ContentValues toContentValues() {
@@ -30,6 +31,7 @@ public class OrderItemInfo implements Parcelable {
         values.put(AccsTables.OrderDetail.COL_PRODUCT_ID, getProductId());
         values.put(AccsTables.OrderDetail.COL_PRODUCT_NAME, getProductName());
         values.put(AccsTables.OrderDetail.COL_PRODUCT_PRICE, getProductPrice());
+        values.put(AccsTables.OrderDetail.COL_DISCOUNT, getDiscount());
 
         return values;
     }
@@ -54,6 +56,7 @@ public class OrderItemInfo implements Parcelable {
         builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_ID, getProductId());
         builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_NAME, getProductName());
         builder.withValue(AccsTables.OrderDetail.COL_PRODUCT_PRICE, getProductPrice());
+        builder.withValue(AccsTables.OrderDetail.COL_DISCOUNT, getDiscount());
         builder.withYieldAllowed(true);
     }
 
@@ -64,6 +67,7 @@ public class OrderItemInfo implements Parcelable {
         item.setCount(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT));
         item.setOrderId(cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_ORDER_ID));
         item.setProductPrice(cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_PRICE));
+        item.setDiscount(cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_DISCOUNT));
         return item;
     }
 
@@ -78,6 +82,7 @@ public class OrderItemInfo implements Parcelable {
         count = in.readInt();
         price = in.readFloat();
         productName = in.readString();
+        discount = in.readFloat();
     }
 
 
@@ -121,6 +126,14 @@ public class OrderItemInfo implements Parcelable {
         this.price = privce;
     }
 
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -146,5 +159,8 @@ public class OrderItemInfo implements Parcelable {
         dest.writeInt(count);
         dest.writeFloat(price);
         dest.writeString(productName);
+        dest.writeFloat(discount);
     }
+
+
 }

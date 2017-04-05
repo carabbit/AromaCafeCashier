@@ -50,4 +50,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/order_status_normal" />
+    <TextView
+        android:id="@+id/order_discount"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:background="@drawable/discount_bg"
+        android:gravity="center"
+        android:text="@string/discount" />
 </bunny.project.aromacafecashier.view.HistoryOrderItemView>

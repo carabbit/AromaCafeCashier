@@ -32,7 +32,8 @@ public class QueryManager {
             , AccsTables.Order.COL_DATE // ........ 1
             , AccsTables.Order.COL_PAYED // ....... 2
             , AccsTables.Order.COL_PAY_TIME // .... 3
-            , AccsTables.Order.COL_STATUS // .... 4
+            , AccsTables.Order.COL_STATUS // ...... 4
+            , AccsTables.Order.COL_DISCOUNT // .... 5
     };
 
     public static final int INDEX_ORDER_ID = 0;
@@ -40,15 +41,17 @@ public class QueryManager {
     public static final int INDEX_ORDER_PAYED = 2;
     public static final int INDEX_ORDER_PAY_TIME = 3;
     public static final int INDEX_ORDER_STATUS = 4;
+    public static final int INDEX_ORDER_DISCOUNT = 5;
 
 
     public static final String[] PROJECTION_ORDER_DETAIL = new String[]{
-            AccsTables.OrderDetail._ID
-            , AccsTables.OrderDetail.COL_ORDER_ID
-            , AccsTables.OrderDetail.COL_PRODUCT_ID
-            , AccsTables.OrderDetail.COL_PRODUCT_NAME
-            , AccsTables.OrderDetail.COL_PRODUCT_PRICE
-            , AccsTables.OrderDetail.COL_COUNT
+            AccsTables.OrderDetail._ID // ................0
+            , AccsTables.OrderDetail.COL_ORDER_ID // .....1
+            , AccsTables.OrderDetail.COL_PRODUCT_ID // ...2
+            , AccsTables.OrderDetail.COL_PRODUCT_NAME // .3
+            , AccsTables.OrderDetail.COL_PRODUCT_PRICE //.4
+            , AccsTables.OrderDetail.COL_COUNT // ........5
+            , AccsTables.OrderDetail.COL_DISCOUNT // .....6
     };
 
     public static final int INDEX_ORDER_DETAIL_ID = 0;
@@ -57,6 +60,7 @@ public class QueryManager {
     public static final int INDEX_ORDER_DETAIL_PRODUCT_NAME = 3;
     public static final int INDEX_ORDER_DETAIL_PRODUCT_PRICE = 4;
     public static final int INDEX_ORDER_DETAIL_COUNT = 5;
+    public static final int INDEX_ORDER_DETAIL_DISCOUNT = 6;
 
 
     public static final String[] PROJECTION_PRODUCT = new String[]{

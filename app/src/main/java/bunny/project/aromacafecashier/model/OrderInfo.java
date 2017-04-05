@@ -21,7 +21,8 @@ public class OrderInfo {
     private int payed;
     private long date;
     private long pay_time;
-    private int orderStatus;
+    private int orderStatus = 0;
+    private float discount = 1.0f;
 
     public int getId() {
         return id;
@@ -60,6 +61,14 @@ public class OrderInfo {
         return orderStatus;
     }
 
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
     public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -71,7 +80,8 @@ public class OrderInfo {
         order.setPay_time(cursor.getLong(QueryManager.INDEX_ORDER_PAY_TIME));
         order.setDate(cursor.getLong(QueryManager.INDEX_ORDER_DATE));
         order.setOrderStatus(cursor.getInt(QueryManager.INDEX_ORDER_STATUS));
-        MyLog.i("xxx", order.toString());
+        order.setDiscount(cursor.getFloat(QueryManager.INDEX_ORDER_DISCOUNT));
+//        MyLog.i("xxx", order.toString());
         return order;
     }
 
@@ -80,7 +90,9 @@ public class OrderInfo {
         values.put(AccsTables.Order.COL_PAYED, getPayed());
         values.put(AccsTables.Order.COL_DATE, getDate());
         values.put(AccsTables.Order.COL_PAY_TIME, getPayTime());
-        MyLog.i("xxx", "[toContentValues] date:" + getDate() + " payTime:" + getPayTime());
+        values.put(AccsTables.Order.COL_STATUS, getOrderStatus());
+        values.put(AccsTables.Order.COL_DISCOUNT, getDiscount());
+//        MyLog.i("xxx", "[toContentValues] date:" + getDate() + " payTime:" + getPayTime());
         return values;
     }
 
@@ -91,16 +103,18 @@ public class OrderInfo {
         return builder.build();
     }
 
-    public static ContentProviderOperation getNewInsertOperation(boolean payed) {
+    public static ContentProviderOperation getNewInsertOperation(boolean payed, float discount) {
         OrderInfo order = new OrderInfo();
         long now = System.currentTimeMillis();
         order.setDate(now);
         if (payed) {
             order.setPay_time(now);
             order.setPayed(OrderInfo.PAYED);
+            order.setDiscount(discount);
         } else {
             order.setPay_time(-1);
             order.setPayed(OrderInfo.UNPAYED);
+            order.setDiscount(1.0f);
         }
 
         return order.toInsertContentProviderOperation();
@@ -108,6 +122,8 @@ public class OrderInfo {
 
     @Override
     public String toString() {
-        return "[ id:" + getId() + " payed:" + getPayed() + " time:" + getDate() + " pay_time:" + getPayTime() + " ]";
+        return "[ id:" + getId() + " payed:" + getPayed() + " time:" + getDate() + " pay_time:" + getPayTime() + " status:" + getOrderStatus() + " ]";
     }
+
+
 }

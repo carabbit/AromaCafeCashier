@@ -43,6 +43,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     private static final int TOKEN_INSERT_ORDER = 1;
 
     private TextView mTotalCashView;
+    private TextView mDiscountPriceView;
     private EditText mPayinView;
     private TextView mChargeView;
     private Button mConfirmBtn;
@@ -72,19 +73,53 @@ public class OrderConfirmDialogFragment extends DialogFragment {
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.btn_temp_order) {
-                v.setEnabled(false);
-                new InsertOrderTask(getActivity().getContentResolver(), mOrderId, false).execute();
-            } else if (v.getId() == R.id.btn_confirm) {
-                v.setEnabled(false);
-                new InsertOrderTask(getActivity().getContentResolver(), mOrderId, true).execute();
-            } else if (v.getId() == R.id.btn_cancel) {
-                dismiss();
-            } else {
-                int keyCode = DIGIT_ID_TO_EVENT_KEY.get(v.getId());
-                mPayinView.onKeyDown(keyCode, new KeyEvent(KeyEvent.ACTION_DOWN, keyCode));
+
+
+            switch (v.getId()) {
+                case R.id.discount_nine:
+                case R.id.discount_eight:
+                case R.id.discount_seven:
+                case R.id.discount_six:
+                case R.id.discount_five:
+                case R.id.discount_none:
+                    float discount = Float.valueOf((String) v.getTag());
+                    String totalCashSting = mTotalCashView.getText().toString();
+                    float totalCash = Float.valueOf(totalCashSting);
+                    float discountPrice = Math.round(discount * totalCash);
+                    mDiscountPriceView.setText(String.valueOf(discountPrice));
+                    mDiscountPriceView.setTag(discount);
+                    break;
+                case R.id.btn_temp_order:
+                    v.setEnabled(false);
+                    new InsertOrderTask(getActivity().getContentResolver(), mOrderId, false, 1.0f).execute();
+                    break;
+                case R.id.btn_confirm:
+                    v.setEnabled(false);
+
+                    float disCount = getDisCount();
+                    new InsertOrderTask(getActivity().getContentResolver(), mOrderId, true, disCount).execute();
+                    break;
+                case R.id.btn_cancel:
+                    dismiss();
+                    break;
+
+                default:
+                    int keyCode = DIGIT_ID_TO_EVENT_KEY.get(v.getId());
+                    mPayinView.onKeyDown(keyCode, new KeyEvent(KeyEvent.ACTION_DOWN, keyCode));
             }
 
+        }
+
+        private float getDisCount() {
+            Object disc = mDiscountPriceView.getTag();
+            float disCount = 1.0f;
+            if (disc != null && disc instanceof Float) {
+                disCount = (Float) disc;
+                if (disCount > 1.0) {
+                    throw new RuntimeException("discount is over 1.0");
+                }
+            }
+            return disCount;
         }
     };
 
@@ -101,10 +136,10 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            String totalCashSting = mTotalCashView.getText().toString();
+            String finalCashSting = mDiscountPriceView.getText().toString();
             String payInString = mPayinView.getText().toString();
 
-            float totalCash = TextUtils.isEmpty(totalCashSting) ? 0f : Float.valueOf(totalCashSting);
+            float totalCash = TextUtils.isEmpty(finalCashSting) ? 0f : Float.valueOf(finalCashSting);
             float payIn = TextUtils.isEmpty(payInString) ? 0f : Float.valueOf(payInString);
             float charge = payIn - totalCash;
 
@@ -141,7 +176,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 //            }
 //        });
 
-        View view = inflater.inflate(R.layout.order_comfirm, null);
+        View view = inflater.inflate(R.layout.order_comfirm_dialog_fragment, null);
 
         initView(view);
 
@@ -165,6 +200,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
 
         mTotalCashView = (TextView) view.findViewById(R.id.total_cash);
+        mDiscountPriceView = (TextView) view.findViewById(R.id.discounted_price);
         mPayinView = (EditText) view.findViewById(R.id.pay_in);
         mChargeView = (TextView) view.findViewById(R.id.charge);
         mConfirmBtn = (Button) view.findViewById(R.id.btn_confirm);
@@ -184,6 +220,13 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         view.findViewById(R.id.dot).setOnClickListener(mOnClickListener);
         view.findViewById(R.id.del).setOnClickListener(mOnClickListener);
 
+        view.findViewById(R.id.discount_nine).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.discount_eight).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.discount_seven).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.discount_six).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.discount_five).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.discount_none).setOnClickListener(mOnClickListener);
+
         Bundle data = getArguments();
         mOrderItems = data.getParcelableArrayList(IntentKeys.ORDER_ITEM_LIST);
         mOrderId = data.getInt(IntentKeys.ORDER_ID);
@@ -192,6 +235,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
 
         float totalCash = getTotalCash(mOrderItems);
         mTotalCashView.setText(String.valueOf(totalCash));
+        mDiscountPriceView.setText(String.valueOf(totalCash));
 
         mConfirmBtn.setOnClickListener(mOnClickListener);
         mCanceltn.setOnClickListener(mOnClickListener);
@@ -221,12 +265,14 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         private ContentResolver mResolver;
         private int mOrderId;
         private boolean mIsPayed;
+        private float mDiscount;
         private ContentProviderResult[] mResults;
 
-        public InsertOrderTask(ContentResolver resolver, int orderId, boolean isPayed) {
+        public InsertOrderTask(ContentResolver resolver, int orderId, boolean isPayed, float discount) {
             mResolver = resolver;
             mOrderId = orderId;
             mIsPayed = isPayed;
+            mDiscount = discount;
         }
 
         @Override
@@ -234,9 +280,9 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
             if (mOrderId <= 0) {
-                buildNewInsert(operations, mIsPayed);
+                buildNewInsert(operations, mIsPayed, mDiscount);
             } else {
-                buildUpdateOrder(operations, mOrderId, mIsPayed);
+                buildUpdateOrder(operations, mOrderId, mIsPayed, mDiscount);
             }
 
 
@@ -252,10 +298,11 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             return null;
         }
 
-        private void buildUpdateOrder(ArrayList<ContentProviderOperation> operations, int orderId, boolean isPayed) {
+        private void buildUpdateOrder(ArrayList<ContentProviderOperation> operations, int orderId, boolean isPayed, float discount) {
             ContentProviderOperation updatePeration = ContentProviderOperation.newUpdate(QueryManager.URI_ORDER)
                     .withValue(AccsTables.Order.COL_PAY_TIME, isPayed ? System.currentTimeMillis() : -1)
                     .withValue(AccsTables.Order.COL_PAYED, isPayed ? 1 : 0)
+                    .withValue(AccsTables.Order.COL_DISCOUNT, isPayed ? discount : 1.0f)
                     .withSelection(AccsTables.Order._ID + "=?", new String[]{String.valueOf(orderId)})
                     .build();
             operations.add(updatePeration);
@@ -266,6 +313,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
             operations.add(deleteOperation);
 
             for (OrderItemInfo item : mOrderItems) {
+                item.setDiscount(discount);
                 operations.add(item.toInertOperationWithOrderId(mOrderId));
             }
         }
@@ -273,11 +321,11 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         /**
          * 生成新的付款订单或挂单。
          */
-
-        private void buildNewInsert(ArrayList<ContentProviderOperation> operations, boolean isPayed) {
-            operations.add(OrderInfo.getNewInsertOperation(isPayed));
+        private void buildNewInsert(ArrayList<ContentProviderOperation> operations, boolean isPayed, float discount) {
+            operations.add(OrderInfo.getNewInsertOperation(isPayed, discount));
 
             for (OrderItemInfo item : mOrderItems) {
+                item.setDiscount(discount);
                 operations.add(item.toInsertContentProviderOperation(0));
             }
         }

@@ -62,6 +62,7 @@ public class AccsTables {
         public static final String COL_PAYED = "payed";
         public static final String COL_PAY_TIME = "pay_time";
         public static final String COL_STATUS = "status";
+        public static final String COL_DISCOUNT = "discount";
 
         public static String CREATE_TABLE = new StringBuilder()
                 .append("CREATE TABLE ")
@@ -72,6 +73,7 @@ public class AccsTables {
                 .append("," + COL_PAYED + " INTEGER")
                 .append("," + COL_PAY_TIME + " LONG")
                 .append("," + COL_STATUS+ " INTEGER DEFAULT 0")
+                .append("," + COL_DISCOUNT+ " FLOAT DEFAULT 1.0")
                 .append(");")
                 .toString();
     }
@@ -84,6 +86,7 @@ public class AccsTables {
         public static final String COL_PRODUCT_NAME = "product_name";
         public static final String COL_PRODUCT_PRICE = "product_price";
         public static final String COL_COUNT = "count";
+        public static final String COL_DISCOUNT = Order.COL_DISCOUNT;
 
         public static String CREATE_TABLE = new StringBuilder()
                 .append("CREATE TABLE ")
@@ -95,6 +98,7 @@ public class AccsTables {
                 .append("," + COL_PRODUCT_NAME + " TEXT")
                 .append("," + COL_PRODUCT_PRICE + " TEXT")
                 .append("," + COL_COUNT + " INTEGER ")
+                .append("," + COL_DISCOUNT+ " FLOAT DEFAULT 1.0")
                 .append(");")
                 .toString();
     }

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +66,9 @@ public class OrderListFragment extends Fragment {
     private View mTodayReprotContainer;
 
     private int mCurrentClickItemId = -1;
+
+    private long mLastClickTime;
+    private static final int CLICK_INTERVAL = 60 * 1000;
 
     public void setOrderItemClickListener(OrderItemClickListener listener) {
         this.mOrderItemClickListener = listener;
@@ -152,7 +156,9 @@ public class OrderListFragment extends Fragment {
             while (cursor.moveToNext()) {
                 int count = cursor.getInt(QueryManager.INDEX_ORDER_DETAIL_COUNT);
                 float price = cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_PRODUCT_PRICE);
-                cash += count * price;
+                float discount = cursor.getFloat(QueryManager.INDEX_ORDER_DETAIL_DISCOUNT);
+                MyLog.i("", "discount:" + discount);
+                cash += count * price * discount;
             }
 
             return cash;
@@ -191,7 +197,20 @@ public class OrderListFragment extends Fragment {
                     queryTodayData();
                     break;
                 case R.id.btn_send_report:
-                    sendReport();
+                    long currentTime = System.currentTimeMillis();
+                    long interval = currentTime - mLastClickTime;
+                    if (interval < 0) {
+                        Toast.makeText(getActivity(), getString(R.string.sys_time_error), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else if (interval < CLICK_INTERVAL) {
+                        Toast.makeText(getActivity(), getString(R.string.cool_time, (CLICK_INTERVAL - interval) / 1000), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        mLastClickTime = currentTime;
+                        sendReport();
+                        MyLog.i("", "sendReport()");
+                    }
+
                     break;
             }
         }
@@ -351,6 +370,8 @@ public class OrderListFragment extends Fragment {
             } else {
                 itemView.getSelectIcon().setVisibility(View.INVISIBLE);
             }
+
+            itemView.getDiscountIcon().setVisibility(order.getDiscount() < 1.0 ? View.VISIBLE : View.INVISIBLE);
         }
     }
 

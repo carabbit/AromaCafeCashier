@@ -44,7 +44,7 @@
             <ImageView
                 android:layout_width="30px"
                 android:layout_height="30px"
-                android:src="@drawable/item_select_icon"
+                android:src="@drawable/discount_bg"
                 android:visibility="invisible" />
 
             <TextView

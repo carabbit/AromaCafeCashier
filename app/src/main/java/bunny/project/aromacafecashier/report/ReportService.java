@@ -16,6 +16,7 @@ import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -90,8 +91,8 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
 
             SharedPreferences sharedPreferences = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
             sharedPreferences.edit().putInt(PREF_KEY_SEND_DAY, dayNow).commit();
-            MyLog.i("onSendFinish", "success:" + success);
         }
+        MyLog.i("onSendFinish", "success:" + success);
     }
 
     private class MyHandler extends Handler {

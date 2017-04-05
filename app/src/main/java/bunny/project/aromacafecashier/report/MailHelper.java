@@ -1,17 +1,14 @@
 package bunny.project.aromacafecashier.report;
 
-import android.os.Handler;
-import android.os.HandlerThread;
-
 import java.util.Properties;
 
 import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -25,11 +22,23 @@ import bunny.project.aromacafecashier.MyLog;
 
 public class MailHelper {
 
+    private static Address[] TO_ADDRESSES;
+
+    static {
+        try {
+            TO_ADDRESSES = new Address[]{
+                    new InternetAddress("1172434168@qq.com"),
+                    new InternetAddress("supercarabbit@qq.com")
+            };
+        } catch (AddressException e) {
+            MyLog.i("", e.toString());
+        }
+    }
+
+
     public static boolean sendTodaySheet(String title, String content) {
         final String sendUserName = "aroma_cafe@163.com";
         final String sendPassword = "orange12345";
-        final String mailToAddress1 = "1172434168@qq.com";
-        final String mailToAddress2 = "supercarabbit@qq.com";
 
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
@@ -53,7 +62,7 @@ public class MailHelper {
         try {
             Message message = new MimeMessage(session);//构建发送的信息
             message.setFrom(new InternetAddress("aroma_cafe@163.com"));//发件人
-            message.setRecipients(Message.RecipientType.TO, new Address[]{new InternetAddress(mailToAddress1), new InternetAddress(mailToAddress2)});
+            message.setRecipients(Message.RecipientType.TO, TO_ADDRESSES);
             message.setSubject(title);
             message.setText(content);//信息内容
             MimeBodyPart textPart = new MimeBodyPart();

@@ -5,6 +5,7 @@
     <string name="tab_product_manager">商品\n管理</string>
     <string name="order">订单</string>
     <string name="order_detail">订单详情</string>
+    <string name="order_discount">折扣</string>
     <string name="order_id">订单编号</string>
     <string name="temp_order">挂单</string>
     <string name="confirm_order">下单</string>
@@ -27,8 +28,12 @@
     <string name="item_title_count">数量</string>
     <string name="item_title_sum">小计</string>
     <string name="total_cash">合计：%1$.1f 元</string>
+    <string name="total_discount">折后：%1$.1f 元</string>
+    <string name="cool_time">冷却时间还有%1$d秒</string>
+    <string name="sys_time_error">系统时间错误</string>
     <string name="sum_price">%1$.1f</string>
     <string name="total_cash_single">合计：</string>
+    <string name="discounted_price">折后价：</string>
     <string name="pay_in">实收：</string>
     <string name="charge">找零：</string>
     <string name="product_info">商品信息</string>
@@ -64,14 +69,16 @@
     <string name="all_order">全部订单</string>
     <string name="send_report">发送报表</string>
     <string name="no_type">未分类</string>
-    <string name="cost_off_nine">9折</string>
-    <string name="cost_off_eight">8折</string>
-    <string name="cost_off_seven">7折</string>
-    <string name="cost_off_six">6折</string>
-    <string name="cost_off_five">5折</string>
+    <string name="discount_nine">9折</string>
+    <string name="discount_eight">8折</string>
+    <string name="discount_seven">7折</string>
+    <string name="discount_six">6折</string>
+    <string name="discount_five">5折</string>
+    <string name="discount_none">无折扣</string>
     <string name="password_wrong">密码错误</string>
     <string name="delete_order_confirm">是否删除该订单？</string>
     <string name="recover_order_confirm">是否恢复该订单？</string>
     <string name="order_status_normal">正常</string>
     <string name="order_status_delete">作废</string>
+    <string name="discount">折</string>
 </resources>

@@ -37,6 +37,7 @@ public class OrderDetailFragment extends Fragment {
 
     private boolean mIsHistoryMode;
     private TextView mTotalCashView;
+    private TextView mTotalDiscountView;
     private TextView mOrderNumber;
     private int mOrderId = -1;
 
@@ -147,13 +148,28 @@ public class OrderDetailFragment extends Fragment {
 
     private void countTotalCash() {
         float totalCash = 0f;
+        float totalDiscount = 0f;
+
+
         for (OrderItemInfo item : mOrderItems) {
             totalCash += item.getCount() * item.getProductPrice();
+            totalDiscount += item.getCount() * item.getProductPrice() * item.getDiscount();
         }
         String totalCashStr = getResources().getString(R.string.total_cash, totalCash);
+
+
 //        MyLog.i("xxx", "totalCashStr:" + totalCashStr);
 //        mTotalCashView.setText(String.format(totalCashStr, totalCash));
         mTotalCashView.setText(totalCashStr);
+
+        if (totalCash == totalDiscount) {
+            mTotalDiscountView.setVisibility(View.GONE);
+        } else {
+            String totalDiscountStr = getResources().getString(R.string.total_discount, totalDiscount);
+            mTotalDiscountView.setVisibility(View.VISIBLE);
+            mTotalDiscountView.setText(totalDiscountStr);
+        }
+
     }
 
     @Override
@@ -179,6 +195,7 @@ public class OrderDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTotalCashView = (TextView) view.findViewById(R.id.total_cash);
+        mTotalDiscountView = (TextView) view.findViewById(R.id.total_discount_price);
         mOrderNumber = (TextView) view.findViewById(R.id.order_number);
         mOrderListView = (ListView) view.findViewById(R.id.list);
 
