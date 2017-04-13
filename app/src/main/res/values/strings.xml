@@ -81,4 +81,5 @@
     <string name="order_status_normal">正常</string>
     <string name="order_status_delete">作废</string>
     <string name="discount">折</string>
+    <string name="choose_product">请选择商品</string>
 </resources>

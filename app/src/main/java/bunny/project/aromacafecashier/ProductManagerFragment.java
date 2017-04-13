@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import bunny.project.aromacafecashier.model.Product;
 import bunny.project.aromacafecashier.utility.BitmapTool;
@@ -21,16 +22,15 @@ import bunny.project.aromacafecashier.utility.IntentKeys;
 
 public class ProductManagerFragment extends Fragment implements ProductListFragment.ProductItemClickListener {
 
-    Button mBtnCreateProduct;
-    Button mBtnDeleteProduct;
-    Button mBtnDeleteType;
+    private Button mBtnCreateProduct;
+    private Button mBtnDeleteProduct;
+    private Button mBtnDeleteType;
     //    ImageView mBtnBack;
-    // TODO 商品编辑功能（待做）
-    //    Button mBtnEdit;
-    ImageView mProductImgView;
-    TextView mProductNameView;
-    TextView mProudctPriceView;
-    TextView mProductTypeView;
+    private Button mBtnEditProduct;
+    private ImageView mProductImgView;
+    private TextView mProductNameView;
+    private TextView mProudctPriceView;
+    private TextView mProductTypeView;
     private ProductListFragment mProductListFragment;
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -42,7 +42,10 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
                     deleteType();
                     break;
                 case R.id.btn_delete:
-                    deteteProduct(v);
+                    deleteProduct(v);
+                    break;
+                case R.id.btn_edit:
+                    editProduct(v);
                     break;
                 case R.id.btn_create:
                     startActivity(new Intent(getActivity(), ProductEditorActivity.class));
@@ -89,26 +92,13 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
 
         mBtnDeleteType = (Button) view.findViewById(R.id.btn_detele_type);
         mBtnDeleteProduct = (Button) view.findViewById(R.id.btn_delete);
-//        mBtnEdit = (Button) findViewById(R.id.btn_edit);
+        mBtnEditProduct = (Button) view.findViewById(R.id.btn_edit);
         mBtnCreateProduct = (Button) view.findViewById(R.id.btn_create);
 
         mBtnCreateProduct.setOnClickListener(mOnClickListener);
         mBtnDeleteProduct.setOnClickListener(mOnClickListener);
+        mBtnEditProduct.setOnClickListener(mOnClickListener);
         mBtnDeleteType.setOnClickListener(mOnClickListener);
-
-//        mBtnEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                editProduct(v);
-//            }
-//        });
-
-//        mBtnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
     }
 
     private void editProduct(View v) {
@@ -119,10 +109,12 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             Intent intent = new Intent(getActivity(), ProductEditorActivity.class);
             intent.putExtra(IntentKeys.ID, productId);
             startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), R.string.choose_product, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void deteteProduct(View v) {
+    private void deleteProduct(View v) {
         Object tag = v.getTag();
         if (tag != null && tag instanceof Integer) {
             int productId = (Integer) tag;
@@ -130,7 +122,10 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             mProductListFragment.deleteItem(productId);
 
             setPrudoctInfo(null);
+        } else {
+            Toast.makeText(getActivity(), R.string.choose_product, Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void setPrudoctInfo(Product product) {
@@ -141,19 +136,21 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
             mProductTypeView.setText(null);
 
             mBtnDeleteProduct.setTag(null);
-//            mBtnEdit.setTag(null);
+            mBtnEditProduct.setTag(null);
         } else {
             mProductImgView.setImageBitmap(BitmapTool.bytes2Bimap(product.getImage()));
             mProductNameView.setText(product.getName());
             mProudctPriceView.setText(String.valueOf(product.getPrice()));
             mProductTypeView.setText(product.getType());
-            mBtnDeleteProduct.setTag(Integer.valueOf(product.getId()));
+            mBtnDeleteProduct.setTag(product.getId());
+            mBtnEditProduct.setTag(product.getId());
         }
     }
 
 
     @Override
     public void onItemClick(Product product) {
+        MyLog.i("", "onItemClick");
         setPrudoctInfo(product);
     }
 
