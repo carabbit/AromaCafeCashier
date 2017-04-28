@@ -1,6 +1,7 @@
 package bunny.project.aromacafecashier;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import bunny.project.aromacafecashier.model.OrderItemInfo;
+import bunny.project.aromacafecashier.report.ReportService;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
@@ -46,6 +48,9 @@ public class OrderFragment extends Fragment implements OrderConfirmDialogFragmen
                 }
 
                 showConfirmDialog(mOrderListFragment.getOrderId(), orderItems);
+
+                // 每次点击下单按钮，启动邮件发送服务，防止service被系统终止。
+                getActivity().startService(new Intent(getActivity(), ReportService.class));
 
                 return;
             }

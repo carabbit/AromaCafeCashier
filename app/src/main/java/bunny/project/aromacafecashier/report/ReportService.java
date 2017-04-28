@@ -1,25 +1,18 @@
 package bunny.project.aromacafecashier.report;
 
-import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.SystemClock;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import bunny.project.aromacafecashier.MainActivity;
 import bunny.project.aromacafecashier.MyLog;
@@ -31,7 +24,10 @@ import bunny.project.aromacafecashier.R;
 
 public class ReportService extends Service implements SendReportTask.OnSendFinishListener {
     private static final int MSG_SEND_REPORT = 1;
-    private static final int REPEAT_INTERVAL = 1 * 30 * 1000;
+    private static final int MSG_RECV_MAIL = 2;
+
+    private static final int REPEAT_INTERVAL = 1 * 30 * 1000;//间隔30秒
+    private static final int RECEIVE_MAIL_INTERVAL = 2 * 60 * 1000;//接收邮件间隔2分
 
     private static final int SEND_HOUR = 21;//每天21：45时发送邮件
     private static final int SEND_MINUTE = 45;
@@ -66,8 +62,15 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        mHandler.sendEmptyMessageDelayed(MSG_SEND_REPORT, 0);
-        MyLog.i("onStart", "sendEmptyMessageDelayed");
+        if (mHandler.hasMessages(MSG_SEND_REPORT)) {
+            mHandler.removeMessages(MSG_SEND_REPORT);
+            mHandler.sendEmptyMessageDelayed(MSG_SEND_REPORT, 0);
+            MyLog.i("onStart", "sendEmptyMessage");
+        } else {
+            mHandler.sendEmptyMessageDelayed(MSG_SEND_REPORT, REPEAT_INTERVAL);
+            MyLog.i("onStart", "sendEmptyMessageDelayed");
+        }
+
     }
 
     @Nullable
@@ -78,7 +81,17 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MyLog.i("onStartCommand", "");
+        if (mHandler.hasMessages(MSG_SEND_REPORT)) {
+            mHandler.removeMessages(MSG_SEND_REPORT);
+            mHandler.sendEmptyMessageDelayed(MSG_SEND_REPORT, 0);
+            MyLog.i("onStartCommand", "sendEmptyMessage");
+        } else {
+            mHandler.sendEmptyMessageDelayed(MSG_SEND_REPORT, REPEAT_INTERVAL);
+            MyLog.i("onStartCommand", "sendEmptyMessageDelayed");
+        }
+
+        MyLog.i("onStartCommand", "sendEmptyMessageDelayed");
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -96,27 +109,31 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
     }
 
     private class MyHandler extends Handler {
-
+        private Executor executor = Executors.newSingleThreadExecutor();
 
         @Override
         public void handleMessage(Message msg) {
-            Calendar now = Calendar.getInstance();
-            int dayNow = now.get(Calendar.DAY_OF_MONTH);
-            int hourNow = now.get(Calendar.HOUR_OF_DAY);
-            int minuteNow = now.get(Calendar.MINUTE);
-            MyLog.i("", " day:" + dayNow + " h:" + hourNow + " m:" + minuteNow);
-            if (hourNow == SEND_HOUR && minuteNow >= SEND_MINUTE && minuteNow <= SEND_MINUTE_LIMIT) {
-                SharedPreferences sharedPreferences = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
-                int pref_day = sharedPreferences.getInt(PREF_KEY_SEND_DAY, 0);
-                MyLog.i("handleMessage", "pref_day:" + pref_day);
-                if (pref_day == 0 || pref_day != dayNow) {
-                    new SendReportTask(ReportService.this, ReportService.this).execute();
-                    MyLog.i("handleMessage", "SendReportTask");
+            if (msg.what == MSG_SEND_REPORT) {
+                Calendar now = Calendar.getInstance();
+                int dayNow = now.get(Calendar.DAY_OF_MONTH);
+                int hourNow = now.get(Calendar.HOUR_OF_DAY);
+                int minuteNow = now.get(Calendar.MINUTE);
+                MyLog.i("", " day:" + dayNow + " h:" + hourNow + " m:" + minuteNow);
+                if (hourNow == SEND_HOUR && minuteNow >= SEND_MINUTE && minuteNow <= SEND_MINUTE_LIMIT) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+                    int pref_day = sharedPreferences.getInt(PREF_KEY_SEND_DAY, 0);
+                    MyLog.i("handleMessage", "pref_day:" + pref_day);
+                    if (pref_day == 0 || pref_day != dayNow) {
+                        new SendReportTask(ReportService.this, ReportService.this).executeOnExecutor(executor);
+                        MyLog.i("handleMessage", "SendReportTask");
+                    }
+
                 }
 
+                sendEmptyMessageDelayed(MSG_SEND_REPORT, REPEAT_INTERVAL);
+            } else if (msg.what == MSG_RECV_MAIL) {
+                sendEmptyMessageDelayed(MSG_RECV_MAIL, RECEIVE_MAIL_INTERVAL);
             }
-
-            sendEmptyMessageDelayed(MSG_SEND_REPORT, REPEAT_INTERVAL);
         }
 
 

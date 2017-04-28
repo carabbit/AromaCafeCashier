@@ -24,7 +24,7 @@ import bunny.project.aromacafecashier.provider.AccsTables;
  * Created by bunny on 17-3-30.
  */
 public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
-
+    private static final String TAG = SendReportTask.class.getSimpleName();
     private ContentResolver mResolver;
     private Context mContext;
     private OnSendFinishListener mListener;
@@ -43,6 +43,8 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
+        MyLog.i(TAG, "[doInBackground]");
+
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);

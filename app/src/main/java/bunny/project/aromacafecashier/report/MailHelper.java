@@ -89,4 +89,8 @@ public class MailHelper {
 
         return true;
     }
+
+    public static void receiveMail() {
+
+    }
 }
