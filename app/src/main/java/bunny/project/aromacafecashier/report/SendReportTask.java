@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import bunny.project.aromacafecashier.MyLog;
 import bunny.project.aromacafecashier.QueryManager;
 import bunny.project.aromacafecashier.R;
+import bunny.project.aromacafecashier.backup.BackupDatabase;
 import bunny.project.aromacafecashier.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.provider.AccsTables;
@@ -30,6 +32,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
     private OnSendFinishListener mListener;
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
     private SimpleDateFormat mContentDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CHINA);
+    private File mDbFile;
 
     public static interface OnSendFinishListener {
         void onSendFinish(boolean success);
@@ -63,13 +66,21 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
         String formatDate = mDateFormat.format(new Date(System.currentTimeMillis()));
         String title = mContext.getResources().getString(R.string.today_repot, formatDate);
 
-        return MailHelper.sendTodaySheet(title, content);
+
+        mDbFile = BackupDatabase.pullDatabase();
+
+        return MailHelper.sendTodaySheet(title, content, mDbFile);
     }
 
     @Override
     protected void onPostExecute(Boolean result) {
         if (mListener != null) {
             mListener.onSendFinish(result);
+        }
+
+        if (mDbFile!=null){
+            boolean ret = mDbFile.delete();
+            MyLog.i("", "delete tmp db file result: " + ret);
         }
     }
 

@@ -1,10 +1,19 @@
 package bunny.project.aromacafecashier.report;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import javax.activation.CommandMap;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.activation.MailcapCommandMap;
 import javax.mail.Address;
 import javax.mail.Authenticator;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -13,6 +22,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 import bunny.project.aromacafecashier.MyLog;
 
@@ -36,7 +46,7 @@ public class MailHelper {
     }
 
 
-    public static boolean sendTodaySheet(String title, String content) {
+    public static boolean sendTodaySheet(String title, String content, File file) {
         final String sendUserName = "aroma_cafe@163.com";
         final String sendPassword = "orange12345";
 
@@ -64,30 +74,58 @@ public class MailHelper {
             message.setFrom(new InternetAddress("aroma_cafe@163.com"));//发件人
             message.setRecipients(Message.RecipientType.TO, TO_ADDRESSES);
             message.setSubject(title);
-            message.setText(content);//信息内容
-            MimeBodyPart textPart = new MimeBodyPart();
-            textPart.setContent("图文加附件邮件测试", "text/html;charset=UTF-8");
 
-            MimeMultipart mmp2 = new MimeMultipart();
-            mmp2.addBodyPart(textPart);
-//
+            Multipart multipart = new MimeMultipart();
 
-//            MimeBodyPart imagePart = new MimeBodyPart();
-//            imagePart.setDataHandler(new DataHandler(new FileDataSource("imagePath")));//图片路径
-//            imagePart.setContentID("myimg");
 
-            message.setContent(content, "text/html;charset=UTF-8");
+            addContent(multipart, content);
+            addFile(multipart, file);
 
-//            message.setContent(mmp2);
+            message.setContent(multipart);
+
+
+            MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
+            mc.addMailcap("text/html;; x-Java-content-handler=com.sun.mail.handlers.text_html");
+            mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+            mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+            mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+            mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
+            CommandMap.setDefaultCommandMap(mc);
 
 
             Transport.send(message);
         } catch (Exception e) {
-            MyLog.i("", e.toString());
+            MyLog.i("sendTodaySheet", e.toString());
             return false;
         }
 
         return true;
+    }
+
+    private static void addFile(Multipart multipart, File file) {
+        if (file == null || file.isDirectory() || !file.exists()) {
+            return;
+        }
+        try {
+            BodyPart bodyPart = new MimeBodyPart();
+            FileDataSource fileDataSource = new FileDataSource(file);
+            bodyPart.setDataHandler(new DataHandler(fileDataSource));
+            bodyPart.setFileName(MimeUtility.encodeText(fileDataSource.getName(), "UTF-8", null));
+
+            multipart.addBodyPart(bodyPart);
+        } catch (MessagingException e) {
+        } catch (UnsupportedEncodingException e) {
+        }
+    }
+
+    private static void addContent(Multipart multipart, String content) {
+        try {
+            BodyPart bodyPart = new MimeBodyPart();
+            bodyPart.setContent(content, "text/html;charset=UTF-8");
+            multipart.addBodyPart(bodyPart);
+        } catch (MessagingException e) {
+            MyLog.i("", e.getMessage());
+        }
     }
 
     public static void receiveMail() {

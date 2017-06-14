@@ -15,14 +15,18 @@ import bunny.project.aromacafecashier.provider.AccsDbHelper;
 public class BackupDatabase {
     private static final String TAG = BackupDatabase.class.getSimpleName();
 
-    private static final String CONTACTS_PROVIDER_DB = "/data/data/bunny.project.aromacafecashier/databases/" + AccsDbHelper.DB_NAME;
+    private static final String DB_PATH = "/data/data/bunny.project.aromacafecashier/databases/" + AccsDbHelper.DB_NAME;
 
 
-    public static String getDatabasePath() {
-        return null;
+//    public static String getDatabasePath() {
+//        return null;
+//    }
+
+    public static File pullDatabase() {
+        return pullDatabase(DB_PATH, AccsDbHelper.DB_NAME);
     }
 
-    private void pullDatabase(String srcPath, String destFileName) {
+    private static File pullDatabase(String srcPath, String destFileName) {
         File sourceFile = new File(srcPath);
 
         File sdPath = null;
@@ -43,6 +47,9 @@ public class BackupDatabase {
         } catch (IOException e) {
             MyLog.i(TAG, "[pullDatabase]:" + e.getMessage());
             MyLog.i(TAG, "pull " + destFileName + " fail");
+            targetFile = null;
         }
+
+        return targetFile;
     }
 }
