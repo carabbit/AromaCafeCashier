@@ -1,1 +1,1 @@
-include ':pad'
+include ':pad', ':phone'
