@@ -8,13 +8,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import bunny.project.aromacafecashier.common.MLog;
+import bunny.project.aromacafecashier.lantransport.LanTransportHelper;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 

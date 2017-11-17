@@ -15,12 +15,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import bunny.project.aromacafecashier.MyLog;
-import bunny.project.aromacafecashier.QueryManager;
+import bunny.project.aromacafecashier.common.QueryManager;
 import bunny.project.aromacafecashier.R;
 import bunny.project.aromacafecashier.backup.BackupDatabase;
-import bunny.project.aromacafecashier.model.OrderInfo;
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 
 /**
  * Created by bunny on 17-3-30.
@@ -209,7 +210,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
         String selection = AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         String orderBy = AccsTables.Order.COL_STATUS + " ASC , " + AccsTables.Order.COL_PAYED + " DESC , " + AccsTables.Order.COL_DATE + " DESC";
-        return mResolver.query(QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+        return mResolver.query(AccsUris.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
     private Cursor queryTodayProducts(long todayZeroTime, long nextDayZeroTime) {
@@ -217,7 +218,7 @@ public class SendReportTask extends AsyncTask<Void, Void, Boolean> {
                 + " SELECT " + AccsTables.Order._ID + " FROM " + AccsTables.Order.TABLE_NAME + " WHERE " + AccsTables.Order.COL_DATE + " BETWEEN ? AND ? "
                 + ")";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
-        return mResolver.query(QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+        return mResolver.query(AccsUris.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
 
     }
 

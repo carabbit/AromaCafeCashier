@@ -26,8 +26,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import bunny.project.aromacafecashier.model.OrderInfo;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.QueryManager;
+import bunny.project.aromacafecashier.common.model.OrderInfo;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 import bunny.project.aromacafecashier.report.SendReportTask;
 import bunny.project.aromacafecashier.view.HistoryOrderItemView;
 
@@ -299,7 +301,7 @@ public class OrderListFragment extends Fragment {
         String selection = AccsTables.Order.COL_PAYED + " = ? AND " + AccsTables.Order.COL_STATUS + " = ?";
         String[] args = new String[]{"0", "0"};
         String orderBy = AccsTables.Order.COL_DATE + " DESC";
-        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_TEMP_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_TEMP_ORDER, null, AccsUris.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
 
@@ -322,7 +324,7 @@ public class OrderListFragment extends Fragment {
         String selection = "(" + AccsTables.Order.COL_STATUS + " = ? ) AND (" + AccsTables.Order.COL_DATE + " BETWEEN ? AND ? ) ";
         String[] args = new String[]{String.valueOf(OrderInfo.STATUS_NOMAL), String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
         String orderBy = AccsTables.Order.COL_STATUS + " ASC , " + AccsTables.Order.COL_PAYED + " ASC , " + AccsTables.Order.COL_DATE + " DESC";
-        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_ORDER, null, AccsUris.URI_ORDER, QueryManager.PROJECTION_ORDER, selection, args, orderBy);
     }
 
     private void queryTodayProducts(long todayZeroTime, long nextDayZeroTime) {
@@ -332,12 +334,12 @@ public class OrderListFragment extends Fragment {
                 + " AND " + AccsTables.Order.COL_STATUS + " = 0"
                 + ")";
         String[] args = new String[]{String.valueOf(todayZeroTime), String.valueOf(nextDayZeroTime)};
-        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_PRODUCTS, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+        mQueryHandler.startQuery(TOKEN_QUEREY_TODAY_PRODUCTS, null, AccsUris.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
     }
 
     private void queryAllOrders() {
         String orderBy = AccsTables.Order.COL_DATE + " DESC";
-        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_ORDER, null, QueryManager.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
+        mQueryHandler.startQuery(TOKEN_QUEREY_ALL_ORDER, null, AccsUris.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, orderBy);
     }
 
     private class OrderListAdapter extends CursorAdapter {
@@ -403,6 +405,6 @@ public class OrderListFragment extends Fragment {
         values.put(AccsTables.Order.COL_STATUS, info.getOrderStatus() == 0 ? 1 : 0);
         String selection = AccsTables.Order._ID + " = ?";
         String[] args = new String[]{String.valueOf(info.getId())};
-        mQueryHandler.startUpdate(TOKEN_UPDATE_ORDER_STATUS, info, QueryManager.URI_ORDER, values, selection, args);
+        mQueryHandler.startUpdate(TOKEN_UPDATE_ORDER_STATUS, info, AccsUris.URI_ORDER, values, selection, args);
     }
 }

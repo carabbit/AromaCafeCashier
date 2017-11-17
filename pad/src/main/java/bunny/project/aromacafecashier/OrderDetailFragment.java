@@ -15,10 +15,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import bunny.project.aromacafecashier.model.OrderInfo;
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.QueryManager;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.model.Product;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 import bunny.project.aromacafecashier.view.OrderItemView;
 
@@ -221,7 +222,7 @@ public class OrderDetailFragment extends Fragment {
         mOrderItems.clear();
         String selection = AccsTables.OrderDetail.COL_ORDER_ID + "=?";
         String[] args = new String[]{String.valueOf(orderId)};
-        mQueryOrderHandler.startQuery(0, null, QueryManager.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
+        mQueryOrderHandler.startQuery(0, null, AccsUris.URI_ORDER_DETAIL, QueryManager.PROJECTION_ORDER_DETAIL, selection, args, null);
         mOrderNumber.setText(getString(R.string.order_number, orderId));
         mOrderNumber.setVisibility(View.VISIBLE);
     }

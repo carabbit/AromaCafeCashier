@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 import bunny.project.aromacafecashier.MainActivity;
 import bunny.project.aromacafecashier.MyLog;
 import bunny.project.aromacafecashier.R;
+import bunny.project.aromacafecashier.common.MLog;
+import bunny.project.aromacafecashier.lantransport.LanTransportHelper;
 
 /**
  * Created by bunny on 17-3-31.
@@ -56,6 +58,9 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
         builder.setContentText("运行中");
         Notification notification = builder.build();
         startForeground(1, notification);
+
+        LanTransportHelper.getInstance().startSyncServer();
+        MLog.i("", "" + getDatabasePath("accs.db").getPath());
     }
 
     @Override

@@ -1,6 +1,20 @@
 <resources>
-    <string name="app_name">phone</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Aroma</string>
+    <string name="title_sales">营业额</string>
+    <string name="title_manager">商品管理</string>
+    <string name="title_setting">设置</string>
+    <string name="search">搜索</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="today">今日</string>
+    <string name="month">本月</string>
+    <string name="custom">自定义</string>
+    <string name="last_sync_time">上次同步时间：%1$s</string>
+    <string name="not_sync">未同步</string>
+    <string name="sales_cash">营业额：%1$.1f</string>
+    <string name="finish_order_count">完成订单：%1$d</string>
+    <string name="temp_order_count">挂单：%1$d</string>
+    <string name="canceled_order_count">作废：%1$d</string>
+    <string name="no_value">-</string>
 </resources>

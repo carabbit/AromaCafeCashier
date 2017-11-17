@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import bunny.project.aromacafecashier.MyLog;
-import bunny.project.aromacafecashier.provider.AccsDbHelper;
+import bunny.project.aromacafecashier.common.provider.AccsDbHelper;
 
 /**
  * Created by bunny on 17-4-28.

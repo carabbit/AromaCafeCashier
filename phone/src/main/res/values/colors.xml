@@ -3,4 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="commandBg">#000</color>
+    <color name="commandText">#0F0</color>
+
+    <color name="yellow">#ff8b14</color>
+    <color name="green">#54c671</color>
+    <color name="red">#ff505d</color>
+
+    <!--订单列表高亮-->
+    <color name="list_item_highlight">@color/yellow</color>
+    <color name="list_item_delete">@color/red</color>
+    <color name="white">#f5f1f9</color>
+
+    <color name="screen_bg">#112212</color>
+    <color name="screen_text">#23f87c</color>
+
 </resources>

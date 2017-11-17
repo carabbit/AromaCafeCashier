@@ -4,12 +4,13 @@
     android:versionCode="10"
     android:versionName="1.9">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".AccsApplication"
@@ -55,17 +56,15 @@
         </activity>
         <activity
             android:name=".ProductEditorActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
 
         <service android:name=".report.ReportService">
             <!--<intent-filter>-->
-                <!--<action android:name="bunny.action.ReportService" />-->
+            <!--<action android:name="bunny.action.ReportService" />-->
             <!--</intent-filter>-->
         </service>
 
-        <provider
-            android:name=".provider.AccsProvider"
-            android:authorities="bunny.project.aromacafecashier"/>
+
     </application>
 
 </manifest>

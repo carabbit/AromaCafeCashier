@@ -26,8 +26,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import bunny.project.aromacafecashier.common.AccsUris;
 import bunny.project.aromacafecashier.model.ProductType;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
 
 /**
@@ -220,7 +221,7 @@ public class ProductEditorActivity extends Activity {
         if (mImgProduct.getTag() != null && ((Integer) mImgProduct.getTag() == TAG_PRODUCT_IMG_UPDATE)) {
             values.put(AccsTables.Product.COL_IMAGE, BitmapTool.drawable2Bytes(mImgProduct.getDrawable()));
         }
-        mQueryProductHandler.startInsert(TOKEN_INSERT_PRODUCT, null, QueryManager.URI_PRODUCT, values);
+        mQueryProductHandler.startInsert(TOKEN_INSERT_PRODUCT, null, AccsUris.URI_PRODUCT, values);
     }
 
     @Override
@@ -274,19 +275,19 @@ public class ProductEditorActivity extends Activity {
 
     private void queryAllProductType() {
         String[] projection = new String[]{AccsTables.Type._ID, AccsTables.Type.COL_NAME};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, projection, null, null, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_ALL_TYPE, null, AccsUris.URI_TYPE, projection, null, null, null);
     }
 
     private void queryProductType(String type) {
         String selection = AccsTables.Type.COL_NAME + "=?";
         String[] agrs = new String[]{type};
-        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, QueryManager.URI_TYPE, new String[]{AccsTables.Type._ID}, selection, agrs, null);
+        mQueryProductHandler.startQuery(TOKEN_QUERY_TYPE, type, AccsUris.URI_TYPE, new String[]{AccsTables.Type._ID}, selection, agrs, null);
     }
 
     private void insertProductType(String type) {
         ContentValues values = new ContentValues();
         values.put(AccsTables.Type.COL_NAME, type);
-        mQueryProductHandler.startInsert(TOKEN_INSERT_TYPE, type, QueryManager.URI_TYPE, values);
+        mQueryProductHandler.startInsert(TOKEN_INSERT_TYPE, type, AccsUris.URI_TYPE, values);
     }
 
     /*

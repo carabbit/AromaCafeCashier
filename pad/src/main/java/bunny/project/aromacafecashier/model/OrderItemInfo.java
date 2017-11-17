@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import bunny.project.aromacafecashier.QueryManager;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.QueryManager;
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 
 /**
  * Created by bunny on 17-3-15.
@@ -37,14 +38,14 @@ public class OrderItemInfo implements Parcelable {
     }
 
     public ContentProviderOperation toInertOperationWithOrderId(int orderId) {
-        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(QueryManager.URI_ORDER_DETAIL);
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(AccsUris.URI_ORDER_DETAIL);
         builder.withValue(AccsTables.OrderDetail.COL_ORDER_ID, orderId);
         buildInsertPart(builder);
         return builder.build();
     }
 
     public ContentProviderOperation toInsertContentProviderOperation(int backRef) {
-        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(QueryManager.URI_ORDER_DETAIL);
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(AccsUris.URI_ORDER_DETAIL);
         builder.withValueBackReference(AccsTables.OrderDetail.COL_ORDER_ID, backRef);
 //        builder.withValues(toContentValues());
         buildInsertPart(builder);

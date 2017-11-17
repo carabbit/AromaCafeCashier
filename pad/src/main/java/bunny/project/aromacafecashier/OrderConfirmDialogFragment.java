@@ -28,10 +28,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import bunny.project.aromacafecashier.model.OrderInfo;
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
-import bunny.project.aromacafecashier.provider.AccsProvider;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.provider.AccsProvider;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
 /**
@@ -299,7 +300,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
         }
 
         private void buildUpdateOrder(ArrayList<ContentProviderOperation> operations, int orderId, boolean isPayed, float discount) {
-            ContentProviderOperation updatePeration = ContentProviderOperation.newUpdate(QueryManager.URI_ORDER)
+            ContentProviderOperation updatePeration = ContentProviderOperation.newUpdate(AccsUris.URI_ORDER)
                     .withValue(AccsTables.Order.COL_PAY_TIME, isPayed ? System.currentTimeMillis() : -1)
                     .withValue(AccsTables.Order.COL_PAYED, isPayed ? 1 : 0)
                     .withValue(AccsTables.Order.COL_DISCOUNT, isPayed ? discount : 1.0f)
@@ -307,7 +308,7 @@ public class OrderConfirmDialogFragment extends DialogFragment {
                     .build();
             operations.add(updatePeration);
 
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(QueryManager.URI_ORDER_DETAIL)
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(AccsUris.URI_ORDER_DETAIL)
                     .withSelection(AccsTables.OrderDetail.COL_ORDER_ID + "=?", new String[]{String.valueOf(orderId)})
                     .build();
             operations.add(deleteOperation);

@@ -2,7 +2,7 @@ package bunny.project.aromacafecashier.model;
 
 import android.database.Cursor;
 
-import bunny.project.aromacafecashier.QueryManager;
+import bunny.project.aromacafecashier.common.QueryManager;
 
 /**
  * Created by bunny on 17-3-14.

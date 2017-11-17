@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">LanTransport</string>
+    <string name="sync">同步</string>
+    <string name="start_tcp_receiver">开启TCP接收端口</string>
+    <string name="tcp_socket_got">TCP连接已建立</string>
+    <string name="close_tcp_socket">关闭TCP连接</string>
+    <string name="create_db_path">创建本地数据库路径</string>
+    <string name="create_db_file">创建本地数据库文件</string>
+    <string name="create_db_file_success">创建本地数据库文件成功</string>
+    <string name="create_db_file_fail">创建本地数据库文件失败</string>
+    <string name="receive_db_ready">准备接收数据库文件</string>
+    <string name="receive_db_success">数据库文件接收成功</string>
+    <string name="local_ip">本机IP地址：%1$s</string>
+    <string name="before_send_udp">准备发送UDP广播</string>
+    <string name="after_send_udp">UDP广播发送完毕</string>
+    <string name="close_send_udp">关闭UDP广播端口</string>
+    <string name="exception">[错误]：%1$s</string>
+</resources>

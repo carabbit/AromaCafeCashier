@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import bunny.project.aromacafecashier.model.OrderInfo;
+import bunny.project.aromacafecashier.common.model.OrderInfo;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 

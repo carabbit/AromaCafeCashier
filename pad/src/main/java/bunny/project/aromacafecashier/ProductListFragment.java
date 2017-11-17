@@ -15,13 +15,15 @@ import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import bunny.project.aromacafecashier.common.AccsUris;
+import bunny.project.aromacafecashier.common.QueryManager;
 import bunny.project.aromacafecashier.model.Product;
-import bunny.project.aromacafecashier.provider.AccsTables;
+import bunny.project.aromacafecashier.common.provider.AccsTables;
 import bunny.project.aromacafecashier.utility.BitmapTool;
 import bunny.project.aromacafecashier.view.ProductListItemView;
 import bunny.project.aromacafecashier.view.TabGroup;
 
-import static bunny.project.aromacafecashier.QueryManager.PROJECTION_TYPE;
+import static bunny.project.aromacafecashier.common.QueryManager.PROJECTION_TYPE;
 
 /**
  * Created by bunny on 2017/3/12.
@@ -219,13 +221,13 @@ public class ProductListFragment extends Fragment {
     public void deleteCurrentType() {
         String[] args = new String[]{String.valueOf(mCurrentTypeId)};
         String seletion = AccsTables.Type._ID + " = ?";
-        mQqueryHandle.startDelete(TOKEN_DELETE_TYPE, mCurrentTypeId, QueryManager.URI_TYPE, seletion, args);
+        mQqueryHandle.startDelete(TOKEN_DELETE_TYPE, mCurrentTypeId, AccsUris.URI_TYPE, seletion, args);
     }
 
     public void deleteItem(int productId) {
         String[] args = new String[]{String.valueOf(productId)};
         String seletion = AccsTables.Product._ID + " = ?";
-        mQqueryHandle.startDelete(TOKEN_DELETE_PRODUCT, productId, QueryManager.URI_PRODUCT, seletion, args);
+        mQqueryHandle.startDelete(TOKEN_DELETE_PRODUCT, productId, AccsUris.URI_PRODUCT, seletion, args);
     }
 
     private void handleProductQuery(int type, Cursor cursor) {
@@ -291,7 +293,7 @@ public class ProductListFragment extends Fragment {
 
     private void queryProductWithNoType() {
         String selection = AccsTables.Product.COL_TYPE_ID + " NOT IN ( SELECT " + AccsTables.Type._ID + " FROM " + AccsTables.Type.TABLE_NAME + ")";
-        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT_WITH_NO_TYPE, null, QueryManager.URI_PRODUCT, new String[]{AccsTables.Product._ID}, selection, null, null);
+        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT_WITH_NO_TYPE, null, AccsUris.URI_PRODUCT, new String[]{AccsTables.Product._ID}, selection, null, null);
     }
 
     private void queryProductByType(int type) {
@@ -305,7 +307,7 @@ public class ProductListFragment extends Fragment {
         }
 
         String order = AccsTables.Product.COL_NAME;
-        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT, type, QueryManager.URI_PRODUCT, QueryManager.PROJECTION_PRODUCT, selection, args, order);
+        mQqueryHandle.startQuery(TOKEN_QUERY_PRODUCT, type, AccsUris.URI_PRODUCT, QueryManager.PROJECTION_PRODUCT, selection, args, order);
     }
 
     @Override
@@ -343,7 +345,7 @@ public class ProductListFragment extends Fragment {
     }
 
     private void queryAllType() {
-        mQqueryHandle.startQuery(TOKEN_QUERY_ALL_TYPE, null, QueryManager.URI_TYPE, PROJECTION_TYPE, null, null, null);
+        mQqueryHandle.startQuery(TOKEN_QUERY_ALL_TYPE, null, AccsUris.URI_TYPE, PROJECTION_TYPE, null, null, null);
     }
 
     public void setProductItemClickListener(ProductItemClickListener listener) {
