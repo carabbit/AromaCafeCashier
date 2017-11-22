@@ -18,14 +18,17 @@ public class TcpReceiver extends Thread {
     private static final String TAG = "TcpReceiver";
 
     private boolean mIsRunning;
+    private boolean mIsClosed;
     private LanTransportHelper.Progress mProgress;
-    Socket mSocket;
+    private Socket mSocket;
+    private ServerSocket mServerSocket;
 
     public TcpReceiver(LanTransportHelper.Progress progress) {
         mProgress = progress;
     }
 
     public void close() {
+        MLog.i(TAG, "[close] mSocket：" + mSocket);
         if (mSocket != null) {
             try {
                 MLog.i(TAG, ">> close tcp socket");
@@ -35,6 +38,17 @@ public class TcpReceiver extends Thread {
                 MLog.i(TAG, e.toString());
                 mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.exception, e.toString());
             }
+        } else {
+            mIsClosed = true;
+            if (mServerSocket != null) {
+                try {
+                    mServerSocket.close();
+                } catch (IOException e) {
+                    MLog.i(TAG, e.toString());
+                    mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.exception, e.toString());
+                }
+            }
+            mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.close_tcp_socket, null);
         }
     }
 
@@ -45,7 +59,7 @@ public class TcpReceiver extends Thread {
     @Override
     public void run() {
 
-        ServerSocket serverSocket = null;
+        mIsClosed = false;
 
         while (true) {
             mIsRunning = true;
@@ -53,11 +67,16 @@ public class TcpReceiver extends Thread {
             try {
                 MLog.i(TAG, " new ServerSocket ++++++++++");
                 mProgress.onProgress(LanTransportHelper.TOKEN_PROGRESS, R.string.start_tcp_receiver, null);
-                serverSocket = new ServerSocket(Constant.TCP_PORT);
+                mServerSocket = new ServerSocket(Constant.TCP_PORT);
 
-                mSocket = serverSocket.accept();
+                mSocket = mServerSocket.accept();
+
+                if (mIsClosed) {
+                    break;
+                }
+
                 MLog.i(TAG, " get mSocket ++++++++++++++++");
-                mProgress.onProgress(LanTransportHelper.TOKEN_PROGRESS, R.string.tcp_socket_got, null);
+                mProgress.onProgress(LanTransportHelper.TOKEN_TCP_CONNECTED, R.string.tcp_socket_got, null);
 
                 if (mSocket != null) {
                     InputStream socketInputStream = mSocket.getInputStream();
@@ -113,7 +132,7 @@ public class TcpReceiver extends Thread {
                 }
             } catch (IOException e1) {
                 MLog.i(TAG, e1.toString());
-                mProgress.onProgress(LanTransportHelper.TOKEN_PROGRESS, R.string.exception, e1.toString());
+                mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.exception, e1.toString());
                 break;
             } finally {
                 try {
@@ -121,12 +140,12 @@ public class TcpReceiver extends Thread {
                         mSocket.close();
                     }
 
-                    if (serverSocket != null) {
-                        serverSocket.close();
+                    if (mServerSocket != null) {
+                        mServerSocket.close();
                     }
                 } catch (IOException e) {
                     MLog.i(TAG, e.toString());
-                    mProgress.onProgress(LanTransportHelper.TOKEN_PROGRESS, R.string.exception, e.toString());
+                    mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.exception, e.toString());
                     break;
                 }
             }

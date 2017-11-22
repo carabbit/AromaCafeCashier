@@ -1,15 +1,14 @@
 package bunny.project.aromacafecashier.lantransport;
 
-import android.os.Message;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.DatagramSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.nio.charset.Charset;
 
 import bunny.project.aromacafecashier.common.MLog;
 
@@ -22,47 +21,67 @@ public class UdpReceiveAndTcpSend extends Thread {
 
     private static final String TAG = "UdpReceiveAndTcpSend";
     Socket socket = null;
-    MulticastSocket ms = null;
+    //    MulticastSocket ms = null;
     DatagramPacket dp;
+    private TransportCallback mCallback;
 
-    public UdpReceiveAndTcpSend() {
+    public UdpReceiveAndTcpSend(TransportCallback callback) {
+        mCallback = callback;
     }
 
     @Override
     public void run() {
-        Message msg;
         String information;
 
+        String host_ip = Utils.getLocalHostIp();
+        MLog.i(TAG, "host_ip:          " + host_ip);
+        mCallback.progress(R.string.local_ip, host_ip);
+
         byte[] data = new byte[1024];
+//        try {
+//            InetAddress groupAddress = InetAddress.getByName(Constant.MULTI_BROADCAST_ADDRESS);
+//            ms = new MulticastSocket(Constant.UDP_RECEIVE_PORT);
+//            ms.joinGroup(groupAddress);
+//        } catch (Exception e) {
+//            MLog.i(TAG, e.toString());
+//            mCallback.progress(R.string.exception, e.toString());
+//            mCallback.transportComplete();
+//            return;
+//        }
+        DatagramSocket updSocket = null;
         try {
-            InetAddress groupAddress = InetAddress.getByName(Constant.MULTI_BROADCAST_ADDRESS);
-            ms = new MulticastSocket(Constant.UDP_PORT);
-            ms.joinGroup(groupAddress);
-        } catch (Exception e) {
-            e.printStackTrace();
+            updSocket = new DatagramSocket(Constant.UDP_RECEIVE_PORT);
+            updSocket.setReuseAddress(true);
+        } catch (SocketException e) {
+            MLog.i(TAG, e.toString() + " port:" + Constant.UDP_RECEIVE_PORT);
+            mCallback.progress(R.string.exception, e.toString());
+            return;
         }
 
         while (true) {
             try {
                 dp = new DatagramPacket(data, data.length);
-                if (ms != null) {
+                if (updSocket != null) {
                     MLog.i(TAG, "start receiving...");
-                    ms.receive(dp);
+                    mCallback.progress(R.string.start_udp_receiver, null);
+                    updSocket.receive(dp);
                 }
             } catch (Exception e) {
                 MLog.i(TAG, e.toString());
-                break;
+                mCallback.progress(R.string.exception, e.toString());
+                mCallback.transportComplete();
+                return;
             }
 
             MLog.i(TAG, "udp received");
+            mCallback.progress(R.string.udp_received, null);
 
             if (dp.getAddress() != null) {
                 final String quest_ip = dp.getAddress().toString();
 
-                String host_ip = Utils.getLocalHostIp();
 
-                MLog.i(TAG, "host_ip:          " + host_ip);
                 MLog.i(TAG, "remote_device_ip: " + quest_ip.substring(1));
+                mCallback.progress(R.string.remote_ip, quest_ip.substring(1));
 
                 /* 若udp包的ip地址 是 本机的ip地址的话，丢掉这个包(不处理)*/
 
@@ -70,19 +89,25 @@ public class UdpReceiveAndTcpSend extends Thread {
                     continue;
                 }
 
-                final String codeString = new String(data, 0, dp.getLength());
 
-//                msg = new Message();
-//                msg.what = 0x222;
-                information = "收到来自: \n" + quest_ip.substring(1) + "\n" + "的udp请求\n";
-//                        + "请求内容: " + codeString + "\n\n";
-//
+                byte[] udpData = dp.getData();
+                String udpMessage = new String(udpData, 0, dp.getLength(), Charset.forName("UTF-8"));
+                mCallback.progress(R.string.udp_message, udpMessage);
+
+                information = "收到来自: " + quest_ip.substring(1) + " 的udp请求\n"
+                        + "请求内容: " + udpMessage;
                 MLog.i(TAG, information);
+
+                if (!Constant.UDP_MESSAGE.equals(udpMessage)) {
+                    return;
+                }
+//
 
 //                msg.obj = information;
 //                handler.sendMessage(msg);
 
                 try {
+                    mCallback.progress(R.string.before_send_tcp, null);
                     final String target_ip = dp.getAddress().toString().substring(1);
 
 //                    msg = new Message();
@@ -114,8 +139,10 @@ public class UdpReceiveAndTcpSend extends Thread {
 //                    printWriter.print("你好，服务端已接收到您的信息");
 //                    printWriter.flush();
                     socket.shutdownOutput();// 关闭输出流
+                    mCallback.progress(R.string.after_send_tcp, null);
+
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    mCallback.progress(R.string.exception, e.toString());
                 } finally {
 
                     try {
@@ -128,7 +155,10 @@ public class UdpReceiveAndTcpSend extends Thread {
 //                        }
                     } catch (IOException e) {
                         MLog.i(TAG, e.toString());
+                        mCallback.progress(R.string.exception, e.toString());
                     }
+
+                    mCallback.transportComplete();
                 }
             }
         }

@@ -150,7 +150,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LanTransportHelper.getInstance().closeSync(mCallback);
+        LanTransportHelper.getInstance().closeSync();
     }
 
     private void initTimeView() {

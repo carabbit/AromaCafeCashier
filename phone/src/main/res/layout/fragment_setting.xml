@@ -10,13 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/screen_bg_100dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/screen_bg"
         android:gravity="bottom"
-        android:padding="5dp"
-        android:paddingStart="8dp"
+        android:padding="13px"
         android:textColor="@color/screen_text" />
 
 

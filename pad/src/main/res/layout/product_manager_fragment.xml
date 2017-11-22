@@ -123,8 +123,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_edit"
@@ -133,10 +133,10 @@
                     android:text="@string/edit" />
 
                 <Button
-                    android:layout_marginStart="30px"
                     android:id="@+id/btn_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="30px"
                     android:text="@string/delete" />
             </LinearLayout>
 
@@ -181,6 +181,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|right"
                     android:text="@string/create_product" />
+
+                <Button
+                    android:id="@+id/btn_sync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:layout_marginStart="20px"
+                    android:text="@string/sync_setting" />
 
             </LinearLayout>
         </LinearLayout>

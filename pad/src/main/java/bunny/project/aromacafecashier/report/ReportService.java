@@ -8,9 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -18,7 +23,9 @@ import bunny.project.aromacafecashier.MainActivity;
 import bunny.project.aromacafecashier.MyLog;
 import bunny.project.aromacafecashier.R;
 import bunny.project.aromacafecashier.common.MLog;
+import bunny.project.aromacafecashier.lantransport.Constant;
 import bunny.project.aromacafecashier.lantransport.LanTransportHelper;
+import bunny.project.aromacafecashier.lantransport.TransportCallback;
 
 /**
  * Created by bunny on 17-3-31.
@@ -42,6 +49,47 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
 
     private MyHandler mHandler;
 
+    private TransportCallback mCallback = new TransportCallback() {
+
+        private StringBuilder mStrBuilder = new StringBuilder();
+        SharedPreferences pref;
+        private DateFormat mTimeFormat = new SimpleDateFormat("HH:mm:ss");
+
+        @Override
+        public void progress(int res, String text) {
+            mStrBuilder.delete(0, mStrBuilder.length());
+
+            if (pref == null) {
+                pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            }
+
+            String oriLog = pref.getString(Constant.PREF_SERVER_LOG, "");
+            mStrBuilder.append(oriLog);
+
+            String log;
+            if (TextUtils.isEmpty(text)) {
+                log = getResources().getString(res);
+            } else {
+                log = getResources().getString(res, text);
+            }
+
+            mStrBuilder.append("\n> ");
+            String formatTime = mTimeFormat.format(new Date(System.currentTimeMillis()));
+            mStrBuilder.append(formatTime);
+            mStrBuilder.append(" ");
+            mStrBuilder.append(log);
+
+
+            pref.edit().putString(Constant.PREF_SERVER_LOG, mStrBuilder.toString()).commit();
+
+            MLog.i("", formatTime + " " + log);
+        }
+
+        @Override
+        public void transportComplete() {
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -59,7 +107,8 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
         Notification notification = builder.build();
         startForeground(1, notification);
 
-        LanTransportHelper.getInstance().startSyncServer();
+        LanTransportHelper.getInstance().acquireMultiCastLock(this);
+        LanTransportHelper.getInstance().startSyncServer(mCallback);
         MLog.i("", "" + getDatabasePath("accs.db").getPath());
     }
 
@@ -144,7 +193,13 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
 
     }
 
-//    public static void setReportAlarm(Context context) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LanTransportHelper.getInstance().releaseMultiCastLock();
+    }
+
+    //    public static void setReportAlarm(Context context) {
 //        Intent intent = new Intent(context, ReportService.class);
 //        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 //

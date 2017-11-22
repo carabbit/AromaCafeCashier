@@ -1,11 +1,11 @@
 package bunny.project.aromacafecashier.lantransport;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
 
@@ -26,20 +26,57 @@ public class LanTransportHelper {
 
     public static final int TOKEN_PROGRESS = 0;
     public static final int TOKEN_COMPLETE = 1;
-    public static final int TOKEN_ERROR = 2;
+    public static final int TOKEN_TCP_CONNECTED = 2;
+    public static final int TOKEN_CLOSE_TCP_RECEIVER = 3;
+    public static final int TOKEN_ERROR = 4;
+    public static final int TOKEN_UPD_SENDER_CLOSE = 5;
+
+    private static final int REPEAT_TIME = 5;
+
+    private TcpReceiver mTcpReceiver;
+    private TransportCallback mCallback;
+    private WifiManager.MulticastLock mMulticastLock;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == TOKEN_PROGRESS) {
-                mCallback.progress(msg.arg1, (String) msg.obj);
-            } else if (msg.what == TOKEN_COMPLETE) {
-                mCallback.transportComplete();
-            } else if (msg.what == TOKEN_ERROR) {
-                mCallback.progress(msg.arg1, (String) msg.obj);
-                mCallback.transportComplete();
-            } else {
-                throw new RuntimeException("invalid token:" + msg.what);
+            switch (msg.what) {
+                case TOKEN_PROGRESS: {
+                    mCallback.progress(msg.arg1, (String) msg.obj);
+                    break;
+                }
+                case TOKEN_COMPLETE: {
+                    removeMessages(TOKEN_CLOSE_TCP_RECEIVER);
+                    mCallback.transportComplete();
+                    break;
+                }
+                case TOKEN_ERROR: {
+                    removeMessages(TOKEN_CLOSE_TCP_RECEIVER);
+                    mCallback.progress(msg.arg1, (String) msg.obj);
+                    mCallback.transportComplete();
+                    break;
+                }
+                case TOKEN_TCP_CONNECTED: {
+                    removeMessages(TOKEN_CLOSE_TCP_RECEIVER);
+                    mCallback.progress(msg.arg1, (String) msg.obj);
+                    break;
+                }
+                case TOKEN_CLOSE_TCP_RECEIVER: {
+                    int count = (int) msg.obj;
+                    if (count <= REPEAT_TIME) {
+                        mCallback.progress(msg.arg1, String.valueOf(count));
+                        stopTcpReceiver(++count);
+                    } else {
+                        closeSync();
+                    }
+                    break;
+                }
+                case TOKEN_UPD_SENDER_CLOSE: {
+                    stopTcpReceiver(1);
+                    break;
+                }
+                default:
+                    throw new RuntimeException("invalid token:" + msg.what);
             }
         }
     };
@@ -55,13 +92,24 @@ public class LanTransportHelper {
         }
     };
 
-    private TcpReceiver mTcpReceiver;
-    private TransportCallback mCallback;
-
     private LanTransportHelper() {
     }
 
     private static volatile LanTransportHelper sInstance;
+
+    public void acquireMultiCastLock(Context context) {
+        if (mMulticastLock == null) {
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            mMulticastLock = wifiManager.createMulticastLock("multicast.test");
+        }
+        mMulticastLock.acquire();
+    }
+
+    public void releaseMultiCastLock() {
+        if (mMulticastLock != null) {
+            mMulticastLock.release();
+        }
+    }
 
     public static LanTransportHelper getInstance() {
         if (sInstance == null) {
@@ -85,9 +133,11 @@ public class LanTransportHelper {
         mCallback = callback;
         startTcpReceiver(mProgress);
         startSearch(mProgress);
+
     }
 
-    public void closeSync(TransportCallback callback) {
+    public void closeSync() {
+        MLog.i("", "[closeSync]");
         if (mTcpReceiver != null) {
             mTcpReceiver.close();
         }
@@ -101,11 +151,25 @@ public class LanTransportHelper {
 
         if (!mTcpReceiver.isRunning()) {
             mTcpReceiver.start();
+            stopTcpReceiver(1);
         }
     }
 
-    public void startSyncServer() {
-        new UdpReceiveAndTcpSend().start();
+    private void stopTcpReceiver(int count) {
+        if (!mTcpReceiver.isRunning()) {
+            return;
+        }
+
+        Message message = mHandler.obtainMessage();
+        message.what = TOKEN_CLOSE_TCP_RECEIVER;
+        message.arg1 = R.string.wait_for_receive_tcp;
+        message.obj = count;
+        mHandler.sendMessageDelayed(message, 1500);
+        MLog.i("", "stopTcpReceiver: " + count);
+    }
+
+    public void startSyncServer(TransportCallback callback) {
+        new UdpReceiveAndTcpSend(callback).start();
         MLog.i(TAG, "[startSyncServer]");
     }
 
@@ -115,48 +179,8 @@ public class LanTransportHelper {
      * @param progress
      */
     private void startSearch(Progress progress) {
-        new udpBroadCast(progress).start();
+        new UdpSender(progress).start();
         MLog.i(TAG, "[startSearch]");
-    }
-
-    /* 发送udp多播 */
-    private class udpBroadCast extends Thread {
-        MulticastSocket sender = null;
-        DatagramPacket dp = null;
-        InetAddress group = null;
-
-        byte[] data = new byte[1024];
-        private Progress mProgress;
-
-        public udpBroadCast(Progress progress) {
-            mProgress = progress;
-        }
-
-        @Override
-        public void run() {
-            try {
-                String localIp = Utils.getLocalHostIp();
-                MLog.i(TAG, "localIp:" + localIp);
-                mProgress.onProgress(TOKEN_PROGRESS, R.string.local_ip, localIp);
-                MLog.i(TAG, "===");
-                sender = new MulticastSocket();
-                group = InetAddress.getByName(Constant.MULTI_BROADCAST_ADDRESS);
-                dp = new DatagramPacket(data, data.length, group, Constant.UDP_PORT);
-
-                MLog.i(TAG, "[udpBroadCast] before send udp");
-                mProgress.onProgress(TOKEN_PROGRESS, R.string.before_send_udp, null);
-                sender.send(dp);
-                MLog.i(TAG, "[udpBroadCast] after  send udp");
-                mProgress.onProgress(TOKEN_PROGRESS, R.string.after_send_udp, null);
-            } catch (Exception e) {
-                Log.i(TAG, e.toString());
-                mProgress.onProgress(TOKEN_PROGRESS, R.string.exception, e.toString());
-            } finally {
-                sender.close();
-                MLog.i(TAG, "[udpBroadCast] finally");
-                mProgress.onProgress(TOKEN_PROGRESS, R.string.close_send_udp, null);
-            }
-        }
     }
 
     protected interface Progress {

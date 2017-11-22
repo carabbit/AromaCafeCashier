@@ -25,6 +25,7 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
     private Button mBtnCreateProduct;
     private Button mBtnDeleteProduct;
     private Button mBtnDeleteType;
+    private Button mBtnSync;
     //    ImageView mBtnBack;
     private Button mBtnEditProduct;
     private ImageView mProductImgView;
@@ -49,6 +50,9 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
                     break;
                 case R.id.btn_create:
                     startActivity(new Intent(getActivity(), ProductEditorActivity.class));
+                    break;
+                case R.id.btn_sync:
+                    showDialog(new SyncDialogFragment());
                     break;
             }
         }
@@ -94,11 +98,13 @@ public class ProductManagerFragment extends Fragment implements ProductListFragm
         mBtnDeleteProduct = (Button) view.findViewById(R.id.btn_delete);
         mBtnEditProduct = (Button) view.findViewById(R.id.btn_edit);
         mBtnCreateProduct = (Button) view.findViewById(R.id.btn_create);
+        mBtnSync = (Button) view.findViewById(R.id.btn_sync);
 
         mBtnCreateProduct.setOnClickListener(mOnClickListener);
         mBtnDeleteProduct.setOnClickListener(mOnClickListener);
         mBtnEditProduct.setOnClickListener(mOnClickListener);
         mBtnDeleteType.setOnClickListener(mOnClickListener);
+        mBtnSync.setOnClickListener(mOnClickListener);
     }
 
     private void editProduct(View v) {

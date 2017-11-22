@@ -11,8 +11,15 @@
     <string name="receive_db_ready">准备接收数据库文件</string>
     <string name="receive_db_success">数据库文件接收成功</string>
     <string name="local_ip">本机IP地址：%1$s</string>
+    <string name="remote_ip">远程IP地址：%1$s</string>
+    <string name="udp_message">接受UDP消息：%1$s</string>
     <string name="before_send_udp">准备发送UDP广播</string>
     <string name="after_send_udp">UDP广播发送完毕</string>
     <string name="close_send_udp">关闭UDP广播端口</string>
     <string name="exception">[错误]：%1$s</string>
+    <string name="start_udp_receiver">开启UDP接收端口</string>
+    <string name="udp_received">UDP数据已接收</string>
+    <string name="before_send_tcp">准备发送TCP数据</string>
+    <string name="after_send_tcp">TCP数据发送完毕</string>
+    <string name="wait_for_receive_tcp">等待TCP连接，第%1$s次</string>
 </resources>

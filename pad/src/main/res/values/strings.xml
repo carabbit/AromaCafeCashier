@@ -82,4 +82,8 @@
     <string name="order_status_delete">作废</string>
     <string name="discount">折</string>
     <string name="choose_product">请选择商品</string>
+    <string name="quit">退出</string>
+    <string name="clear">清除</string>
+    <string name="refresh">刷新</string>
+    <string name="sync_setting">同步设置</string>
 </resources>
