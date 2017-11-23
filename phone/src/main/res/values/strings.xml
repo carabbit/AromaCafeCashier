@@ -11,10 +11,17 @@
     <string name="month">本月</string>
     <string name="custom">自定义</string>
     <string name="last_sync_time">上次同步时间：%1$s</string>
+    <string name="selected_date_today">选择日期：%1$d年%2$d月%3$d日</string>
+    <string name="selected_date_month">选择日期：%1$d年%2$d月</string>
+    <string name="selected_date_default">选择日期：</string>
     <string name="not_sync">未同步</string>
     <string name="sales_cash">营业额：%1$.1f</string>
     <string name="finish_order_count">完成订单：%1$d</string>
     <string name="temp_order_count">挂单：%1$d</string>
     <string name="canceled_order_count">作废：%1$d</string>
     <string name="no_value">-</string>
+    <string name="sale_item_default_id">单号</string>
+    <string name="sale_item_default_order_time">下单时间</string>
+    <string name="sale_item_default_pay_time">付款时间</string>
+    <string name="no_data">没有数据</string>
 </resources>

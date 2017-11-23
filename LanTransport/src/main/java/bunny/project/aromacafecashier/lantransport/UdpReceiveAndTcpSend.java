@@ -39,7 +39,7 @@ public class UdpReceiveAndTcpSend extends Thread {
 
         byte[] data = new byte[1024];
 //        try {
-//            InetAddress groupAddress = InetAddress.getByName(Constant.MULTI_BROADCAST_ADDRESS);
+//            InetAddress groupAddress = InetAddress.getByName(Constant.UDP_MULTI_BROADCAST_ADDRESS);
 //            ms = new MulticastSocket(Constant.UDP_RECEIVE_PORT);
 //            ms.joinGroup(groupAddress);
 //        } catch (Exception e) {
@@ -98,7 +98,7 @@ public class UdpReceiveAndTcpSend extends Thread {
                         + "请求内容: " + udpMessage;
                 MLog.i(TAG, information);
 
-                if (!Constant.UDP_MESSAGE.equals(udpMessage)) {
+                if (!Constant.SYNC_MESSAGE_ASK.equals(udpMessage)) {
                     return;
                 }
 //
@@ -107,7 +107,7 @@ public class UdpReceiveAndTcpSend extends Thread {
 //                handler.sendMessage(msg);
 
                 try {
-                    mCallback.progress(R.string.before_send_tcp, null);
+                    mCallback.progress(R.string.before_send_via_tcp, null);
                     final String target_ip = dp.getAddress().toString().substring(1);
 
 //                    msg = new Message();
@@ -139,7 +139,7 @@ public class UdpReceiveAndTcpSend extends Thread {
 //                    printWriter.print("你好，服务端已接收到您的信息");
 //                    printWriter.flush();
                     socket.shutdownOutput();// 关闭输出流
-                    mCallback.progress(R.string.after_send_tcp, null);
+                    mCallback.progress(R.string.after_send_via_tcp, null);
 
                 } catch (IOException e) {
                     mCallback.progress(R.string.exception, e.toString());

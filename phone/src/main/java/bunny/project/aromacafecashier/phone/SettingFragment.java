@@ -1,7 +1,13 @@
 package bunny.project.aromacafecashier.phone;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -20,6 +26,7 @@ import java.util.Date;
 import bunny.project.aromacafecashier.common.MLog;
 import bunny.project.aromacafecashier.lantransport.LanTransportHelper;
 import bunny.project.aromacafecashier.lantransport.TransportCallback;
+import bunny.project.aromacafecashier.lantransport.Utils;
 
 
 /**
@@ -42,7 +49,8 @@ public class SettingFragment extends Fragment {
 
     private View mContentView;
     private TextView mCommondDisplay;
-    private TextView mText;
+    private TextView mLastSyncTimeView;
+    private TextView mLocalTimeView;
     private Button mBtnSync;
 
 
@@ -78,14 +86,32 @@ public class SettingFragment extends Fragment {
             setTimeView();
             mBtnSync.setEnabled(true);
         }
+
+        @Override
+        public void notification(int res, String text) {
+
+        }
+    };
+
+    private BroadcastReceiver mWifiReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            MLog.i("", "action:" + action);
+            if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
+                updateWifiStateView();
+            }
+        }
     };
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_sync) {
-                LanTransportHelper.getInstance().sync(mCallback);
+//                LanTransportHelper.getInstance().sync(mCallback);
                 v.setEnabled(false);
+//                LanTransportHelper.getInstance().startUdpReceiver(mCallback);
+                LanTransportHelper.getInstance().startTcpSenderForPhone(mCallback);
             }
         }
     };
@@ -138,13 +164,39 @@ public class SettingFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (mCommondDisplay == null) {
             mCommondDisplay = (TextView) view.findViewById(R.id.command_display);
-            mText = (TextView) view.findViewById(R.id.text);
+            mLastSyncTimeView = (TextView) view.findViewById(R.id.last_sync_time);
+            mLocalTimeView = (TextView) view.findViewById(R.id.local_ip);
             mBtnSync = (Button) view.findViewById(R.id.btn_sync);
             mBtnSync.setOnClickListener(mOnClickListener);
 
-            initTimeView();
+            initView();
         }
         MLog.i("xxx", "onViewCreated");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        registerWifiReceiver(context);
+    }
+
+
+    private void registerWifiReceiver(Context context) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        context.registerReceiver(mWifiReceiver, filter);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mWifiReceiver != null) {
+            getContext().unregisterReceiver(mWifiReceiver);
+        }
     }
 
     @Override
@@ -153,20 +205,30 @@ public class SettingFragment extends Fragment {
         LanTransportHelper.getInstance().closeSync();
     }
 
-    private void initTimeView() {
+    private void initView() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         long lastSyncTime = pref.getLong("last_sync_time", -1);
         if (lastSyncTime > 0) {
-            mText.setText(getString(R.string.last_sync_time, mDateFormat.format(new Date(lastSyncTime))));
+            mLastSyncTimeView.setText(getString(R.string.last_sync_time, mDateFormat.format(new Date(lastSyncTime))));
         } else {
-            mText.setText(R.string.not_sync);
+            mLastSyncTimeView.setText(R.string.not_sync);
         }
+
+        updateWifiStateView();
     }
+
+    private void updateWifiStateView() {
+        mLocalTimeView.setText(getString(R.string.local_ip, Utils.getLocalHostIp()));
+
+        //如果非局域网，同步按钮禁用。
+        mBtnSync.setEnabled(Utils.isWifiNetwork(getContext()));
+    }
+
 
     private void setTimeView() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         long currentTime = System.currentTimeMillis();
         pref.edit().putLong("last_sync_time", currentTime).commit();
-        mText.setText(getString(R.string.last_sync_time, mDateFormat.format(new Date(currentTime))));
+        mLastSyncTimeView.setText(getString(R.string.last_sync_time, mDateFormat.format(new Date(currentTime))));
     }
 }

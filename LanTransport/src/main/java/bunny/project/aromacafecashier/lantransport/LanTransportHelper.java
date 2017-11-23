@@ -30,6 +30,7 @@ public class LanTransportHelper {
     public static final int TOKEN_CLOSE_TCP_RECEIVER = 3;
     public static final int TOKEN_ERROR = 4;
     public static final int TOKEN_UPD_SENDER_CLOSE = 5;
+    public static final int TOKEN_TOAST = 6;
 
     private static final int REPEAT_TIME = 5;
 
@@ -40,6 +41,12 @@ public class LanTransportHelper {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+
+            if (mCallback == null) {
+                MLog.i(TAG, "mCallback is null");
+                return;
+            }
+
             switch (msg.what) {
                 case TOKEN_PROGRESS: {
                     mCallback.progress(msg.arg1, (String) msg.obj);
@@ -75,6 +82,10 @@ public class LanTransportHelper {
                     stopTcpReceiver(1);
                     break;
                 }
+                case TOKEN_TOAST:{
+                    mCallback.notification(msg.arg1, (String) msg.obj);
+                    break;
+                }
                 default:
                     throw new RuntimeException("invalid token:" + msg.what);
             }
@@ -100,7 +111,7 @@ public class LanTransportHelper {
     public void acquireMultiCastLock(Context context) {
         if (mMulticastLock == null) {
             WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            mMulticastLock = wifiManager.createMulticastLock("multicast.test");
+            mMulticastLock = wifiManager.createMulticastLock("accs_multicast");
         }
         mMulticastLock.acquire();
     }
@@ -141,6 +152,15 @@ public class LanTransportHelper {
         if (mTcpReceiver != null) {
             mTcpReceiver.close();
         }
+    }
+
+    public void sendUdpMulticast() {
+        new UpdMultiSender(mProgress).run();
+    }
+
+    public void startUdpReceiver(TransportCallback callback) {
+        mCallback = callback;
+        new UdpReceiver(mProgress).start();
     }
 
 
@@ -185,6 +205,16 @@ public class LanTransportHelper {
 
     protected interface Progress {
         void onProgress(int token, int res, String text);
+    }
+
+    public void startTcpRecieverForPad(TransportCallback callback) {
+        mCallback = callback;
+        new TcpRecevierForPad(mProgress).start();
+    }
+
+    public void startTcpSenderForPhone(TransportCallback callback){
+        mCallback = callback;
+        new TcpTransferClient(mProgress).start();
     }
 
 }

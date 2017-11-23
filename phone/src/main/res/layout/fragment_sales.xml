@@ -1,13 +1,77 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="bunny.project.aromacafecashier.phone.SalesFragment">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/no_data"
+        android:visibility="gone" />
+
+
+    <bunny.project.aromacafecashier.phone.view.SalesSummaryView
+        android:id="@+id/sales_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:paddingStart="5dp">
+
+        <TextView
+            android:id="@+id/sales_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_value" />
+
+        <TextView
+            android:id="@+id/finish_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/no_value" />
+
+        <TextView
+            android:id="@+id/temp_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/no_value" />
+
+        <TextView
+            android:id="@+id/canceled_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/no_value" />
+    </bunny.project.aromacafecashier.phone.view.SalesSummaryView>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/selected_date_default" />
 
     <LinearLayout
         android:id="@+id/filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <Button
@@ -31,57 +95,4 @@
             android:layout_weight="1"
             android:text="@string/custom" />
     </LinearLayout>
-
-    <bunny.project.aromacafecashier.phone.view.SalesSummaryView
-        android:id="@+id/sales_summary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/filter">
-
-        <TextView
-            android:id="@+id/sales_cash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/no_value" />
-
-        <TextView
-            android:id="@+id/finish_order_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/no_value" />
-
-        <TextView
-            android:id="@+id/temp_order_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/no_value" />
-
-        <TextView
-            android:id="@+id/canceled_order_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/no_value" />
-    </bunny.project.aromacafecashier.phone.view.SalesSummaryView>
-
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/sales_summary" />
-
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/title_sales"
-        android:visibility="gone" />
-</RelativeLayout>
+</LinearLayout>

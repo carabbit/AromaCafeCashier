@@ -8,9 +8,10 @@
     <bunny.project.aromacafecashier.phone.view.ScreenView
         android:id="@+id/command_display"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_height="0dp"
         android:layout_margin="3dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
         android:background="@drawable/screen_bg"
         android:gravity="bottom"
         android:padding="13px"
@@ -18,17 +19,27 @@
 
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/local_ip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/title_setting" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/local_ip" />
+
+    <TextView
+        android:id="@+id/last_sync_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/last_sync_time" />
 
     <Button
         android:id="@+id/btn_sync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp"
         android:text="@string/sync" />
 
 

@@ -31,7 +31,7 @@ public class TcpReceiver extends Thread {
         MLog.i(TAG, "[close] mSocket：" + mSocket);
         if (mSocket != null) {
             try {
-                MLog.i(TAG, ">> close tcp socket");
+                MLog.i(TAG, ">> close tcp mSocket");
                 mProgress.onProgress(LanTransportHelper.TOKEN_ERROR, R.string.close_tcp_socket, null);
                 mSocket.close();
             } catch (IOException e) {

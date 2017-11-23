@@ -27,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
-    <android.support.v4.view.ViewPager
+    <bunny.project.aromacafecashier.common.view.UnslideViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

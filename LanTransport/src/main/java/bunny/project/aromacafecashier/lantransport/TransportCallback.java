@@ -7,4 +7,6 @@ public interface TransportCallback {
     void progress(int res, String text);
 
     void transportComplete();
+
+    void notification(int res, String text);
 }

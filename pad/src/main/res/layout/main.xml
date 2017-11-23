@@ -53,6 +53,7 @@
             android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="20px"
             android:layout_alignParentBottom="true"
             android:gravity="end" />
     </RelativeLayout>

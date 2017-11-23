@@ -9,7 +9,9 @@
         android:id="@+id/order_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="20dp" />
+        android:gravity="center"
+        android:minWidth="30dp"
+        android:text="@string/sale_item_default_id" />
 
     <TextView
         android:id="@+id/order_time"
@@ -17,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight="1"
-        android:minWidth="10dp" />
+        android:minWidth="50dp"
+        android:text="@string/sale_item_default_order_time" />
 
     <TextView
         android:id="@+id/pay_time"
@@ -25,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight="1"
-        android:minWidth="50dp" />
+        android:minWidth="50dp"
+        android:text="@string/sale_item_default_pay_time" />
 
     <!--<ImageView
         android:id="@+id/pay_status"

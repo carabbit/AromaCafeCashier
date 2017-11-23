@@ -11,6 +11,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,7 +65,19 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
             }
 
             String oriLog = pref.getString(Constant.PREF_SERVER_LOG, "");
-            mStrBuilder.append(oriLog);
+
+            if (!TextUtils.isEmpty(oriLog)) {
+                String[] commandLines = oriLog.split("\n> ");
+                int length = commandLines.length;
+                if (length > 100) {
+                    for (int index = (length - 100); index < length; index++) {
+                        mStrBuilder.append("\n> ");
+                        mStrBuilder.append(commandLines[index]);
+                    }
+                } else {
+                    mStrBuilder.append(oriLog);
+                }
+            }
 
             String log;
             if (TextUtils.isEmpty(text)) {
@@ -79,7 +92,6 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
             mStrBuilder.append(" ");
             mStrBuilder.append(log);
 
-
             pref.edit().putString(Constant.PREF_SERVER_LOG, mStrBuilder.toString()).commit();
 
             MLog.i("", formatTime + " " + log);
@@ -87,6 +99,11 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
 
         @Override
         public void transportComplete() {
+        }
+
+        @Override
+        public void notification(int res, String text) {
+            Toast.makeText(ReportService.this, getString(res, text), Toast.LENGTH_LONG).show();
         }
     };
 
@@ -107,8 +124,9 @@ public class ReportService extends Service implements SendReportTask.OnSendFinis
         Notification notification = builder.build();
         startForeground(1, notification);
 
-        LanTransportHelper.getInstance().acquireMultiCastLock(this);
-        LanTransportHelper.getInstance().startSyncServer(mCallback);
+//        LanTransportHelper.getInstance().acquireMultiCastLock(this);
+//        LanTransportHelper.getInstance().startSyncServer(mCallback);
+        LanTransportHelper.getInstance().startTcpRecieverForPad(mCallback);
         MLog.i("", "" + getDatabasePath("accs.db").getPath());
     }
 

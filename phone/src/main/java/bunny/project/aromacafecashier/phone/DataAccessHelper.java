@@ -23,6 +23,13 @@ public class DataAccessHelper {
     public static final int TOKEN_QUERY_TODAY_PRODUCTS = 0;
     public static final int TOKEN_QUERY_TODAY_ORDERS = 1;
 
+    public enum QUERY_TYPE {
+        TODAY,
+        THIS_MONTH,
+        CUSTOM_MONTH
+    }
+
+
     public DataAccessHelper(ContentResolver resolver, AccessCallback callback) {
         mCallback = callback;
         mQueryHandler = new AccsQueryHandler(resolver);
@@ -32,7 +39,7 @@ public class DataAccessHelper {
         return mResolver.query(AccsUris.URI_ORDER, QueryManager.PROJECTION_ORDER, null, null, null);
     }
 
-    public void getTodaySalesSummary() {
+    public void queryTodaySalesSummary() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);
@@ -47,7 +54,7 @@ public class DataAccessHelper {
         queryProductsByTime(todayZeroTime, nextDayZeroTime);
     }
 
-    public void getMonthSalesSummary() {
+    public void queryMonthSalesSummary() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);

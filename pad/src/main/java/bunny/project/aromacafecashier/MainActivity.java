@@ -8,14 +8,17 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import bunny.project.aromacafecashier.common.MLog;
 import bunny.project.aromacafecashier.lantransport.LanTransportHelper;
+import bunny.project.aromacafecashier.lantransport.TransportCallback;
+import bunny.project.aromacafecashier.lantransport.Utils;
 import bunny.project.aromacafecashier.model.OrderItemInfo;
 import bunny.project.aromacafecashier.utility.IntentKeys;
 
@@ -33,6 +36,24 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
     private RadioButton mRbtnOrder;
 
 //    private FrameLayout mDialogContainer;
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.version) {
+//                ((TextView) v).setText(Utils.getLocalHostIp());
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setMessage(Utils.getLocalHostIp()).create().show();
+                String localIp = Utils.getLocalHostIp();
+                String wifiName = Utils.getWifiName(MainActivity.this);
+                Toast.makeText(MainActivity.this, wifiName + "   " + localIp, Toast.LENGTH_LONG).show();
+
+//                LanTransportHelper.getInstance().acquireMultiCastLock(MainActivity.this);
+//                LanTransportHelper.getInstance().sendUdpMulticast();
+//                LanTransportHelper.getInstance().releaseMultiCastLock();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +77,7 @@ public class MainActivity extends FullScreenActivity implements RadioGroup.OnChe
 
         TextView versionView = (TextView) findViewById(R.id.version);
         versionView.setText(getVersion());
+        versionView.setOnClickListener(mOnClickListener);
     }
 
     @Override

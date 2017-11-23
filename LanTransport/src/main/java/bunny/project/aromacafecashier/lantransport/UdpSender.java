@@ -15,7 +15,7 @@ import bunny.project.aromacafecashier.common.MLog;
 public class UdpSender extends Thread {
     private static final String TAG = "UdpSender";
 
-    byte[] data = Constant.UDP_MESSAGE.getBytes(Charset.forName("UTF-8"));
+    byte[] data = Constant.SYNC_MESSAGE_ASK.getBytes(Charset.forName("UTF-8"));
     private LanTransportHelper.Progress mProgress;
 
     public UdpSender(LanTransportHelper.Progress progress) {

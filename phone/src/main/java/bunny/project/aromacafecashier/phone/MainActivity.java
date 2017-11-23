@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
+//        mViewPager.scro
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {

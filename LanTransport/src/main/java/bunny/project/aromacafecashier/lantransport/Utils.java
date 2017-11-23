@@ -1,6 +1,8 @@
 package bunny.project.aromacafecashier.lantransport;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
@@ -46,12 +48,21 @@ public class Utils {
         return ipaddress;
     }
 
-    public static String getWifiInfo(Context context) {
+    public static String getWifiName(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        MLog.i(TAG, "wifi信息：" + wifiInfo.toString());
+//        MLog.i(TAG, "wifi信息：" + wifiInfo.toString());
         MLog.i(TAG, "wifi名称：" + wifiInfo.getSSID());
 
-        return null;
+        return wifiInfo.getSSID();
+    }
+
+    public static boolean isWifiNetwork(Context context) {
+        //获得网络连接服务
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        //获取wifi连接状态
+        NetworkInfo.State state = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        //判断是否正在使用wifi网络
+        return state == NetworkInfo.State.CONNECTED;
     }
 }
