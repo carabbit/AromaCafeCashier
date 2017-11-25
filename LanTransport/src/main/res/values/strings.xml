@@ -26,8 +26,11 @@
 
 
     <string name="before_send_via_tcp">开始扫描ACCS系统IP地址</string>
-    <string name="before_verify_accs_ip">开始验证ACCS系统</string>
-    <string name="verify_accs_success">验证ACCS系统通过</string>
+    <string name="connect_ip_start">开始连接IP：%1$s</string>
+    <string name="connect_ip_success">连接IP：%1$s[成功]</string>
+    <string name="verify_accs_start">开始验证ACCS系统</string>
+    <string name="verify_accs_success">验证ACCS系统[成功]</string>
+    <string name="verify_accs_fail">验证ACCS系统[失败]</string>
     <string name="sync_accs_db_start">开始同步ACCS系统数据</string>
     <string name="sync_accs_db_end">同步ACCS系统数据完成</string>
     <string name="after_send_via_tcp">TCP数据发送完毕</string>

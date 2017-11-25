@@ -212,9 +212,9 @@ public class LanTransportHelper {
         new TcpRecevierForPad(mProgress).start();
     }
 
-    public void startTcpSenderForPhone(TransportCallback callback){
+    public void startTcpSenderForPhone(String targetIp, TransportCallback callback){
         mCallback = callback;
-        new TcpTransferClient(mProgress).start();
+        new TcpTransferClient(targetIp, mProgress).start();
     }
 
 }

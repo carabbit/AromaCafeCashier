@@ -111,7 +111,7 @@ public class SettingFragment extends Fragment {
 //                LanTransportHelper.getInstance().sync(mCallback);
                 v.setEnabled(false);
 //                LanTransportHelper.getInstance().startUdpReceiver(mCallback);
-                LanTransportHelper.getInstance().startTcpSenderForPhone(mCallback);
+                LanTransportHelper.getInstance().startTcpSenderForPhone("", mCallback);
             }
         }
     };

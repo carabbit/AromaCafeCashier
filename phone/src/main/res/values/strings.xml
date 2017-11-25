@@ -2,7 +2,7 @@
     <string name="app_name">Aroma</string>
     <string name="title_sales">营业额</string>
     <string name="title_manager">商品管理</string>
-    <string name="title_setting">设置</string>
+    <string name="title_sync">同步</string>
     <string name="search">搜索</string>
     <string name="title_activity_tab">TabActivity</string>
     <string name="action_settings">Settings</string>

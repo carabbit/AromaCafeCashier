@@ -55,7 +55,14 @@ public class DataAccessHelper {
     }
 
     public void queryMonthSalesSummary() {
+        queryMonthSalesSummary(-1);
+    }
+
+    public void queryMonthSalesSummary(int month) {
         Calendar cal = Calendar.getInstance();
+        if (month > 0) {
+            cal.set(Calendar.MONTH, month);
+        }
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);
